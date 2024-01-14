@@ -28,8 +28,8 @@ jobs:
         run: sudo apt-get install cmake doxygen
 
       - name: Compile project
-        run: make && make install
+        run: make compile
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v
+        uses: github/codeql-action/analyze@v1
 

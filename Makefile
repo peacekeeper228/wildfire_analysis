@@ -7,7 +7,7 @@ TARGET := bin/main
 
 SRCS := src/Cell.cpp src/CellStorage.cpp
 
-run:
+run: compile
 	@echo "🚀 Executing..."
 	@./$(TARGET)
 

@@ -6,6 +6,8 @@ int main()
     /* code */
     cell c = cell();
     std::cout << static_cast<int>(c.getState()) << std::endl;
+    c.inFire();
+    std::cout << static_cast<int>(c.getState()) << std::endl;
 
     CellStorage s = CellStorage();
     s.setNewState(cellState::Fire, 6, 5);

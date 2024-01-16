@@ -12,10 +12,15 @@ constexpr int getXArea(){
 constexpr int getYArea(){
     return 10;
 }
+
+constexpr int ignitionPercentage(){
+    return 50;
+}
+
 class CellStorage
 {
 private:
-    /* data */
+    size_t time_after;
     cell Terrain[getXArea()][getYArea()]; 
 public:
     void setNewState(const cellState& state, int xValue, int yValue);

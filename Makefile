@@ -12,9 +12,11 @@ run: compile
 	@./$(TARGET)
 
 compile: echo_nice_icon
+	mkdir -p bin
 	$(CC) $(CC_FLAGS) $(SRCS) $(MAINFILE) -o $(TARGET)
 
 compile_test: echo_nice_icon
+	mkdir -p bin
 	$(CC) $(CC_FLAGS) $(SRCS) $(TESTMAINFILE) -o $(TARGET)
 
 echo_nice_icon:

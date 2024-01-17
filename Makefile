@@ -5,9 +5,9 @@ MAINFILE := src/main.cpp
 TESTMAINFILE := tests/test_main.cpp
 TARGET := bin/main
 
-SRCS := src/Cell.cpp src/CellStorage.cpp
+SRCS := src/Cell.cpp src/CellStorage.cpp src/Coordinates.cpp
 
-run: compile
+run:
 	@echo "🚀 Executing..."
 	@./$(TARGET)
 

@@ -1,4 +1,5 @@
 #include "../include/CellStorage.h"
+#include "../include/Coordinates.h"
 #include <stdlib.h>
 
 CellStorage::CellStorage(/* args */)
@@ -42,33 +43,19 @@ void CellStorage::iterate()
     }
     time_after++;
 }
-std::list<const cell *> CellStorage::getNeighbors(int xValue, int yValue) const
-{
-    auto cellList = std::list<const cell *>();
-    if (xValue>0)
-    {
-        cellList.push_back(&(this->Terrain[xValue - 1][yValue]));
-    }
-    if (yValue>0)
-    {
-        cellList.push_back(&(this->Terrain[xValue][yValue - 1]));
-    }
-    if (yValue>0 and xValue>0)
-    {
-        cellList.push_back(&(this->Terrain[xValue - 1][yValue - 1]));
-    }
 
-    if (xValue<getXArea() - 1)
-    {
-        cellList.push_back(&(this->Terrain[xValue + 1][yValue]));
-    }
-    if (yValue<getYArea() - 1)
-    {
-        cellList.push_back(&(this->Terrain[xValue][yValue + 1]));
-    }
-    if (yValue<getYArea() - 1 and xValue<getXArea() - 1)
-    {
-        cellList.push_back(&(this->Terrain[xValue + 1][yValue + 1]));
+
+
+std::list<const cell *> CellStorage::getNeighbors(int xValue, int yValue) const
+{   
+    auto cellList = std::list<const cell *>();
+    for (auto i : getAllDirections()){
+        auto x = getShiftingOnDirections(i);
+        auto a = checkAndGetCell(xValue + x.first, yValue + x.second);
+        if (a != nullptr)
+        {
+            cellList.push_back(a);
+        }
     }
     return cellList;
 }
@@ -80,4 +67,12 @@ void CellStorage::setNewState(const cellState &state, int xValue, int yValue)
 cellState CellStorage::getState(int xValue, int yValue) const
 {
     return Terrain[xValue][yValue].getState();
+}
+const cell* CellStorage::checkAndGetCell(int xValue, int yValue) const
+{
+    if (xValue > 0 && xValue < getXArea() && yValue > 0 && yValue < getYArea()){
+        auto a = &(Terrain[xValue][yValue]);
+        return &(Terrain[xValue][yValue]);
+    }
+    return nullptr;
 }

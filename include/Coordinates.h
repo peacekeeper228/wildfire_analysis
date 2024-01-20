@@ -1,6 +1,5 @@
 #include <array>
-#ifndef COORDINATES_H
-#define COORDINATES_H
+#pragma once
 enum class directions
 {
     North,
@@ -13,13 +12,9 @@ enum class directions
     NorthWest
 };
 
-struct Coordinates
-{
-    double lat;
-    double lng;
-};
+inline int numberOfDegreesPerDirection(){
+    return 45;
+}
 
 const std::array<directions, 8> getAllDirections();
 const std::pair<int, int> getShiftingOnDirections(const directions d);
-
-#endif

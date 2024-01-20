@@ -1,5 +1,5 @@
 CC := g++
-CC_FLAGS := -std=c++17 -g
+CC_FLAGS := -std=c++17 -g -Wall
 
 MAINFILE := src/main.cpp
 TESTMAINFILE := tests/test_main.cpp

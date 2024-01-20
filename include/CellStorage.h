@@ -1,6 +1,4 @@
-#ifndef CELLSTORAGE_H
-#define CELLSTORAGE_H
-
+#pragma once
 #include "Cell.h"
 #include <cstddef>
 #include <list>
@@ -17,6 +15,7 @@ constexpr int getYArea(){
 constexpr int ignitionPercentage(){
     return 50;
 }
+
 
 constexpr int cellSizeInMeters(){
     return 20;
@@ -36,7 +35,6 @@ inline double calculateKoeff(float windSpeed, double slopeAngleRad){
     int slopeKoeff = 5.275 * tan(slopeAngleRad);
     return windKoeff * slopeKoeff;
 }
-
 class CellStorage
 {
 private:
@@ -51,5 +49,3 @@ public:
     void iterate();
     std::list<const cell*> getNeighbors(int xValue, int yValue) const;
 };
-
-#endif

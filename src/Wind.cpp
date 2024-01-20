@@ -26,9 +26,7 @@ double Wind::CalculateWindKoef(directions InvestigatedDirection)
     
     */
    float angleRadians = this->angleBetweenDirections(InvestigatedDirection) * pi() / 180;
-   auto a = this->windSpeed * (cos(cos(angleRadians)) - 1);
-   auto b = std::exp(a);
-   return b;
+   return std::exp(this->windSpeed * (cos(cos(angleRadians)) - 1));
 }
 int Wind::angleBetweenDirections(directions d)
 {

@@ -71,7 +71,6 @@ cellState CellStorage::getState(int xValue, int yValue) const
 const cell* CellStorage::checkAndGetCell(int xValue, int yValue) const
 {
     if (xValue > 0 && xValue < getXArea() && yValue > 0 && yValue < getYArea()){
-        auto a = &(Terrain[xValue][yValue]);
         return &(Terrain[xValue][yValue]);
     }
     return nullptr;

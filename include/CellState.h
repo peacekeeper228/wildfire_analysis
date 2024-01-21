@@ -1,5 +1,4 @@
-#ifndef CELLSTATE_H
-#define CELLSTATE_H
+#pragma once
 enum class cellState
 {
     Tree,
@@ -9,4 +8,3 @@ enum class cellState
     Road,
     Artificial
 };
-#endif

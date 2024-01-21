@@ -22,6 +22,10 @@ void test_Cell(){
     c.setState(cellState::Artificial);
     c.inFire();
     assert(c.getState() == cellState::Artificial);
+
+    float wS = 1.0;
+    Wind w = Wind(directions::North, wS);
+    c.setWind(&w);
 }
 
 void test_CellStorage(){

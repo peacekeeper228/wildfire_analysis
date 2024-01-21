@@ -3,12 +3,18 @@
 cell::cell()
 {
     this->currentState = cellState::Empty;
+    this->windState = nullptr;
 }
 
-cell::~cell()
+void cell::setWind(const Wind* wind)
 {
+    this->windState = wind;
 }
 
+Wind *cell::getWind() const
+{
+    this->windState;
+}
 cellState cell::getState() const
 {
     return this->currentState;
@@ -26,3 +32,6 @@ void cell::inFire()
     }
 }
 
+cell::~cell()
+{
+}

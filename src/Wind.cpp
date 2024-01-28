@@ -9,7 +9,7 @@ Wind::Wind(directions initialDirection, float w)
     this->windSpeed = w;
 }
 
-directions Wind::getWindDirection()
+directions Wind::getWindDirection() const
 {
     return this->direction;
 }

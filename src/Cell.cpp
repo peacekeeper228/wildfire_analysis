@@ -11,9 +11,9 @@ void cell::setWind(const Wind* wind)
     this->windState = wind;
 }
 
-Wind *cell::getWind() const
-{
-    this->windState;
+const Wind* cell::getWind() const
+{   
+    return this->windState;
 }
 cellState cell::getState() const
 {

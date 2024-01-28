@@ -8,7 +8,7 @@ private:
     /* data */
 public:
     Wind(directions initialDirection, float w);
-    directions getWindDirection();
+    directions getWindDirection() const;
     ~Wind();
     double CalculateWindKoef(directions InvestigatedDirection);
     int angleBetweenDirections(directions d);

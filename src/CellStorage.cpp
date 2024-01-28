@@ -59,6 +59,22 @@ std::list<const cell *> CellStorage::getNeighbors(int xValue, int yValue) const
     }
     return cellList;
 }
+void CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, const Wind* w)
+{
+    if ((xRange.first < 0) | (xRange.second > getXArea()) | (yRange.first < 0) | (yRange.second > getYArea())){
+        return;
+        // что-то надо делать
+    };
+
+    for (int i = xRange.first; i < xRange.second; i++)
+    {
+        for (int j = yRange.first; j < yRange.second; j++)
+        {
+            Terrain[i][j].setWind(w);
+        }
+    }
+        
+}
 void CellStorage::setNewState(const cellState &state, int xValue, int yValue)
 {
     Terrain[xValue][yValue].setState(state);

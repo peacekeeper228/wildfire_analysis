@@ -4,6 +4,7 @@
 #include "../include/CellStorage.h"
 #include "../include/Wind.h"
 #include <limits>
+#include <utility>
 
 constexpr double tolerance(){
     return std::pow(10, -10);
@@ -28,12 +29,37 @@ void test_Cell(){
     c.setWind(&w);
 }
 
+void test_CellStorage_setWindToArea(){
+    CellStorage s = CellStorage();
+    std::pair<int, int> p = std::make_pair<int, int>(4, 5);
+    float wS = 1.0;
+    Wind w = Wind(directions::North, wS);
+
+    assert(!s.checkAndGetCell(4, 4)->getWind());
+
+    s.setWindToArea(p, p, &w);
+    const cell *c = s.checkAndGetCell(4, 4);
+    const Wind *wInCell = c->getWind();
+    assert(wInCell->getWindDirection() == directions::North);
+    c = s.checkAndGetCell(7, 7);
+    assert(!c->getWind());
+
+    std::pair<int, int> pUnreachable = std::make_pair<int, int>(4, getXArea() + 1);
+    s.setWindToArea(pUnreachable, p, &w);
+    c = s.checkAndGetCell(4, 7);
+    assert(!c->getWind());
+
+
+
+}
+
 void test_CellStorage(){
     CellStorage s = CellStorage();
     s.setNewState(cellState::Fire, 5, 5);
     s.setNewState(cellState::Water, 4, 5);
     assert(s.getState(5, 5) == cellState::Fire);
     assert(s.getState(4, 5) == cellState::Water);
+    test_CellStorage_setWindToArea();
 }
 
 void test_Wind(){

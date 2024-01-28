@@ -3,7 +3,7 @@
 #include "../include/CellStorage.h"
 int main()
 {
-    /* code */
+
     cell c = cell();
     std::cout << static_cast<int>(c.getState()) << std::endl;
     c.inFire();
@@ -12,6 +12,7 @@ int main()
     CellStorage s = CellStorage();
     s.setNewState(cellState::Fire, 1, 1);
     s.setNewState(cellState::Tree, 1, 2);
+    
     s.iterate();
     s.setNewState(cellState::Fire, 4, 5);
     auto neighbours = s.getNeighbors(5, 5);

@@ -11,6 +11,8 @@ run:
 	@echo "🚀 Executing..."
 	@./$(TARGET)
 
+run_compile_test: compile_test run
+
 compile: echo_nice_icon
 	mkdir -p bin
 	$(CC) $(CC_FLAGS) $(SRCS) $(MAINFILE) -o $(TARGET)

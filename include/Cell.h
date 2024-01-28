@@ -11,7 +11,7 @@ public:
     cell();
 
     void setWind(const Wind* wind);
-    Wind* getWind() const;
+    const Wind* getWind() const;
 
     cellState getState() const;
     void setState(const cellState& State);

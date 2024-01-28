@@ -3,6 +3,9 @@
 #include <cstddef>
 #include <list>
 #include <math.h>
+#include <utility>
+
+#include "Wind.h"
 
 constexpr int getXArea(){
     return 10;
@@ -48,4 +51,5 @@ public:
     ~CellStorage();
     void iterate();
     std::list<const cell*> getNeighbors(int xValue, int yValue) const;
+    void setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, const Wind* w);
 };

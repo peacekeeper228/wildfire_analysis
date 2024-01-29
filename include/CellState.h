@@ -6,5 +6,6 @@ enum class cellState
     Fire,
     Water,
     Road,
-    Artificial
+    Artificial,
+    Burnt
 };

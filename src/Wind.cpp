@@ -17,7 +17,7 @@ Wind::~Wind()
 {
 }
 
-double Wind::CalculateWindKoef(directions InvestigatedDirection)
+double Wind::CalculateWindKoef(directions InvestigatedDirection) const
 {
     /*
     by now is from
@@ -28,7 +28,7 @@ double Wind::CalculateWindKoef(directions InvestigatedDirection)
    float angleRadians = this->angleBetweenDirections(InvestigatedDirection) * pi() / 180;
    return std::exp(this->windSpeed * (cos(cos(angleRadians)) - 1));
 }
-int Wind::angleBetweenDirections(directions d)
+int Wind::angleBetweenDirections(directions d) const
 {
     int differenceInDirections = abs(static_cast<int>(d) - static_cast<int>(this->direction));
     if (differenceInDirections > 4) {

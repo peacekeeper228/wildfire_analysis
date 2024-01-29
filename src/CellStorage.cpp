@@ -5,13 +5,15 @@
 CellStorage::CellStorage(/* args */)
 {   
     time_after = 0;
+    //Terrain.resize(getXArea(), std::vector<cell>(getYArea()));
     for (size_t i = 0; i < getXArea(); i++)
     {
-        for (size_t j = 0; i < getYArea(); i++)
+        for (size_t j = 0; j < getYArea(); j++)
         {
             Terrain[i][j] = cell();
         }
     }
+   //vtr.resize(getXArea()*100, std::vector<cell>(getYArea()));
 }
 
 CellStorage::~CellStorage()
@@ -25,9 +27,18 @@ void CellStorage::iterate()
         for (size_t j = 0; j < getYArea(); j++)
         {   
             if (getState(i, j) == cellState::Fire){
+                Terrain[i][j].iterate();
                 continue;
             }
             if (getState(i, j) == cellState::Tree){
+                auto koeff = getNeighborsKoeff(i, j);
+                for (auto k : koeff)
+                {   
+                    if (int(k * 100) * rand() % 100 > ignitionPercentage()){
+                        setNewState(cellState::Fire, i, j);
+                    }
+                }
+                /*
                 auto cellNeighbours = getNeighbors(i, j);
                 for (auto const& k : cellNeighbours)
                 {
@@ -37,14 +48,25 @@ void CellStorage::iterate()
                         }
                     }
                 }
-                
+                */
             }
         }
     }
     time_after++;
 }
 
-
+std::list<double> CellStorage::getNeighborsKoeff(int xValue, int yValue) const
+{
+    auto listKoef = std::list<double>();
+    for (auto i : getAllDirections()){
+        auto x = getShiftingOnDirections(i);
+        auto a = checkAndGetCell(xValue + x.first, yValue + x.second);
+        if (a != nullptr && a->getState() == cellState::Fire){
+            listKoef.push_back(a->getWind()->CalculateWindKoef(i));
+        }
+    }
+    return listKoef;
+}
 
 std::list<const cell *> CellStorage::getNeighbors(int xValue, int yValue) const
 {   

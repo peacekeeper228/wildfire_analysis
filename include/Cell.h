@@ -6,6 +6,7 @@ class cell
 private:
     cellState currentState;
     const Wind* windState;
+    int fireLifeTime;
     
 public:
     cell();
@@ -17,6 +18,6 @@ public:
     void setState(const cellState& State);
     
     void inFire();
-
+    void iterate();
     ~cell();
 };

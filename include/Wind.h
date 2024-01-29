@@ -10,6 +10,6 @@ public:
     Wind(directions initialDirection, float w);
     directions getWindDirection() const;
     ~Wind();
-    double CalculateWindKoef(directions InvestigatedDirection);
-    int angleBetweenDirections(directions d);
+    double CalculateWindKoef(directions InvestigatedDirection) const;
+    int angleBetweenDirections(directions d) const;
 };

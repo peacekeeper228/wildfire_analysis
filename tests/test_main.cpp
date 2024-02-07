@@ -1,10 +1,12 @@
 #include <iostream>
 #include <cassert>
+#include <limits>
+#include <utility>
 #include "../include/Cell.h"
 #include "../include/CellStorage.h"
 #include "../include/Wind.h"
-#include <limits>
-#include <utility>
+#include "../include/Fire.h"
+
 
 constexpr double tolerance(){
     return std::pow(10, -10);
@@ -48,9 +50,6 @@ void test_CellStorage_setWindToArea(){
     s.setWindToArea(pUnreachable, p, &w);
     c = s.checkAndGetCell(4, 7);
     assert(!c->getWind());
-
-
-
 }
 
 void test_CellStorage(){
@@ -77,6 +76,27 @@ void test_Wind(){
     assert(fabs(w.CalculateWindKoef((directions::North)) - 0.63147451510646979) < tolerance());
 }
 
+void testFire(){
+    Fire fire = Fire();
+    assert(fire.getState() == FireState::Cursory);
+    assert(!fire.fireEnded());
+    fire.iterate();
+    assert(fire.getState() == FireState::FullyDeveloped);
+    assert(!fire.fireEnded());
+    for (size_t i = 1; i < 3; i++)
+    {
+        fire.iterate(); 
+        assert(fire.getState() == FireState::FullyDeveloped);
+        assert(!fire.fireEnded());
+    }
+    fire.iterate(); 
+    assert(fire.getState() == FireState::Declining);
+    assert(!fire.fireEnded());
+    fire.iterate(); 
+    assert(fire.getState() == FireState::Ended);
+    assert(fire.fireEnded());
+}
+
 int main()
 {
     test_Cell();  
@@ -85,6 +105,8 @@ int main()
     std::cout << "cellstorage was tested successfully" << std::endl;
     test_Wind();  
     std::cout << "wind was tested successfully" << std::endl;
+    testFire();
+    std::cout << "fire was tested successfully" << std::endl;
     std::cout << "all tests passed" << std::endl;
     return 0;
 }

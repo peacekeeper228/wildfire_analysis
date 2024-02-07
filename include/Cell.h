@@ -6,7 +6,7 @@ class cell
 private:
     cellState currentState;
     const Wind* windState;
-    int fireLifeTime;
+    
     
 public:
     cell();

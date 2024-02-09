@@ -34,7 +34,7 @@ void cell::inFire()
     if (currentState == cellState::Tree)
     {
         currentState = cellState::Fire;
-        //fireLifeTime = 10;
+        this->fireState = new Fire();
     }
 }
 
@@ -43,10 +43,11 @@ void cell::iterate()
     if (!(currentState == cellState::Fire)){
         return;
     };
-    //fireLifeTime--;
-    //if (fireLifeTime == 0){
-    //    this->setState(cellState::Burnt);
-    //};
+    fireState->iterate();
+    if (fireState->fireEnded()){
+        fireState->~Fire();
+        this->setState(cellState::Burnt);
+    };
 }
 cell::~cell()
 {

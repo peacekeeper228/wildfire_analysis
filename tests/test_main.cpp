@@ -29,6 +29,19 @@ void test_Cell(){
     float wS = 1.0;
     Wind w = Wind(directions::North, wS);
     c.setWind(&w);
+    assert(c.getWind() == &w);
+}
+
+void test_fire_in_cell(){
+    cell c = cell();
+    c.setState(cellState::Tree);
+    c.inFire();
+    for (size_t i = 0; i < 10; i++)
+    {
+        c.iterate();
+    };
+    assert(c.getState() == cellState::Burnt);
+    
 }
 
 void test_CellStorage_setWindToArea(){
@@ -107,6 +120,8 @@ int main()
     std::cout << "wind was tested successfully" << std::endl;
     testFire();
     std::cout << "fire was tested successfully" << std::endl;
+    test_fire_in_cell();
+
     std::cout << "all tests passed" << std::endl;
     return 0;
 }

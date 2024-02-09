@@ -16,18 +16,22 @@ int main()
         for (int j = 0; j < getYArea(); j++)
         {  
             s.setNewState(cellState::Tree, i, j);
+            if (i == 6){
+                s.setNewState(cellState::Water, i, j); 
+            }
         }
         
     }
-    s.setNewState(cellState::Fire, 1, 1);
+    s.setNewState(cellState::Fire, 5, 4);
     
     clock_t tStart = clock();
     for (size_t i = 0; i < 10; i++)
     {
         s.iterate();
+        s.printCurrentStates();
     }
     printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
-    
+    //s.printCurrentStates();
     /*
     1000х1000 на 100 итераций - ~16 секунд c ветром, размер: 24 Б на клетку
     */

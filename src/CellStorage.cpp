@@ -1,6 +1,7 @@
 #include "../include/CellStorage.h"
 #include "../include/Coordinates.h"
 #include <stdlib.h>
+#include <iostream>
 
 CellStorage::CellStorage(/* args */)
 {   
@@ -51,7 +52,14 @@ void CellStorage::iterate()
                 */
             }
         }
-    }
+    };
+    for (size_t i = 0; i < getXArea(); i++)
+    {
+        for (size_t j = 0; j < getYArea(); j++)
+        { 
+            Terrain[i][j].setNewState();
+        }
+    };
     time_after++;
 }
 
@@ -112,4 +120,15 @@ const cell* CellStorage::checkAndGetCell(int xValue, int yValue) const
         return &(Terrain[xValue][yValue]);
     }
     return nullptr;
+}
+void CellStorage::printCurrentStates(){
+    for (size_t i = 0; i < getXArea(); i++)
+    {
+        for (size_t j = 0; j < getYArea(); j++)
+        { 
+            std::cout << static_cast<int>(Terrain[i][j].getState()) << " ";
+        }
+        std::cout << std::endl;
+    };
+    std::cout << std::endl;
 }

@@ -54,4 +54,5 @@ public:
     std::list<double> getNeighborsKoeff(int xValue, int yValue) const;
     std::list<const cell*> getNeighbors(int xValue, int yValue) const;
     void setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, const Wind* w);
+    void printCurrentStates();
 };

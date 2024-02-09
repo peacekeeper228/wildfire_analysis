@@ -6,6 +6,7 @@ class cell
 {
 private:
     cellState currentState;
+    cellState futureState;
     const Wind* windState;
     Fire* fireState;
     
@@ -20,5 +21,6 @@ public:
     
     void inFire();
     void iterate();
+    void setNewState();
     ~cell();
 };

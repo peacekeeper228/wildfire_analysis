@@ -7,5 +7,6 @@ enum class cellState
     Water,
     Road,
     Artificial,
-    Burnt
+    Burnt,
+    NoState
 };

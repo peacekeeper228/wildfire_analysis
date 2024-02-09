@@ -72,6 +72,7 @@ void test_CellStorage(){
     assert(s.getState(5, 5) == cellState::Fire);
     assert(s.getState(4, 5) == cellState::Water);
     test_CellStorage_setWindToArea();
+    // iterating has not tested
 }
 
 void test_Wind(){

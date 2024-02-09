@@ -16,10 +16,12 @@ void test_Cell(){
     cell c = cell();
     assert(c.getState() == cellState::Empty);
     c.setState(cellState::Fire);
-    assert(c.getState() == cellState::Fire);
+    c.setNewState();
+    assert(c.getState() == cellState::Empty);
     //test inFire
     c.setState(cellState::Tree);
     c.inFire();
+    c.setNewState();
     assert(c.getState() == cellState::Fire);
 
     c.setState(cellState::Artificial);
@@ -36,9 +38,11 @@ void test_fire_in_cell(){
     cell c = cell();
     c.setState(cellState::Tree);
     c.inFire();
+    c.setNewState();
     for (size_t i = 0; i < 10; i++)
     {
         c.iterate();
+        c.setNewState();
     };
     assert(c.getState() == cellState::Burnt);
     
@@ -67,8 +71,10 @@ void test_CellStorage_setWindToArea(){
 
 void test_CellStorage(){
     CellStorage s = CellStorage();
+    s.setNewState(cellState::Tree, 5, 5);
     s.setNewState(cellState::Fire, 5, 5);
     s.setNewState(cellState::Water, 4, 5);
+    s.iterate();
     assert(s.getState(5, 5) == cellState::Fire);
     assert(s.getState(4, 5) == cellState::Water);
     test_CellStorage_setWindToArea();

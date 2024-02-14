@@ -24,3 +24,4 @@ public:
     void setNewState();
     ~cell();
 };
+void setWindToCell(cell* c, Wind* w);

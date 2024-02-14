@@ -4,9 +4,10 @@
 constexpr double pi() { return std::atan(1)*4; }
 
 Wind::Wind(directions initialDirection, float w)
+    :direction(initialDirection),
+    windSpeed(w),
+    numberOfAssignedCells(0)
 {
-    this->direction = initialDirection;
-    this->windSpeed = w;
 }
 
 directions Wind::getWindDirection() const
@@ -15,6 +16,19 @@ directions Wind::getWindDirection() const
 }
 Wind::~Wind()
 {
+}
+
+void Wind::windIsDisassignedFromCell()
+{
+    this->numberOfAssignedCells--;
+    if (this->numberOfAssignedCells == 0){
+        this->~Wind();
+    }
+}
+
+void Wind::windIsAssignedToCell()
+{
+    this->numberOfAssignedCells++;
 }
 
 double Wind::CalculateWindKoef(directions InvestigatedDirection) const

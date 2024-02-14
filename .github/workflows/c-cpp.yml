@@ -13,11 +13,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    #- name: configure
-    #  run: ./configure
-    - name: make run_compile_test
-      run: make run_compile_test
-    #- name: make check
-    #  run: make check
-    #- name: make distcheck
-    #  run: make distcheck
+    - name: compile and run tests
+      run: make compile_run_test

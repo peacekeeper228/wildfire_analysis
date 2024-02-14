@@ -42,8 +42,8 @@ class CellStorage
 {
 private:
     size_t time_after;
-    //std::vector<std::vector<cell>> Terrain;
-    cell Terrain[getXArea()][getYArea()]; 
+    std::vector<std::vector<cell>> Terrain;
+    //cell Terrain[getXArea()][getYArea()]; 
 public:
     void setNewState(const cellState& state, int xValue, int yValue);
     cellState getState(int xValue, int yValue) const;

@@ -9,15 +9,15 @@
 #include <vector>
 
 constexpr int getXArea(){
-    return 10;
+    return 1000;
 }
 
 constexpr int getYArea(){
-    return 10;
+    return 1000;
 }
 
 constexpr int ignitionPercentage(){
-    return 50;
+    return 150; // in formula there is smth wrong I suppose
 }
 
 constexpr int cellSizeInMeters(){

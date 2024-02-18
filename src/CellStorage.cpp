@@ -2,6 +2,8 @@
 #include "../include/Coordinates.h"
 #include <stdlib.h>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 CellStorage::CellStorage(/* args */)
 {
@@ -40,8 +42,7 @@ void CellStorage::iterate()
                         if (a->getWind() != nullptr){
                             fireKoeff = a->getWind()->CalculateWindKoef(analyzedDirection);
                         }
-                        
-                        //TODO calculate k (now 0)
+                        //TODO calculate k 
                         if (int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage()){
                             setNewState(cellState::Fire, i + x.first, j + x.second);
                         }
@@ -146,13 +147,22 @@ const cell *CellStorage::checkAndGetCell(int xValue, int yValue) const
 }
 void CellStorage::printCurrentStates()
 {
+    std::ofstream outFile("LogOfCurrentStates.txt");         
+   
+    if (!outFile.is_open())
+    {
+        std::cout << "Smth goes wrong in writing in file" << std::endl;
+    }
+    
     for (size_t i = 0; i < getXArea(); i++)
     {
         for (size_t j = 0; j < getYArea(); j++)
-        {
-            std::cout << static_cast<int>(Terrain[i][j].getState()) << " ";
+        {   
+            auto a = std::to_string(static_cast<int>(Terrain[i][j].getState()));
+            outFile << a;
         }
-        std::cout << std::endl;
+        outFile << '\n';
     };
-    std::cout << std::endl;
+    outFile << std::endl;
+    outFile.close();
 }

@@ -27,9 +27,12 @@ int main()
     s.setNewState(cellState::Fire, 5, 4);
     
     clock_t tStart = clock();
-    for (size_t i = 0; i < 2; i++)
+    for (size_t i = 0; i < 1000; i++)
     {
         s.iterate();
+        if (i % 100 == 0){
+            std::cout << "we have calculated " << i  << " iterations" << std::endl;
+        }
         // s.printCurrentStates();
     }
     printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);

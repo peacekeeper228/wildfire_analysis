@@ -17,6 +17,8 @@ private:
 public:
     Fire();
     FireState getState() const;
+    
+    /// @brief basic function to make iteration and calls iterations of all childs
     void iterate();
     bool fireEnded() const;
     ~Fire();

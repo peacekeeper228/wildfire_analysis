@@ -112,12 +112,12 @@ void CellStorage::iterate()
 //     }
 //     return cellList;
 // }
-void CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, const Wind *w)
+bool CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, const Wind *w)
 {
     if ((xRange.first < 0) | (xRange.second > getXArea()) | (yRange.first < 0) | (yRange.second > getYArea()))
     {
-        return;
-        // что-то надо делать
+        return false;
+        // TODO: что-то надо делать
     };
 
     for (int i = xRange.first; i < xRange.second; i++)
@@ -127,6 +127,7 @@ void CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pai
             setWindToCell(&(Terrain[i][j]), const_cast<Wind *>(w));
         }
     }
+    return true;
 }
 void CellStorage::setNewState(const cellState &state, int xValue, int yValue)
 {

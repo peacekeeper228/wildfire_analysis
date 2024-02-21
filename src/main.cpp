@@ -24,10 +24,10 @@ int main()
         }
         
     }
-    s.setNewState(cellState::Fire, 5, 4);
+    s.setNewState(cellState::Fire, 50, 50);
     
     clock_t tStart = clock();
-    for (size_t i = 0; i < 1000; i++)
+    for (size_t i = 0; i < 100; i++)
     {
         s.iterate();
         if (i % 100 == 0){

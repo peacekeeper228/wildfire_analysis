@@ -1,29 +1,31 @@
 #include "../include/Cell.h"
 
 cell::cell()
+    :futureState(cellState::NoState)
+    ,windState(nullptr)
+    ,fireState(nullptr)
 {
     this->currentState = cellState::Empty;
-    this->windState = nullptr;
-    this->futureState = cellState::NoState;
 }
 
-void setWindToCell(cell *c, Wind* w){
+void setWindToCell(cell *c, Wind *w)
+{
     auto currentWind = c->getWind();
-    if (currentWind != nullptr){
-        const_cast<Wind*>(currentWind)->windIsDisassignedFromCell();
+    if (currentWind != nullptr)
+    {
+        const_cast<Wind *>(currentWind)->windIsDisassignedFromCell();
     };
-    c->setWind(const_cast<const Wind*>(w));
+    c->setWind(const_cast<const Wind *>(w));
     w->windIsAssignedToCell();
-
 }
 
-void cell::setWind(const Wind* wind)
+void cell::setWind(const Wind *wind)
 {
     this->windState = wind;
 }
 
-const Wind* cell::getWind() const
-{   
+const Wind *cell::getWind() const
+{
     return this->windState;
 }
 cellState cell::getState() const
@@ -31,12 +33,14 @@ cellState cell::getState() const
     return this->currentState;
 }
 
-void cell::setState(const cellState& State)
-{   
+void cell::setState(const cellState &State)
+{
     if (State == cellState::Fire)
     {
         inFire();
-    } else {
+    }
+    else
+    {
         this->currentState = State;
     };
 }
@@ -51,11 +55,14 @@ void cell::inFire()
 
 void cell::iterate()
 {
-    if (!(currentState == cellState::Fire)){
+    // cause for now only in fire there can be dynamic changes. Forest is not growing))))
+    if (!(currentState == cellState::Fire))
+    {
         return;
     };
     fireState->iterate();
-    if (fireState->fireEnded()){
+    if (fireState->fireEnded())
+    {
         fireState->~Fire();
         futureState = cellState::Burnt;
     };
@@ -63,10 +70,16 @@ void cell::iterate()
 
 void cell::setNewState()
 {
-    if ((futureState != cellState::NoState) & (futureState != currentState)){
+    if ((futureState != cellState::NoState) & (futureState != currentState))
+    {
         currentState = futureState;
         futureState = cellState::NoState;
-    } 
+    }
+}
+
+Fire *cell::getFireInCell() const
+{
+    return this->fireState;
 }
 cell::~cell()
 {

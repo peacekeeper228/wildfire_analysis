@@ -28,6 +28,8 @@ public:
     /// @brief possible state becomes present, often is calles during iteration
     void setNewState();
     ~cell();
+
+    Fire* getFireInCell() const;
 };
 /// @brief this function make a proper assignment wind to cell. Also it follows invariants in wind
 /// @param c cell, wind is assigned to this cell

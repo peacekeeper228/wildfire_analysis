@@ -28,6 +28,11 @@ bool Fire::fireEnded() const
 {
     return fireLifetime>=5;
 }
+
+bool Fire::canSpread() const
+{
+    return this->state == FireState::FullyDeveloped;
+}
 Fire::~Fire()
 {
 }

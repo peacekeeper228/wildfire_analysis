@@ -8,7 +8,7 @@
 CellStorage::CellStorage(/* args */)
 {
     time_after = 0;
-    Terrain.resize(getXArea(), std::vector<cell>(getYArea()));
+    //Terrain.resize(getXArea(), std::vector<cell>(getYArea()));
     for (size_t i = 0; i < getXArea(); i++)
     {
         for (size_t j = 0; j < getYArea(); j++)
@@ -31,19 +31,28 @@ void CellStorage::iterate()
         {
             if (getState(i, j) == cellState::Fire)
             {
+                // we can do that because invariant is checked in cell
+                if (!checkAndGetCell(i, j)->getFireInCell()->canSpread())
+                {
+                    //TODO: this logic is weird
+                    Terrain[i][j].iterate();
+                    continue;
+                }
                 auto listKoef = std::list<double>();
                 for (auto analyzedDirection : getAllDirections())
                 {
                     auto x = getShiftingOnDirections(analyzedDirection);
                     auto a = checkAndGetCell(i + x.first, j + x.second);
                     if ((a != nullptr) && (a->getState() == cellState::Tree))
-                    {   
+                    {
                         double fireKoeff = 0;
-                        if (a->getWind() != nullptr){
+                        if (a->getWind() != nullptr)
+                        {
                             fireKoeff = a->getWind()->CalculateWindKoef(analyzedDirection);
                         }
-                        //TODO calculate k 
-                        if (int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage()){
+                        // TODO calculate k
+                        if (int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage())
+                        {
                             setNewState(cellState::Fire, i + x.first, j + x.second);
                         }
                     }
@@ -148,17 +157,17 @@ const cell *CellStorage::checkAndGetCell(int xValue, int yValue) const
 }
 void CellStorage::printCurrentStates()
 {
-    std::ofstream outFile("LogOfCurrentStates.txt");         
-   
+    std::ofstream outFile("LogOfCurrentStates.txt");
+
     if (!outFile.is_open())
     {
         std::cout << "Smth goes wrong in writing in file" << std::endl;
     }
-    
+
     for (size_t i = 0; i < getXArea(); i++)
     {
         for (size_t j = 0; j < getYArea(); j++)
-        {   
+        {
             auto a = std::to_string(static_cast<int>(Terrain[i][j].getState()));
             outFile << a;
         }

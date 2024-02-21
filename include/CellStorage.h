@@ -9,11 +9,11 @@
 #include <vector>
 
 constexpr int getXArea(){
-    return 1000;
+    return 100;
 }
 
 constexpr int getYArea(){
-    return 1000;
+    return 100;
 }
 
 constexpr int ignitionPercentage(){
@@ -42,8 +42,8 @@ class CellStorage
 {
 private:
     size_t time_after;
-    std::vector<std::vector<cell>> Terrain;
-    //cell Terrain[getXArea()][getYArea()]; 
+    //std::vector<std::vector<cell>> Terrain;
+    cell Terrain[getXArea()][getYArea()]; 
 public:
     CellStorage();
     ~CellStorage();

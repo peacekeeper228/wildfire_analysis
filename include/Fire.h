@@ -20,7 +20,12 @@ public:
     
     /// @brief basic function to make iteration and calls iterations of all childs
     void iterate();
+
+    /// @brief return the flag lifetime has ended
+    /// @return true if all logic has been proceeded
     bool fireEnded() const;
+
+    bool canSpread() const;
     ~Fire();
 };
 

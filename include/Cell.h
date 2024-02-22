@@ -16,8 +16,8 @@ public:
     void setWind(const Wind* wind);
     const Wind* getWind() const;
 
-    cellState getState() const;
     void setState(const cellState& State);
+    cellState getState() const;
     
     /// @brief carefully set state to fire with checking the possibility to do this
     void inFire();

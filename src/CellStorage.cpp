@@ -8,7 +8,7 @@
 CellStorage::CellStorage(/* args */)
 {
     time_after = 0;
-    //Terrain.resize(getXArea(), std::vector<cell>(getYArea()));
+    Terrain.resize(getXArea(), std::vector<cell>(getYArea()));
     for (size_t i = 0; i < getXArea(); i++)
     {
         for (size_t j = 0; j < getYArea(); j++)

@@ -2,11 +2,11 @@
 #include <cassert>
 #include <limits>
 #include <utility>
+#include "../include/Properties.h"
 #include "../include/Cell.h"
 #include "../include/CellStorage.h"
 #include "../include/Wind.h"
 #include "../include/Fire.h"
-
 
 constexpr double tolerance(){
     return std::pow(10, -10);

@@ -29,7 +29,7 @@ inline int minutesPerIteration(){
 }
 
 inline double NumberOfCellAffectedInParticularDirection(double koeff, float fireSpeed){
-    return minutesPerIteration() * fireSpeed * koeff / cellSizeInMeters();
+    return minutesPerIteration() * (double)fireSpeed * koeff / cellSizeInMeters();
 }
 
 inline double calculateKoeff(float windSpeed, double slopeAngleRad){

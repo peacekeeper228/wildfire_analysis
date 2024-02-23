@@ -16,7 +16,7 @@ public:
     void setWind(const Wind* wind);
     const Wind* getWind() const;
 
-    void setState(const cellState& State);
+    void setState(const cellState& state);
     cellState getState() const;
     
     /// @brief carefully set state to fire with checking the possibility to do this
@@ -32,6 +32,6 @@ public:
     Fire* getFireInCell() const;
 };
 /// @brief this function make a proper assignment wind to cell. Also it follows invariants in wind
-/// @param c cell, wind is assigned to this cell
-/// @param w new wind that is assigned to cell
-void setWindToCell(cell* c, Wind* w);
+/// @param changingCell cell, wind is assigned to this one
+/// @param assigningWind new wind that is assigned to cell
+void setWindToCell(cell* changingCell, Wind* assigningWind);

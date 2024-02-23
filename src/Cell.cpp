@@ -1,22 +1,23 @@
 #include "../include/Cell.h"
 
 cell::cell()
-    :futureState(cellState::NoState)
-    ,windState(nullptr)
-    ,fireState(nullptr)
+    : futureState(cellState::NoState), windState(nullptr), fireState(nullptr)
 {
     this->currentState = cellState::Empty;
 }
 
-void setWindToCell(cell *c, Wind *w)
+void setWindToCell(cell *changingCell, Wind *assigningWind)
 {
-    auto currentWind = c->getWind();
+    auto currentWind = changingCell->getWind();
     if (currentWind != nullptr)
     {
         const_cast<Wind *>(currentWind)->windIsDisassignedFromCell();
     };
-    c->setWind(const_cast<const Wind *>(w));
-    w->windIsAssignedToCell();
+    if (assigningWind == nullptr){
+        return;
+    }
+    changingCell->setWind(const_cast<const Wind *>(assigningWind));
+    assigningWind->windIsAssignedToCell();
 }
 
 void cell::setWind(const Wind *wind)
@@ -33,15 +34,15 @@ cellState cell::getState() const
     return this->currentState;
 }
 
-void cell::setState(const cellState &State)
+void cell::setState(const cellState &state)
 {
-    if (State == cellState::Fire)
+    if (state == cellState::Fire)
     {
         inFire();
     }
     else
     {
-        this->currentState = State;
+        this->currentState = state;
     };
 }
 void cell::inFire()
@@ -81,6 +82,9 @@ Fire *cell::getFireInCell() const
 {
     return this->fireState;
 }
+
 cell::~cell()
 {
+    setWindToCell(this, nullptr);
+    this->getFireInCell()->~Fire();
 }

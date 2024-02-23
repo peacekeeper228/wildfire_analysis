@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 
-CellStorage::CellStorage(/* args */)
+CellStorage::CellStorage()
 {
     time_after = 0;
     Terrain.resize(getXArea(), std::vector<cell>(getYArea()));
@@ -34,7 +34,7 @@ void CellStorage::iterate()
                 // we can do that because invariant is checked in cell
                 if (!checkAndGetCell(i, j)->getFireInCell()->canSpread())
                 {
-                    //TODO: this logic is weird
+                    // TODO: this logic is weird
                     Terrain[i][j].iterate();
                     continue;
                 }
@@ -85,42 +85,6 @@ void CellStorage::iterate()
     time_after++;
 }
 
-// std::list<double> CellStorage::getNeighborsKoeff(int xValue, int yValue) const
-// {
-//     auto listKoef = std::list<double>();
-//     for (auto i : getAllDirections())
-//     {
-//         auto x = getShiftingOnDirections(i);
-//         auto a = checkAndGetCell(xValue + x.first, yValue + x.second);
-//         if (a != nullptr && a->getState() == cellState::Fire)
-//         {
-//             if (a->getWind() != nullptr)
-//             {
-//                 listKoef.push_back(a->getWind()->CalculateWindKoef(i));
-//             }
-//             else
-//             {
-//                 listKoef.push_back(0);
-//             }
-//         }
-//     }
-//     return listKoef;
-// }
-
-// std::list<const cell *> CellStorage::getNeighbors(int xValue, int yValue) const
-// {
-//     auto cellList = std::list<const cell *>();
-//     for (auto i : getAllDirections())
-//     {
-//         auto x = getShiftingOnDirections(i);
-//         auto a = checkAndGetCell(xValue + x.first, yValue + x.second);
-//         if (a != nullptr)
-//         {
-//             cellList.push_back(a);
-//         }
-//     }
-//     return cellList;
-// }
 bool CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, const Wind *w)
 {
     if ((xRange.first < 0) | (xRange.second > getXArea()) | (yRange.first < 0) | (yRange.second > getYArea()))

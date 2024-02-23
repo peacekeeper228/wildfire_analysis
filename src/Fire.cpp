@@ -1,9 +1,8 @@
 #include "../include/Fire.h"
 
 Fire::Fire()
+    : fireLifetime(0), state(FireState::Cursory)
 {
-    this->fireLifetime = 0;
-    this->state = FireState::Cursory;
 }
 
 FireState Fire::getState() const
@@ -13,12 +12,15 @@ FireState Fire::getState() const
 void Fire::iterate()
 {
     fireLifetime++;
-    if (fireLifetime == 1){
+    if (fireLifetime == 1)
+    {
         this->state = FireState::FullyDeveloped;
-    }else if (fireLifetime == 4)
+    }
+    else if (fireLifetime == 4)
     {
         this->state = FireState::Declining;
-    }else if (fireLifetime == 5)
+    }
+    else if (fireLifetime == 5)
     {
         this->state = FireState::Ended;
     };
@@ -26,7 +28,7 @@ void Fire::iterate()
 }
 bool Fire::fireEnded() const
 {
-    return fireLifetime>=5;
+    return fireLifetime >= 5;
 }
 
 bool Fire::canSpread() const

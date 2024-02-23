@@ -18,8 +18,9 @@ const std::pair<int, int> getShiftingOnDirections(const directions d)
     return a[static_cast<int>(d)];
 }
 
-const std::array<directions, 8> getAllDirections(){
-    return std::array<directions, 8> {
+const std::array<directions, 8> getAllDirections()
+{
+    return std::array<directions, 8>{
         directions::North,
         directions::NorthEast,
         directions::East,
@@ -27,6 +28,5 @@ const std::array<directions, 8> getAllDirections(){
         directions::South,
         directions::SouthWest,
         directions::West,
-        directions::NorthWest
-    };
+        directions::NorthWest};
 }

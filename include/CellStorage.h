@@ -60,7 +60,7 @@ public:
     /// @param yRange range of columns
     /// @param w wind, that is assigned to the group of cells
     /// @return sign of success
-    bool setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, const Wind *w);
+    bool setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange,  std::shared_ptr<const Wind> w);
 
     /// @brief all current states of cell storage is stored to 'LogOfCurrentStates.txt' in root project directory
     void printCurrentStates();

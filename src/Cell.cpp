@@ -6,26 +6,17 @@ cell::cell()
     this->currentState = cellState::Empty;
 }
 
-void setWindToCell(cell *changingCell, Wind *assigningWind)
+void setWindToCell(cell *changingCell, std::shared_ptr<const Wind> assigningWind)
 {
-    auto currentWind = changingCell->getWind();
-    if (currentWind != nullptr)
-    {
-        const_cast<Wind *>(currentWind)->windIsDisassignedFromCell();
-    };
-    if (assigningWind == nullptr){
-        return;
-    }
-    changingCell->setWind(const_cast<const Wind *>(assigningWind));
-    assigningWind->windIsAssignedToCell();
+    changingCell->setWind(assigningWind);
 }
 
-void cell::setWind(const Wind *wind)
+void cell::setWind(std::shared_ptr<const Wind> wind)
 {
     this->windState = wind;
 }
 
-const Wind *cell::getWind() const
+std::shared_ptr<const Wind> cell::getWind() const
 {
     return this->windState;
 }

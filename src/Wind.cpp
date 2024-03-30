@@ -16,20 +16,6 @@ Wind::~Wind()
 {
 }
 
-void Wind::windIsDisassignedFromCell()
-{
-    this->numberOfAssignedCells--;
-    if (this->numberOfAssignedCells == 0)
-    {
-        this->~Wind();
-    }
-}
-
-void Wind::windIsAssignedToCell()
-{
-    this->numberOfAssignedCells++;
-}
-
 double Wind::CalculateWindKoef(directions InvestigatedDirection) const
 {
     /*

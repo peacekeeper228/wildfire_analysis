@@ -29,9 +29,9 @@ void test_Cell(){
     assert(c.getState() == cellState::Artificial);
 
     float wS = 1.0;
-    Wind w = Wind(directions::North, wS);
-    c.setWind(&w);
-    assert(c.getWind() == &w);
+    auto w = std::make_shared<const Wind>(directions::North, wS);
+    c.setWind(w);
+    assert(c.getWind().get() == w.get());
 }
 
 void test_fire_in_cell(){
@@ -52,21 +52,21 @@ void test_CellStorage_setWindToArea(){
     CellStorage s = CellStorage();
     std::pair<int, int> p = std::make_pair<int, int>(4, 5);
     float wS = 1.0;
-    Wind w = Wind(directions::North, wS);
-
+    auto w = std::make_shared<const Wind>(directions::North, wS);
+    
     assert(!s.checkAndGetCell(4, 4)->getWind());
 
-    s.setWindToArea(p, p, &w);
+    s.setWindToArea(p, p, w);
     const cell *c = s.checkAndGetCell(4, 4);
-    const Wind *wInCell = c->getWind();
+    const Wind *wInCell = c->getWind().get();
     assert(wInCell->getWindDirection() == directions::North);
     c = s.checkAndGetCell(7, 7);
     assert(!c->getWind());
 
     std::pair<int, int> pUnreachable = std::make_pair<int, int>(4, getXArea() + 1);
-    s.setWindToArea(pUnreachable, p, &w);
+    s.setWindToArea(pUnreachable, p, w);
     c = s.checkAndGetCell(4, 7);
-    assert(!c->getWind());
+    assert(!c->getWind().get());
 }
 
 void test_CellStorage(){

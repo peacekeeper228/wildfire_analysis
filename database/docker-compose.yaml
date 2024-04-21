@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+
+    postgis:
+        image: postgis/postgis:14-3.2-alpine
+        container_name: postgis
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_PASSWORD: postgis
+            POSTGRES_USER: postgis
+            POSTGRES_DB: gis
+        volumes:
+            - ./enableExt.sql:/enableExt.sql:ro
+            - ./database/testData.tif:/home/database/testData.tif:ro
+
+    pgadmin4:
+        image: dpage/pgadmin4
+        container_name: pgadmin4
+        ports:
+            - '5050:80'
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@yopmail.com
+            PGADMIN_DEFAULT_PASSWORD: admin
+        links:
+            - postgis

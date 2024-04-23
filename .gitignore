@@ -1,3 +1,6 @@
 .vscode
 **exe
 LogOfCurrentStates.txt
+main.exe.stackdump
+**.tif
+generatedData

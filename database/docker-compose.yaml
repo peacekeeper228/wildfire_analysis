@@ -8,11 +8,13 @@ services:
             - '5432:5432'
         environment:
             POSTGRES_PASSWORD: postgis
+            PGUSER: postgis
             POSTGRES_USER: postgis
-            POSTGRES_DB: gis
+            POSTGRES_DATABSE: postgis
         volumes:
-            - ./enableExt.sql:/enableExt.sql:ro
+            - ./enableExt.sql:/docker-entrypoint-initdb.d/enableExt.sql:ro
             - ./database/testData.tif:/home/database/testData.tif:ro
+            - ./database/generatedData:/home/database/generatedData
 
     pgadmin4:
         image: dpage/pgadmin4
@@ -24,3 +26,5 @@ services:
             PGADMIN_DEFAULT_PASSWORD: admin
         links:
             - postgis
+
+# raster2pgsql -F -I -C -t 10000x10000  /home/database/testData.tif public.world > /home/database/generatedData/out.sql

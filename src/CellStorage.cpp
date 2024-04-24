@@ -69,6 +69,7 @@ void CellStorage::iterate()
     time_after++;
 }
 
+
 bool CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, std::shared_ptr<const Wind> w)
 {
     if ((xRange.first < 0) | (xRange.second > getXArea()) | (yRange.first < 0) | (yRange.second > getYArea()))

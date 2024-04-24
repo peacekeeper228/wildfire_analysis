@@ -32,46 +32,30 @@ void CellStorage::iterate()
             if (getState(i, j) == cellState::Fire)
             {
                 // we can do that because invariant is checked in cell
-                if (!checkAndGetCell(i, j)->getFireInCell()->canSpread())
+                if (checkAndGetCell(i, j)->getFireInCell()->canSpread())
                 {
-                    // TODO: this logic is weird
-                    Terrain[i][j].iterate();
-                    continue;
-                }
-                auto listKoef = std::list<double>();
-                for (auto analyzedDirection : getAllDirections())
-                {
-                    auto x = getShiftingOnDirections(analyzedDirection);
-                    auto a = checkAndGetCell(i + x.first, j + x.second);
-                    if ((a != nullptr) && (a->getState() == cellState::Tree))
+                    auto listKoef = std::list<double>();
+                    for (auto analyzedDirection : getAllDirections())
                     {
-                        double fireKoeff = 0;
-                        if (a->getWind() != nullptr)
+                        auto x = getShiftingOnDirections(analyzedDirection);
+                        auto a = checkAndGetCell(i + x.first, j + x.second);
+                        if ((a != nullptr) && (a->getState() == cellState::Tree))
                         {
-                            fireKoeff = a->getWind()->CalculateWindKoef(analyzedDirection);
-                        }
-                        // TODO calculate k
-                        if (int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage())
-                        {
-                            setNewState(cellState::Fire, i + x.first, j + x.second);
+                            double fireKoeff = 0;
+                            if (a->getWind() != nullptr)
+                            {
+                                fireKoeff = a->getWind()->CalculateWindKoef(analyzedDirection);
+                            }
+                            // TODO calculate k
+                            if (int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage())
+                            {
+                                setNewState(cellState::Fire, i + x.first, j + x.second);
+                            }
                         }
                     }
                 }
 
                 Terrain[i][j].iterate();
-
-                // if (getState(i, j) == cellState::Fire){
-                //     Terrain[i][j].iterate();
-                //     continue;
-                // }
-                // if (getState(i, j) == cellState::Tree){
-                //     auto koeff = getNeighborsKoeff(i, j);
-                //     for (auto k : koeff)
-                //     {
-                //         if ((int(k * 100) + rand()) % 100 > ignitionPercentage()){
-                //             setNewState(cellState::Fire, i, j);
-                //         }
-                //     }
             }
         }
     };
@@ -85,7 +69,7 @@ void CellStorage::iterate()
     time_after++;
 }
 
-bool CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange,  std::shared_ptr<const Wind> w)
+bool CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, std::shared_ptr<const Wind> w)
 {
     if ((xRange.first < 0) | (xRange.second > getXArea()) | (yRange.first < 0) | (yRange.second > getYArea()))
     {

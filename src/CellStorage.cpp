@@ -8,12 +8,12 @@
 CellStorage::CellStorage()
 {
     time_after = 0;
-    Terrain.resize(getXArea(), std::vector<cell>(getYArea()));
+    Terrain.resize(getXArea(), std::vector<std::shared_ptr<cell>>(getYArea()));
     for (size_t i = 0; i < getXArea(); i++)
     {
         for (size_t j = 0; j < getYArea(); j++)
         {
-            Terrain[i][j] = cell();
+            Terrain[i][j] = std::make_shared<cell>();
         }
     }
     // vtr.resize(getXArea()*100, std::vector<cell>(getYArea()));
@@ -55,7 +55,7 @@ void CellStorage::iterate()
                     }
                 }
 
-                Terrain[i][j].iterate();
+                Terrain[i][j]->iterate();
             }
         }
     };
@@ -63,7 +63,7 @@ void CellStorage::iterate()
     {
         for (size_t j = 0; j < getYArea(); j++)
         {
-            Terrain[i][j].setNewState();
+            Terrain[i][j]->setNewState();
         }
     };
     time_after++;
@@ -81,25 +81,25 @@ bool CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pai
     {
         for (int j = yRange.first; j < yRange.second; j++)
         {
-            setWindToCell(&(Terrain[i][j]), w);
+            setWindToCell((Terrain[i][j].get()), w);
         }
     }
     return true;
 }
 void CellStorage::setNewState(const cellState &state, int xValue, int yValue)
 {
-    Terrain[xValue][yValue].setState(state);
+    Terrain[xValue][yValue]->setState(state);
 }
 
 cellState CellStorage::getState(int xValue, int yValue) const
 {
-    return Terrain[xValue][yValue].getState();
+    return Terrain[xValue][yValue]->getState();
 }
-const cell *CellStorage::checkAndGetCell(int xValue, int yValue) const
+const cell* CellStorage::checkAndGetCell(int xValue, int yValue) const
 {
     if (xValue >= 0 && xValue < getXArea() && yValue >= 0 && yValue < getYArea())
     {
-        return &(Terrain[xValue][yValue]);
+        return (Terrain[xValue][yValue].get());
     }
     return nullptr;
 }
@@ -116,7 +116,7 @@ void CellStorage::printCurrentStates()
     {
         for (size_t j = 0; j < getYArea(); j++)
         {
-            auto a = std::to_string(static_cast<int>(Terrain[i][j].getState()));
+            auto a = std::to_string(static_cast<int>(Terrain[i][j]->getState()));
             outFile << a;
         }
         outFile << '\n';

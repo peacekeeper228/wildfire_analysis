@@ -2,11 +2,11 @@
 #include <cstddef>
 
 constexpr int getXArea(){
-    return 1000;
+    return 100;
 }
 
 constexpr int getYArea(){
-    return 1000;
+    return 100;
 }
 
 constexpr size_t numberOfSimulations(){
@@ -28,6 +28,7 @@ Some statistics
 100 firepoint
     1000х1000 на 100 итераций - ~3.98 секунд c ветром, размер: 24-56 Б на клетку
     10000x10000 на 100 итераций - 256.9~ секунд с ветром, размер: 24-56 Б на клетку
+    10000x10000 на 100 итераций (новый комп) - 90 секунд с ветром, размер 32-64 на клетку
 */
 
 constexpr int ignitionPercentage(){

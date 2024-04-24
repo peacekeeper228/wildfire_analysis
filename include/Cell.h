@@ -9,10 +9,13 @@ private:
     cellState currentState;
     cellState futureState;
     std::shared_ptr<const Wind> windState;
-    Fire* fireState;
+    std::unique_ptr<Fire> fireState;
     
 public:
     cell();
+    cell(cell&& other);
+    cell(const cell& other) = delete;
+    cell& operator=(cell &&other);
 
     void setWind(std::shared_ptr<const Wind> wind);
     std::shared_ptr<const Wind> getWind() const;
@@ -30,7 +33,7 @@ public:
     void setNewState();
     ~cell();
 
-    Fire* getFireInCell() const;
+    const Fire* getFireInCell() const;
 };
 /// @brief this function make a proper assignment wind to cell. Also it follows invariants in wind
 /// @param changingCell cell, wind is assigned to this one

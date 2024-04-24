@@ -6,6 +6,20 @@ cell::cell()
     this->currentState = cellState::Empty;
 }
 
+cell::cell(cell &&other)
+    : currentState(other.currentState), windState(other.windState)
+{
+    this->fireState = std::move(other.fireState);
+}
+
+cell &cell::operator=(cell &&other)
+{   
+    this->currentState = other.currentState;
+    this->windState = other.windState;
+    this->fireState = std::move(other.fireState);
+    return *this;
+}
+
 void setWindToCell(cell *changingCell, std::shared_ptr<const Wind> assigningWind)
 {
     changingCell->setWind(assigningWind);
@@ -41,7 +55,7 @@ void cell::inFire()
     if (currentState == cellState::Tree)
     {
         futureState = cellState::Fire;
-        this->fireState = new Fire();
+        this->fireState = std::make_unique<Fire>();
     }
 }
 
@@ -55,7 +69,7 @@ void cell::iterate()
     fireState->iterate();
     if (fireState->fireEnded())
     {
-        fireState->~Fire();
+        fireState = nullptr;
         futureState = cellState::Burnt;
     };
 }
@@ -69,9 +83,9 @@ void cell::setNewState()
     }
 }
 
-Fire *cell::getFireInCell() const
+const Fire *cell::getFireInCell() const
 {
-    return this->fireState;
+    return this->fireState.get();
 }
 
 cell::~cell()

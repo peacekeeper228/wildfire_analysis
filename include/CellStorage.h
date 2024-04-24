@@ -26,7 +26,7 @@ class CellStorage
 {
 private:
     size_t time_after;
-    std::vector<std::vector<cell>> Terrain;
+    std::vector<std::vector<std::shared_ptr<cell>>> Terrain;
     //cell Terrain[getXArea()][getYArea()];
 
 public:

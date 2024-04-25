@@ -54,6 +54,8 @@ public:
     /// @brief basic function to make iteration and calls iterations of all childs
     void iterate();
 
+    void iterateCell(int i, int j);
+
     /// @brief link a number of cells to a particular wind instance
     /// Attention! If any range invariant is not proper, no assignment is made
     /// @param xRange range of rows

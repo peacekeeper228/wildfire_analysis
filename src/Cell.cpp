@@ -7,13 +7,13 @@ cell::cell()
 }
 
 cell::cell(cell &&other)
-    : currentState(other.currentState), windState(other.windState)
+    : futureState(cellState::NoState), currentState(other.currentState), windState(other.windState)
 {
     this->fireState = std::move(other.fireState);
 }
 
 cell &cell::operator=(cell &&other)
-{   
+{
     this->currentState = other.currentState;
     this->windState = other.windState;
     this->fireState = std::move(other.fireState);
@@ -61,17 +61,20 @@ void cell::inFire()
 
 void cell::iterate()
 {
+
     // cause for now only in fire there can be dynamic changes. Forest is not growing))))
-    if (!(currentState == cellState::Fire))
+    if ((currentState == cellState::Fire))
     {
-        return;
+
+        fireState->iterate();
+        if (fireState->fireEnded())
+        {
+            fireState = nullptr;
+            futureState = cellState::Burnt;
+        };
     };
-    fireState->iterate();
-    if (fireState->fireEnded())
-    {
-        fireState = nullptr;
-        futureState = cellState::Burnt;
-    };
+
+    setNewState();
 }
 
 void cell::setNewState()
@@ -91,5 +94,4 @@ const Fire *cell::getFireInCell() const
 cell::~cell()
 {
     setWindToCell(this, nullptr);
-    this->getFireInCell()->~Fire();
 }

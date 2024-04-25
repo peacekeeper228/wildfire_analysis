@@ -25,11 +25,27 @@ CellStorage::~CellStorage()
 
 void CellStorage::iterate()
 {
+    // take 55 % of time iteration
     for (int i = 0; i < getXArea(); i++)
     {
         for (int j = 0; j < getYArea(); j++)
         {
-            if (getState(i, j) == cellState::Fire)
+            this->iterateCell(i, j);
+        }
+    };
+    // take 45 % of time iteration
+    for (size_t i = 0; i < getXArea(); i++)
+    {
+        for (size_t j = 0; j < getYArea(); j++)
+        {
+            Terrain[i][j]->iterate();
+        }
+    };
+    time_after++;
+}
+
+void CellStorage::iterateCell(int i, int j){
+    if (getState(i, j) == cellState::Fire)
             {
                 // we can do that because invariant is checked in cell
                 if (checkAndGetCell(i, j)->getFireInCell()->canSpread())
@@ -38,7 +54,7 @@ void CellStorage::iterate()
                     for (auto analyzedDirection : getAllDirections())
                     {
                         auto x = getShiftingOnDirections(analyzedDirection);
-                        auto a = checkAndGetCell(i + x.first, j + x.second);
+                        auto a = this->checkAndGetCell(i + x.first, j + x.second);
                         if ((a != nullptr) && (a->getState() == cellState::Tree))
                         {
                             double fireKoeff = 0;
@@ -46,7 +62,7 @@ void CellStorage::iterate()
                             {
                                 fireKoeff = a->getWind()->CalculateWindKoef(analyzedDirection);
                             }
-                            // TODO calculate k
+                            // TODO calculate k properly
                             if (int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage())
                             {
                                 setNewState(cellState::Fire, i + x.first, j + x.second);
@@ -54,19 +70,7 @@ void CellStorage::iterate()
                         }
                     }
                 }
-
-                Terrain[i][j]->iterate();
             }
-        }
-    };
-    for (size_t i = 0; i < getXArea(); i++)
-    {
-        for (size_t j = 0; j < getYArea(); j++)
-        {
-            Terrain[i][j]->setNewState();
-        }
-    };
-    time_after++;
 }
 
 

@@ -29,7 +29,6 @@ int main()
             }
         }
     }
-    std::cout << rand() % getXArea();
     for (size_t i = 0; i < numberOfStartingFirepoints(); i++)
     {
         s.setNewState(cellState::Fire, (rand() % getXArea()), (rand() % getYArea()));

@@ -6,8 +6,8 @@
 class cell
 {
 private:
-    cellState currentState;
     cellState futureState;
+    cellState currentState;
     std::shared_ptr<const Wind> windState;
     std::unique_ptr<Fire> fireState;
     

@@ -6,6 +6,7 @@
 #include "../include/Fire.h"
 #include "../include/Wind.h"
 #include "../include/Properties.h"
+#include "../include/Connection.h"
 
 
 int main()
@@ -18,17 +19,8 @@ int main()
     auto yRange = std::make_pair<int, int>(0, getYArea());
     auto w = std::make_shared<const Wind>(directions::North, float(1.0));
     s.setWindToArea(xRange, yRange, w);
-    for (int i = 0; i < getXArea(); i++)
-    {
-        for (int j = 0; j < getYArea(); j++)
-        {
-            s.setNewState(cellState::Tree, i, j);
-            if (i == 6)
-            {
-                // s.setNewState(cellState::Water, i, j);
-            }
-        }
-    }
+    Connection c = Connection(s);
+    c.setStatesToStorage();
     for (size_t i = 0; i < numberOfStartingFirepoints(); i++)
     {
         s.setNewState(cellState::Fire, (rand() % getXArea()), (rand() % getYArea()));

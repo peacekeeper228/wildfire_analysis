@@ -29,6 +29,8 @@ private:
     std::vector<std::vector<std::shared_ptr<cell>>> Terrain;
     //cell Terrain[getXArea()][getYArea()];
 
+    void iterateSquare(int xMin, int yMin, int xMax, int yMax);
+
 public:
     CellStorage();
     ~CellStorage();

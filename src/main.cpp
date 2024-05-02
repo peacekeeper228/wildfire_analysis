@@ -12,7 +12,7 @@
 int main()
 {   
     
-    printf("Size of cell from %.2ld to %.2ld bytes \n", sizeof(cell), sizeof(cell) + sizeof(Fire) + sizeof(Wind));
+    printf("Size of cell from %.2lld to %.2lld bytes \n", sizeof(cell), sizeof(cell) + sizeof(Fire) + sizeof(Wind));
 
     CellStorage s = CellStorage();
     auto xRange = std::make_pair<int, int>(0, getXArea());
@@ -30,7 +30,7 @@ int main()
     for (size_t i = 0; i < numberOfSimulations(); i++)
     {
         s.iterate();
-        if ((i % 100 == 0) && (i != 0))
+        if ((i % 10 == 0) && (i != 0))
         {
             std::cout << "we have calculated " << i << " iterations" << std::endl;
         }

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <thread>
 
 CellStorage::CellStorage()
 {
@@ -23,16 +24,35 @@ CellStorage::~CellStorage()
 {
 }
 
-void CellStorage::iterate()
+void CellStorage::iterateSquare(int xMin, int yMin, int xMax, int yMax)
 {
-    // take 55 % of time iteration
-    for (int i = 0; i < getXArea(); i++)
+    for (int i = xMin; i < xMax; i++)
     {
-        for (int j = 0; j < getYArea(); j++)
+        for (int j = yMin; j < yMax; j++)
         {
             this->iterateCell(i, j);
         }
     };
+}
+
+void CellStorage::iterate()
+{
+    std::thread thread1(&CellStorage::iterateSquare, this, 0, 0, getXArea() / 2, getYArea() / 2);
+    std::thread thread2(&CellStorage::iterateSquare, this, 0, getYArea() / 2, getXArea() / 2, getYArea());
+    std::thread thread3(&CellStorage::iterateSquare, this, getXArea() / 2, 0, getXArea(), getYArea() / 2);
+    std::thread thread4(&CellStorage::iterateSquare, this, getXArea() / 2, getYArea() / 2, getXArea(), getYArea());
+    thread1.join();
+    thread2.join();
+    thread3.join();
+    thread4.join();
+    // take 55 % of time iteration
+    // for (int i = 0; i < getXArea(); i++)
+    // {
+    //     for (int j = 0; j < getYArea(); j++)
+    //     {
+    //         this->iterateCell(i, j);
+    //     }
+    // };
     // take 45 % of time iteration
     for (size_t i = 0; i < getXArea(); i++)
     {
@@ -44,35 +64,36 @@ void CellStorage::iterate()
     time_after++;
 }
 
-void CellStorage::iterateCell(int i, int j){
-    if (getState(i, j) == cellState::Fire)
+void CellStorage::iterateCell(int i, int j)
+{
+    if (getState(i, j) != cellState::Fire)
+    {
+        return;
+    };
+    // we can do that because invariant is checked in cell
+    if (checkAndGetCell(i, j)->getFireInCell()->canSpread())
+    {
+        auto listKoef = std::list<double>();
+        for (auto analyzedDirection : getAllDirections())
+        {
+            auto x = getShiftingOnDirections(analyzedDirection);
+            auto a = this->checkAndGetCell(i + x.first, j + x.second);
+            if ((a != nullptr) && (a->getState() == cellState::Tree))
             {
-                // we can do that because invariant is checked in cell
-                if (checkAndGetCell(i, j)->getFireInCell()->canSpread())
+                double fireKoeff = 0;
+                if (a->getWind() != nullptr)
                 {
-                    auto listKoef = std::list<double>();
-                    for (auto analyzedDirection : getAllDirections())
-                    {
-                        auto x = getShiftingOnDirections(analyzedDirection);
-                        auto a = this->checkAndGetCell(i + x.first, j + x.second);
-                        if ((a != nullptr) && (a->getState() == cellState::Tree))
-                        {
-                            double fireKoeff = 0;
-                            if (a->getWind() != nullptr)
-                            {
-                                fireKoeff = a->getWind()->CalculateWindKoef(analyzedDirection);
-                            }
-                            // TODO calculate k properly
-                            if (int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage())
-                            {
-                                setNewState(cellState::Fire, i + x.first, j + x.second);
-                            }
-                        }
-                    }
+                    fireKoeff = a->getWind()->CalculateWindKoef(analyzedDirection);
+                }
+                // TODO calculate k properly
+                if (int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage())
+                {
+                    setNewState(cellState::Fire, i + x.first, j + x.second);
                 }
             }
+        }
+    }
 }
-
 
 bool CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, std::shared_ptr<const Wind> w)
 {
@@ -100,7 +121,7 @@ cellState CellStorage::getState(int xValue, int yValue) const
 {
     return Terrain[xValue][yValue]->getState();
 }
-const cell* CellStorage::checkAndGetCell(int xValue, int yValue) const
+const cell *CellStorage::checkAndGetCell(int xValue, int yValue) const
 {
     if (xValue >= 0 && xValue < getXArea() && yValue >= 0 && yValue < getYArea())
     {

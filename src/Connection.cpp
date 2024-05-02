@@ -4,6 +4,9 @@
 Connection::Connection(CellStorage& storage)
 :storage(storage)
 {
+    //auto conninfo = conninfo();
+    char *conninfo = "dbname=your_db_name user=your_user_name password=your_password host=localhost port=5432";
+    //PGconn *conn = PQconnectdb(conninfo);
 }
 
 void Connection::setStatesToStorage()
@@ -17,7 +20,7 @@ void Connection::setStatesToStorage()
             this->storage.setNewState(cellState::Tree, i, j);
             if (i == 6)
             {
-                this->storage.setNewState(cellState::Water, i, j);
+                //this->storage.setNewState(cellState::Water, i, j);
             }
         }
     }

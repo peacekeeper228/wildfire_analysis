@@ -2,11 +2,11 @@
 #include <cstddef>
 
 constexpr int getXArea(){
-    return 10000;
+    return 100;
 }
 
 constexpr int getYArea(){
-    return 10000;
+    return 100;
 }
 
 constexpr size_t numberOfSimulations(){

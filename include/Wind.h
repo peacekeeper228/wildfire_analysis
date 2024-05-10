@@ -12,12 +12,6 @@ public:
     ~Wind();
     directions getWindDirection() const;
 
-    /// @brief controlling memory leak 
-    void windIsAssignedToCell();
-    
-    /// @brief controlling memory leak
-    void windIsDisassignedFromCell();
-
     /// @brief calculate the wind coeff based on mathematical model
     /// @param InvestigatedDirection direction in which koeff is investigated
     /// @return calculated coefficient

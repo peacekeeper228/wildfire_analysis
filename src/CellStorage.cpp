@@ -64,6 +64,10 @@ void CellStorage::iterate()
     time_after++;
 }
 
+void CellStorage::iterate(int n, int xMin, int yMin, int xMax, int yMax)
+{
+}
+
 void CellStorage::iterateCell(int i, int j)
 {
     if (getState(i, j) != cellState::Fire)

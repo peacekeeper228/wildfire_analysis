@@ -56,6 +56,10 @@ public:
     /// @brief basic function to make iteration and calls iterations of all childs
     void iterate();
 
+    /// @brief call iteration function for a particelar square n times
+    /// @param n number of iterations
+    void iterate(int n, int xMin, int yMin, int xMax, int yMax);
+
     void iterateCell(int i, int j);
 
     /// @brief link a number of cells to a particular wind instance

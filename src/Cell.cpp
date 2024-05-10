@@ -55,7 +55,10 @@ void cell::inFire()
     if (currentState == cellState::Tree)
     {
         futureState = cellState::Fire;
-        this->fireState = std::make_unique<Fire>();
+        if (this->fireState == nullptr){
+            this->fireState = std::make_unique<Fire>();
+        }
+        
     }
 }
 

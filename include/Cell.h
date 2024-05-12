@@ -20,11 +20,13 @@ public:
     void setWind(std::shared_ptr<const Wind> wind);
     std::shared_ptr<const Wind> getWind() const;
 
+    /// @brief set state directly to the cell (ignite if fire)
+    /// @param state state that will be set
     void setState(const cellState& state);
     cellState getState() const;
     
     /// @brief carefully set state to fire with checking the possibility to do this
-    void inFire();
+    void ignite();
 
     /// @brief basic function to make iteration and call iterations of all childs
     void iterate();

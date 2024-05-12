@@ -18,14 +18,14 @@ void test_Cell(){
     c.setState(cellState::Fire);
     c.setNewState();
     assert(c.getState() == cellState::Empty);
-    //test inFire
+    //test ignite
     c.setState(cellState::Tree);
-    c.inFire();
+    c.ignite();
     c.setNewState();
     assert(c.getState() == cellState::Fire);
 
     c.setState(cellState::Artificial);
-    c.inFire();
+    c.ignite();
     assert(c.getState() == cellState::Artificial);
 
     float wS = 1.0;
@@ -37,7 +37,7 @@ void test_Cell(){
 void test_fire_in_cell(){
     cell c = cell();
     c.setState(cellState::Tree);
-    c.inFire();
+    c.ignite();
     c.setNewState();
     for (size_t i = 0; i < 10; i++)
     {

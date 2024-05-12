@@ -43,22 +43,22 @@ void cell::setState(const cellState &state)
 {
     if (state == cellState::Fire)
     {
-        inFire();
+        ignite();
     }
     else
     {
         this->currentState = state;
     };
 }
-void cell::inFire()
+void cell::ignite()
 {
     if (currentState == cellState::Tree)
     {
         futureState = cellState::Fire;
-        if (this->fireState == nullptr){
+        if (this->fireState == nullptr)
+        {
             this->fireState = std::make_unique<Fire>();
         }
-        
     }
 }
 
@@ -86,6 +86,10 @@ void cell::setNewState()
     {
         currentState = futureState;
         futureState = cellState::NoState;
+        if (currentState == cellState::Fire)
+        {
+            ignite();
+        }
     }
 }
 

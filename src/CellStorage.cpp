@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <thread>
+//#include <json.h>
 
 CellStorage::CellStorage()
 {
@@ -17,7 +18,6 @@ CellStorage::CellStorage()
             Terrain[i][j] = std::make_shared<cell>();
         }
     }
-    // vtr.resize(getXArea()*100, std::vector<cell>(getYArea()));
 }
 
 CellStorage::~CellStorage()
@@ -154,3 +154,27 @@ void CellStorage::printCurrentStates()
     outFile << std::endl;
     outFile.close();
 }
+
+// void CellStorage::saveFiresToJson()
+// {
+//     Json::Value event;
+//     event["version"] = "0.0.1";
+//     Json::Value data(Json::arrayValue);
+//     for (size_t i = 0; i < getXArea(); i++)
+//     {
+//         for (size_t j = 0; j < getYArea(); j++)
+//         {
+//             auto stateOfCurrentCell = Terrain[i][j]->getState();
+//             if (stateOfCurrentCell == cellState::Burnt || stateOfCurrentCell == cellState::Fire){
+//                 Json::Value vec(Json::arrayValue);
+//                 vec.append(Json::Value(i));
+//                 vec.append(Json::Value(j));
+//                 vec.append(Json::Value(static_cast<int>(stateOfCurrentCell)));
+//                 data.append(vec);
+//             }
+//         }
+//     }
+
+//     event["data"] = data;
+//     std::cout << event << std::endl;
+// }

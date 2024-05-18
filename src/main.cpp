@@ -38,6 +38,7 @@ int main()
     }
     printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
     s.printCurrentStates();
+    s.saveFiresToJson();
 
     return 0;
 }

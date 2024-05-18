@@ -26,7 +26,10 @@ class CellStorage
 {
 private:
     size_t time_after;
+    int32_t lat_min;
+    int32_t long_min;  
     std::vector<std::vector<std::shared_ptr<cell>>> Terrain;
+
     //cell Terrain[getXArea()][getYArea()];
 
     void iterateSquare(int xMin, int yMin, int xMax, int yMax);
@@ -72,4 +75,6 @@ public:
 
     /// @brief all current states of cell storage is stored to 'LogOfCurrentStates.txt' in root project directory
     void printCurrentStates();
+
+    void saveFiresToJson();
 };

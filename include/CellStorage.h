@@ -15,13 +15,6 @@ inline double NumberOfCellAffectedInParticularDirection(double koeff, float fire
     return minutesPerIteration() * (double)fireSpeed * koeff / cellSizeInMeters();
 }
 
-inline double calculateKoeff(float windSpeed, double slopeAngleRad)
-{
-    // currently, I suppose this is more example than real formula :(
-    int windKoeff = pow(196, 0.0133 * windSpeed);
-    int slopeKoeff = 5.275 * tan(slopeAngleRad);
-    return windKoeff * slopeKoeff;
-}
 class CellStorage
 {
 private:

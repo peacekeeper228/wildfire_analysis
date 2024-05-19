@@ -155,8 +155,8 @@ void CellStorage::printCurrentStates()
     outFile.close();
 }
 
-// void CellStorage::saveFiresToJson()
-// {
+ void CellStorage::saveFiresToJson()
+{
 //     Json::Value event;
 //     event["version"] = "0.0.1";
 //     Json::Value data(Json::arrayValue);
@@ -177,4 +177,4 @@ void CellStorage::printCurrentStates()
 
 //     event["data"] = data;
 //     std::cout << event << std::endl;
-// }
+ }

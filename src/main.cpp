@@ -7,6 +7,7 @@
 #include "../include/Wind.h"
 #include "../include/Properties.h"
 #include "../include/Connection.h"
+#include "../include/Math.h"
 
 
 int main()
@@ -14,7 +15,8 @@ int main()
     
     printf("Size of cell from %.2lld to %.2lld bytes \n", sizeof(cell), sizeof(cell) + sizeof(Fire) + sizeof(Wind));
 
-    CellStorage s = CellStorage();
+    Math1 formula = Math1();
+    CellStorage s = CellStorage(&formula);
     auto xRange = std::make_pair<int, int>(0, getXArea());
     auto yRange = std::make_pair<int, int>(0, getYArea());
     auto w = std::make_shared<const Wind>(directions::North, float(1.0));

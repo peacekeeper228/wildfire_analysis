@@ -1,5 +1,3 @@
-#include "../include/CellStorage.h"
-#include "../include/Coordinates.h"
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
@@ -7,7 +5,12 @@
 #include <thread>
 //#include <json.h>
 
-CellStorage::CellStorage()
+#include "../include/CellStorage.h"
+#include "../include/Coordinates.h"
+
+
+CellStorage::CellStorage(Math* formula)
+    :formula(formula)
 {
     time_after = 0;
     Terrain.resize(getXArea(), std::vector<std::shared_ptr<cell>>(getYArea()));

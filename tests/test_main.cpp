@@ -7,6 +7,7 @@
 #include "../include/CellStorage.h"
 #include "../include/Wind.h"
 #include "../include/Fire.h"
+#include "../include/Math.h"
 
 constexpr double tolerance(){
     return std::pow(10, -10);
@@ -49,7 +50,8 @@ void test_fire_in_cell(){
 }
 
 void test_CellStorage_setWindToArea(){
-    CellStorage s = CellStorage();
+    Math1 formula = Math1();
+    CellStorage s = CellStorage(&formula);
     std::pair<int, int> p = std::make_pair<int, int>(4, 5);
     float wS = 1.0;
     auto w = std::make_shared<const Wind>(directions::North, wS);
@@ -70,7 +72,8 @@ void test_CellStorage_setWindToArea(){
 }
 
 void test_CellStorage(){
-    CellStorage s = CellStorage();
+    Math1 formula = Math1();
+    CellStorage s = CellStorage(&formula);
     s.setNewState(cellState::Tree, 5, 5);
     s.setNewState(cellState::Fire, 5, 5);
     s.setNewState(cellState::Water, 4, 5);

@@ -9,6 +9,7 @@
 #include "Wind.h"
 #include "Properties.h"
 #include "Cell.h"
+#include "Math.h"
 
 inline double NumberOfCellAffectedInParticularDirection(double koeff, float fireSpeed)
 {
@@ -22,13 +23,14 @@ private:
     int32_t lat_min;
     int32_t long_min;  
     std::vector<std::vector<std::shared_ptr<cell>>> Terrain;
+    Math* formula;
 
     //cell Terrain[getXArea()][getYArea()];
 
     void iterateSquare(int xMin, int yMin, int xMax, int yMax);
 
 public:
-    CellStorage();
+    CellStorage(Math* formula);
     ~CellStorage();
 
     /// @brief set state of a particular cell with no checking bound invariant

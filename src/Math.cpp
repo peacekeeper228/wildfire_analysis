@@ -18,3 +18,7 @@ inline double Math1::calculateKoeff(float windSpeed, double slopeAngleRad)
 Math1::Math1(/* args */)
 {
 }
+
+Math1::~Math1(/* args */)
+{
+}

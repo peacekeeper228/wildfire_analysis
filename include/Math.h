@@ -19,5 +19,6 @@ private:
 public:
     double calculateKoeff(float windSpeed, double slopeAngleRad) override;
     Math1(/* args */);
+    ~Math1();
 };
 

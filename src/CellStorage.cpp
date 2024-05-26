@@ -3,14 +3,13 @@
 #include <fstream>
 #include <string>
 #include <thread>
-//#include <json.h>
+// #include <json.h>
 
 #include "../include/CellStorage.h"
 #include "../include/Coordinates.h"
 
-
-CellStorage::CellStorage(Math* formula)
-    :formula(formula)
+CellStorage::CellStorage(Math *formula)
+    : formula(formula)
 {
     time_after = 0;
     Terrain.resize(getXArea(), std::vector<std::shared_ptr<cell>>(getYArea()));
@@ -158,26 +157,58 @@ void CellStorage::printCurrentStates()
     outFile.close();
 }
 
- void CellStorage::saveFiresToJson()
+void CellStorage::saveFiresToJson()
 {
-//     Json::Value event;
-//     event["version"] = "0.0.1";
-//     Json::Value data(Json::arrayValue);
-//     for (size_t i = 0; i < getXArea(); i++)
-//     {
-//         for (size_t j = 0; j < getYArea(); j++)
-//         {
-//             auto stateOfCurrentCell = Terrain[i][j]->getState();
-//             if (stateOfCurrentCell == cellState::Burnt || stateOfCurrentCell == cellState::Fire){
-//                 Json::Value vec(Json::arrayValue);
-//                 vec.append(Json::Value(i));
-//                 vec.append(Json::Value(j));
-//                 vec.append(Json::Value(static_cast<int>(stateOfCurrentCell)));
-//                 data.append(vec);
-//             }
-//         }
-//     }
+    //     Json::Value event;
+    //     event["version"] = "0.0.1";
+    //     Json::Value data(Json::arrayValue);
+    //     for (size_t i = 0; i < getXArea(); i++)
+    //     {
+    //         for (size_t j = 0; j < getYArea(); j++)
+    //         {
+    //             auto stateOfCurrentCell = Terrain[i][j]->getState();
+    //             if (stateOfCurrentCell == cellState::Burnt || stateOfCurrentCell == cellState::Fire){
+    //                 Json::Value vec(Json::arrayValue);
+    //                 vec.append(Json::Value(i));
+    //                 vec.append(Json::Value(j));
+    //                 vec.append(Json::Value(static_cast<int>(stateOfCurrentCell)));
+    //                 data.append(vec);
+    //             }
+    //         }
+    //     }
 
-//     event["data"] = data;
-//     std::cout << event << std::endl;
- }
+    //     event["data"] = data;
+    //     std::cout << event << std::endl;
+}
+
+std::vector<std::pair<int, int>> CellStorage::getRelativeFirePoints() const
+{
+    // important note that result must be sorted!
+    std::vector<std::pair<int, int>> result;
+    for (size_t i = 0; i < getXArea(); i++)
+    {
+        for (size_t j = 0; j < getYArea(); j++)
+        {
+            if (Terrain[i][j]->getState() == cellState::Fire){
+                result.push_back(std::pair(i, j));
+            }
+        }
+    }
+    return result;
+}
+
+std::vector<std::pair<int, int>> CellStorage::getBurntPoints() const
+{
+    // important note that result must be sorted!
+    std::vector<std::pair<int, int>> result;
+    for (size_t i = 0; i < getXArea(); i++)
+    {
+        for (size_t j = 0; j < getYArea(); j++)
+        {
+            if (Terrain[i][j]->getState() == cellState::Burnt){
+                result.push_back(std::pair(i, j));
+            }
+        }
+    }
+    return result;
+}

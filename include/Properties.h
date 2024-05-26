@@ -1,5 +1,7 @@
 #pragma once
 #include <cstddef>
+#include <cstdint>
+#include <cmath>
 
 constexpr int getXArea(){
     return 100;
@@ -54,3 +56,5 @@ constexpr int cellSizeInMeters(){
 constexpr int minutesPerIteration(){
     return 10;
 }
+
+constexpr double pi() { return std::atan(1) * 4; }

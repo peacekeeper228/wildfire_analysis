@@ -12,6 +12,12 @@ directions Wind::getWindDirection() const
 {
     return this->direction;
 }
+
+float Wind::getWindSpeed() const
+{
+    return this->windSpeed;
+}
+
 Wind::~Wind()
 {
 }
@@ -36,3 +42,4 @@ int Wind::angleBetweenDirections(directions d) const
     };
     return differenceInDirections * numberOfDegreesPerDirection();
 }
+

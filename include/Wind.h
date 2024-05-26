@@ -11,7 +11,9 @@ public:
     Wind(directions initialDirection, float w);
     ~Wind();
     directions getWindDirection() const;
+    float getWindSpeed() const;
 
+    /// @deprecated now calculates over math module
     /// @brief calculate the wind coeff based on mathematical model
     /// @param InvestigatedDirection direction in which koeff is investigated
     /// @return calculated coefficient

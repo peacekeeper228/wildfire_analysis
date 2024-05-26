@@ -20,8 +20,8 @@ class CellStorage
 {
 private:
     size_t time_after;
-    int32_t lat_min;
-    int32_t long_min;  
+    int32_t latitudeMin;
+    int32_t longtitudeMin;  
     std::vector<std::vector<std::shared_ptr<cell>>> Terrain;
     Math* formula;
 
@@ -73,7 +73,7 @@ public:
 
     std::vector<std::pair<int, int>> getRelativeFirePoints() const;
 
-    std::vector<std::pair<int, int>> getBurntPoints() const;
+    std::vector<std::pair<int, int>> getRelativeBurntPoints() const;
 
     void saveFiresToJson();
 

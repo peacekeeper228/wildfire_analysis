@@ -10,6 +10,7 @@ private:
     cellState currentState;
     std::shared_ptr<const Wind> windState;
     std::unique_ptr<Fire> fireState;
+    double altitude; //currently not used
     
 public:
     cell();

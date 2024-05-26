@@ -11,7 +11,7 @@ find_package(PostgreSQL REQUIRED)
 include_directories (${PostgreSQL_INCLUDE_DIRS})
 link_directories(${PostgreSQL_LIBRARY_DIRS})
 
-add_executable(main src/main.cpp src/Cell.cpp src/CellStorage.cpp src/Connection.cpp src/Coordinates.cpp src/Fire.cpp src/Wind.cpp src/Math.cpp src/Metrics.cpp)
+add_executable(main src/main.cpp src/Cell.cpp src/CellStorage.cpp src/Connection.cpp src/Coordinates.cpp src/Fire.cpp src/Wind.cpp src/Math.cpp src/Metric.cpp)
 
 #add_test(test_all "./tests")
 

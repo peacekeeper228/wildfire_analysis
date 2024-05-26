@@ -9,7 +9,7 @@ Math::~Math()
 {
 }
 
-double Math1::calculateKoeff(float windSpeed, double slopeAngleRad) const
+double Math1::calculateKoef(float windSpeed, double slopeAngleRad) const
 {
     double windKoeff = pow(196, 0.0133 * windSpeed);
     double slopeKoeff = 5.275 * tan(slopeAngleRad);

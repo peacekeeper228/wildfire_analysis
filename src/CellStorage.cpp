@@ -197,7 +197,7 @@ std::vector<std::pair<int, int>> CellStorage::getRelativeFirePoints() const
     return result;
 }
 
-std::vector<std::pair<int, int>> CellStorage::getBurntPoints() const
+std::vector<std::pair<int, int>> CellStorage::getRelativeBurntPoints() const
 {
     // important note that result must be sorted!
     std::vector<std::pair<int, int>> result;

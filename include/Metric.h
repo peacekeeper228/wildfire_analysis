@@ -1,13 +1,20 @@
+#pragma once
 #include "CellStorage.h"
 
 class Metric
 {
-private:
+protected:
     uint64_t a, b, c, d;
+
 public:
     Metric(/* args */);
     ~Metric();
-    void calculateVariables(const CellStorage& cellStorage, std::vector<std::pair<int, int>> realFirePoints, std::vector<std::pair<int, int>> burntPoints);
-    virtual double compute() = 0;
+    void calculateVariables(const CellStorage &cellStorage, std::vector<std::pair<int, int>>& realFirePoints, std::vector<std::pair<int, int>>& burntPoints);
+    virtual double compute() const = 0;
 };
 
+class SimpsonMetric final : public Metric
+{
+public:
+    double compute() const override;
+};

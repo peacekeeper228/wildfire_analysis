@@ -8,6 +8,7 @@
 #include "../include/Wind.h"
 #include "../include/Fire.h"
 #include "../include/Math.h"
+#include "../include/Metric.h"
 
 constexpr double tolerance(){
     return std::pow(10, -10);
@@ -120,6 +121,33 @@ void testFire(){
     assert(fire.fireEnded());
 }
 
+void testMetrics(){
+    Math1 formula = Math1();
+    CellStorage s = CellStorage(&formula);
+
+    for (size_t i = 0; i < 10; i++)
+    {
+        s.setNewState(cellState::Burnt, 1, i);
+        s.setNewState(cellState::Tree, 2, i);
+        s.setNewState(cellState::Fire, 2, i);
+    }
+    s.iterate();
+    auto burnt = std::vector<std::pair<int, int>>();
+    burnt.push_back(std::make_pair<int, int>(1, 3));
+    burnt.push_back(std::make_pair<int, int>(3, 4));
+
+    auto fired = std::vector<std::pair<int, int>>();
+    fired.push_back(std::make_pair<int, int>(2, 8));
+    fired.push_back(std::make_pair<int, int>(9, 10));
+
+    Metric* m = new SimpsonMetric();
+    m->calculateVariables(s, fired, burnt);
+    assert(m->compute() == double(1.0));
+    Metric* m1 = new JaccardMetric();
+    m1->calculateVariables(s, fired, burnt);
+    assert(m1->compute() == double(1) / double(12));
+}
+
 int main()
 {
     test_Cell();  
@@ -131,7 +159,9 @@ int main()
     testFire();
     std::cout << "fire was tested successfully" << std::endl;
     test_fire_in_cell();
-
+    std::cout << "fire in cell tested successfully" << std::endl;
+    testMetrics();
+    std::cout << "metrics tested successfully" << std::endl;
     std::cout << "all tests passed" << std::endl;
     return 0;
 }

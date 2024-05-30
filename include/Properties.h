@@ -12,7 +12,7 @@ constexpr int getYArea(){
 }
 
 constexpr size_t numberOfSimulations(){
-    return 100;
+    return 10;
 }
 
 constexpr size_t numberOfStartingFirepoints(){

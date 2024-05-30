@@ -46,10 +46,10 @@ int main()
         // s.printCurrentStates();
     }
     PROCESS_MEMORY_COUNTERS memCounter;
-    BOOL result = K32GetProcessMemoryInfo(GetCurrentProcess(), &memCounter, sizeof(memCounter));
+    K32GetProcessMemoryInfo(GetCurrentProcess(), &memCounter, sizeof(memCounter));
     std::cout << "WorkingSetSize " << memCounter.PeakWorkingSetSize << std::endl;
 
-    //printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
+    printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
     s.printCurrentStates();
     // s.saveFiresToJson();
 

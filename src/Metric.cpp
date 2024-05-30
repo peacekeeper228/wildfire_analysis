@@ -28,7 +28,8 @@ void Metric::calculateVariables(const CellStorage &cellStorage, std::vector<std:
             ++a;
         } else {
             ++c;
-        }
+        };
+        startingPosition = lower;
         
     }
     b = simulatedFirePoints.size() + realFirePoints.size() - a - c;
@@ -38,4 +39,9 @@ void Metric::calculateVariables(const CellStorage &cellStorage, std::vector<std:
 double SimpsonMetric::compute() const
 {
     return double(a) / double(std::min(a + b, a + c));
+}
+
+double JaccardMetric::compute() const
+{
+    return double(a) / double(a + b + c);
 }

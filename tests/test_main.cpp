@@ -143,9 +143,14 @@ void testMetrics(){
     Metric* m = new SimpsonMetric();
     m->calculateVariables(s, fired, burnt);
     assert(m->compute() == double(1.0));
+
     Metric* m1 = new JaccardMetric();
     m1->calculateVariables(s, fired, burnt);
     assert(m1->compute() == double(1) / double(12));
+
+    Metric* m2 = new SneathMetric();
+    m2->calculateVariables(s, fired, burnt);
+    assert(m2->compute() == double(1) / double(23));
 }
 
 int main()

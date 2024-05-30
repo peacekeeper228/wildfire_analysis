@@ -25,3 +25,9 @@ class JaccardMetric final : public Metric
 public:
     double compute() const override;
 };
+
+class SneathMetric final : public Metric
+{
+public:
+    double compute() const override;
+};

@@ -83,23 +83,42 @@ void CellStorage::iterateCell(int i, int j)
         for (auto analyzedDirection : getAllDirections())
         {
             auto x = getShiftingOnDirections(analyzedDirection);
-            auto a = this->checkAndGetCell(i + x.first, j + x.second);
-            if ((a != nullptr) && (a->getState() == cellState::Tree))
+            auto nearestCell = this->checkAndGetCell(i + x.first, j + x.second);
+            if (nearestCell == nullptr)
             {
-                double fireKoeff = 0;
-                if (a->getWind() != nullptr)
+                continue;
+            }
+            double fireKoeff = 0;
+            if (nearestCell->getState() == cellState::Tree)
+            {
+                // TODO here should be also altitude if we choose formula with it
+                if (nearestCell->getWind() != nullptr)
                 {
-                    fireKoeff = a->getWind()->CalculateWindKoef(analyzedDirection);
+                    fireKoeff = this->formula->CalculateWindKoef(checkAndGetCell(i, j), analyzedDirection);
                 }
                 // TODO calculate k properly
                 if (int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage())
                 {
                     setNewState(cellState::Fire, i + x.first, j + x.second);
                 }
-            }
-        }
-    }
-}
+            };
+            auto throughCell = this->checkAndGetCell(i + 2 * x.first, j + 2 * x.second);
+            if (throughCell == nullptr)
+            {
+                continue;
+            };
+            if ((throughCell->getState() == cellState::Tree) && (nearestCell->getState() != cellState::Tree) && ((nearestCell->getState() != cellState::Fire)))
+            {
+                fireKoeff = this->formula->CalculateWindKoef(checkAndGetCell(i, j), analyzedDirection);
+                // should be got from the article
+                if (int(fireKoeff * 100) + (rand() % 70) > ignitionPercentage())
+                {
+                    setNewState(cellState::Fire, i + 2 * x.first, j + 2 * x.second);
+                };
+            };
+        };
+    };
+};
 
 bool CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, std::shared_ptr<const Wind> w)
 {
@@ -189,7 +208,8 @@ std::vector<std::pair<int, int>> CellStorage::getRelativeFirePoints() const
     {
         for (size_t j = 0; j < getYArea(); j++)
         {
-            if (Terrain[i][j]->getState() == cellState::Fire){
+            if (Terrain[i][j]->getState() == cellState::Fire)
+            {
                 result.push_back(std::pair(i, j));
             }
         }
@@ -205,7 +225,8 @@ std::vector<std::pair<int, int>> CellStorage::getRelativeBurntPoints() const
     {
         for (size_t j = 0; j < getYArea(); j++)
         {
-            if (Terrain[i][j]->getState() == cellState::Burnt){
+            if (Terrain[i][j]->getState() == cellState::Burnt)
+            {
                 result.push_back(std::pair(i, j));
             }
         }

@@ -12,11 +12,11 @@ constexpr int getYArea(){
 }
 
 constexpr size_t numberOfSimulations(){
-    return 10;
+    return 1000;
 }
 
 constexpr size_t numberOfStartingFirepoints(){
-    return 100;
+    return 1;
 }
 
 
@@ -46,6 +46,10 @@ with safe pointers
 */
 
 constexpr int ignitionPercentage(){
+    return 150; // in formula there is smth wrong I suppose
+}
+
+constexpr int throughPercentage(){
     return 150; // in formula there is smth wrong I suppose
 }
 

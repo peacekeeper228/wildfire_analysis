@@ -15,8 +15,6 @@
 #include <stdio.h>
 #include <tchar.h>
 
-// Use to convert bytes to MB
-#define DIV 1048576
 int main()
 {
 
@@ -33,6 +31,10 @@ int main()
     for (size_t i = 0; i < numberOfStartingFirepoints(); i++)
     {
         s.setNewState(cellState::Fire, (rand() % getXArea()), (rand() % getYArea()));
+    }
+    for (size_t i = 0; i < getXArea(); i++)
+    {
+        s.setNewState(cellState::Water, i, 50);
     }
 
     clock_t tStart = clock();

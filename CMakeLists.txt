@@ -6,8 +6,12 @@ project(wildfire_analysis)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
+
 #set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
-#find_package(PostgreSQL REQUIRED)
+find_package(PostgreSQL REQUIRED)
+include_directories (${PostgreSQL_INCLUDE_DIRS})
+link_directories(${PostgreSQL_LIBRARY_DIRS})
+
 #include_directories (${PostgreSQL_INCLUDE_DIRS})
 #link_directories(${PostgreSQL_LIBRARY_DIRS})
 

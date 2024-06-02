@@ -54,6 +54,7 @@ public:
     /// @brief basic function to make iteration and calls iterations of all childs
     void iterate();
 
+    /// @todo not done
     /// @brief call iteration function for a particelar square n times
     /// @param n number of iterations
     void iterate(int n, int xMin, int yMin, int xMax, int yMax);

@@ -76,8 +76,9 @@ void CellStorage::iterateCell(int i, int j)
     {
         return;
     };
+    const cell* iteratedCell = checkAndGetCell(i, j);
     // we can do that because invariant is checked in cell
-    if (checkAndGetCell(i, j)->getFireInCell()->canSpread())
+    if (iteratedCell->getFireInCell()->canSpread())
     {
         auto listKoef = std::list<double>();
         for (auto analyzedDirection : getAllDirections())
@@ -87,20 +88,14 @@ void CellStorage::iterateCell(int i, int j)
             if (nearestCell == nullptr)
             {
                 continue;
-            }
+            };
             double fireKoeff = 0;
             if (nearestCell->getState() == cellState::Tree)
             {
-                // TODO here should be also altitude if we choose formula with it
-                if (nearestCell->getWind() != nullptr)
-                {
-                    fireKoeff = this->formula->CalculateWindKoef(checkAndGetCell(i, j), analyzedDirection);
-                }
-                // TODO calculate k properly
-                if (int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage())
+                if (formula->willSpread(iteratedCell, analyzedDirection))
                 {
                     setNewState(cellState::Fire, i + x.first, j + x.second);
-                }
+                };
             };
             auto throughCell = this->checkAndGetCell(i + 2 * x.first, j + 2 * x.second);
             if (throughCell == nullptr)
@@ -109,11 +104,9 @@ void CellStorage::iterateCell(int i, int j)
             };
             if ((throughCell->getState() == cellState::Tree) && (nearestCell->getState() != cellState::Tree) && ((nearestCell->getState() != cellState::Fire)))
             {
-                fireKoeff = this->formula->CalculateWindKoef(checkAndGetCell(i, j), analyzedDirection);
-                // should be got from the article
-                if (int(fireKoeff * 100) + (rand() % 70) > ignitionPercentage())
+                if (formula->willSpreadThroughOne(iteratedCell, analyzedDirection))
                 {
-                    setNewState(cellState::Fire, i + 2 * x.first, j + 2 * x.second);
+                    setNewState(cellState::Fire, i + x.first, j + x.second);
                 };
             };
         };

@@ -16,22 +16,21 @@ double Math1::calculateKoef(float windSpeed, double slopeAngleRad) const
     return windKoeff * slopeKoeff;
 }
 
-double Math1::CalculateWindKoef(const cell* c, directions InvestigatedDirection) const
+double Math1::calculateWindKoef(const cell *c, directions InvestigatedDirection) const
 {
-    /*
-    by now is from
-    "A Novel Method of Modeling Grassland Wildfire Dynamics Based on Cellular Automata:
-        A Case Study in Inner Mongolia, China"
-    */
     auto wind = c->getWind().get();
     float angleRadians = wind->angleBetweenDirections(InvestigatedDirection) * pi() / 180;
     return std::exp(wind->getWindSpeed() * (cos(cos(angleRadians)) - 1));
 }
 
-Math1::Math1(/* args */)
+bool Math1::willSpread(const cell *c, directions InvestigatedDirection) const
 {
+    double fireKoeff = calculateWindKoef(c, InvestigatedDirection);
+    return int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage();
 }
 
-Math1::~Math1(/* args */)
+bool Math1::willSpreadThroughOne(const cell *c, directions InvestigatedDirection) const
 {
+    double fireKoeff = calculateWindKoef(c, InvestigatedDirection);
+    return int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage();
 }

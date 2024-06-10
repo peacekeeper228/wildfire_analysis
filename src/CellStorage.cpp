@@ -76,7 +76,7 @@ void CellStorage::iterateCell(int i, int j)
     {
         return;
     };
-    const cell* iteratedCell = checkAndGetCell(i, j);
+    const cell *iteratedCell = checkAndGetCell(i, j);
     // we can do that because invariant is checked in cell
     if (iteratedCell->getFireInCell()->canSpread())
     {
@@ -106,7 +106,7 @@ void CellStorage::iterateCell(int i, int j)
             {
                 if (formula->willSpreadThroughOne(iteratedCell, analyzedDirection))
                 {
-                    setNewState(cellState::Fire, i + x.first, j + x.second);
+                    setNewState(cellState::Fire, i + 2 * x.first, j + 2 * x.second);
                 };
             };
         };

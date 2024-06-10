@@ -32,5 +32,5 @@ bool Math1::willSpread(const cell *c, directions InvestigatedDirection) const
 bool Math1::willSpreadThroughOne(const cell *c, directions InvestigatedDirection) const
 {
     double fireKoeff = calculateWindKoef(c, InvestigatedDirection);
-    return int(fireKoeff * 100) + (rand() % 100) > ignitionPercentage();
+    return int(fireKoeff * 100) + (rand() % 30) > throughPercentage();
 }

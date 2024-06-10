@@ -14,7 +14,13 @@ public:
     ~Math();
 };
 
+constexpr int ignitionPercentage(){
+    return 150; // in formula there is smth wrong I suppose
+}
 
+constexpr int throughPercentage(){
+    return 100; // in formula there is smth wrong I suppose
+}
 
 /// @brief by now is from
 /// "A Novel Method of Modeling Grassland Wildfire Dynamics Based on Cellular Automata:

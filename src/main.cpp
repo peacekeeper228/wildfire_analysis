@@ -23,19 +23,15 @@ int main()
     Math1 formula = Math1();
     CellStorage s = CellStorage(&formula);
     auto xRange = std::make_pair<int, int>(0, getXArea());
-    auto yRange = std::make_pair<int, int>(0, getYArea());
+    auto yRange = std::make_pair<int, int>(0, getYArea()/2);
     auto w = std::make_shared<const Wind>(directions::North, float(1.0));
+    s.setWindToArea(xRange, yRange, w);
+
+    yRange = std::make_pair<int, int>(getYArea()/2, getYArea());
+    w = std::make_shared<const Wind>(directions::SouthEast, float(2.0));
     s.setWindToArea(xRange, yRange, w);
     Connection c = Connection(s);
     c.setStatesToStorage();
-    for (size_t i = 0; i < numberOfStartingFirepoints(); i++)
-    {
-        s.setNewState(cellState::Fire, (rand() % getXArea()), (rand() % getYArea()));
-    }
-    for (size_t i = 0; i < getXArea(); i++)
-    {
-        s.setNewState(cellState::Water, i, 50);
-    }
 
     clock_t tStart = clock();
     for (size_t i = 0; i < numberOfSimulations(); i++)

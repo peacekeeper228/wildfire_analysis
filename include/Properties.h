@@ -12,13 +12,12 @@ constexpr int getYArea(){
 }
 
 constexpr size_t numberOfSimulations(){
-    return 1000;
+    return 50;
 }
 
 constexpr size_t numberOfStartingFirepoints(){
     return 1;
 }
-
 
 /*
 Some statistics
@@ -44,14 +43,6 @@ with safe pointers
     10000x10000 на 100 итераций (новый комп) -  секунд с ветром на 2 потока
     10000x10000 на 100 итераций (новый комп) - 520~ секунд с ветром на 4 потока
 */
-
-constexpr int ignitionPercentage(){
-    return 150; // in formula there is smth wrong I suppose
-}
-
-constexpr int throughPercentage(){
-    return 150; // in formula there is smth wrong I suppose
-}
 
 constexpr int cellSizeInMeters(){
     return 20;

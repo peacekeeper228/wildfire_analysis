@@ -14,7 +14,7 @@ services:
             POSTGRES_DATABSE: postgis
         volumes:
             - ./enableExt.sql:/docker-entrypoint-initdb.d/enableExt.sql:ro
-            - ./database/testData.tif:/home/database/testData.tif:ro
+            - ./database/:/home/database/
             - ./database/generatedData:/home/database/generatedData
             - ./postgres-data:/var/lib/postgresql/data
 

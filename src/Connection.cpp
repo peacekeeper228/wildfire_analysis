@@ -30,7 +30,7 @@ void Connection::setStatesToStorage()
     };
     for (size_t i = 0; i < numberOfStartingFirepoints(); i++)
     {
-        s.setNewState(cellState::Fire, (rand() % getXArea()), (rand() % getYArea()));
+        this->storage.setNewState(cellState::Fire, (rand() % getXArea()), (rand() % getYArea()));
     };
 };
 

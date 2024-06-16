@@ -6,7 +6,17 @@ Connection::Connection(CellStorage& storage)
 {
     //auto conninfo = conninfo();
     char *conninfo = "dbname=your_db_name user=your_user_name password=your_password host=localhost port=5432";
-    //PGconn *conn = PQconnectdb(conninfo);
+    PGconn *conn = PQconnectdb(conninfo);
+    if (PQstatus(conn) != CONNECTION_OK) {
+        // If not successful, print the error message and finish the connection
+        printf("Error while connecting to the database server: %s\n", PQerrorMessage(conn));
+
+        // Finish the connection
+        PQfinish(conn);
+
+        // Exit the program
+        exit(1);
+    }
 }
 
 void Connection::setStatesToStorage()

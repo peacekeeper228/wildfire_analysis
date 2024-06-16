@@ -12,6 +12,21 @@ find_package(PostgreSQL REQUIRED)
 include_directories (${PostgreSQL_INCLUDE_DIRS})
 link_directories(${PostgreSQL_LIBRARY_DIRS})
 
+ADD_LIBRARY(LibsModule 
+    src/Cell.cpp
+    src/CellStorage.cpp
+    src/Connection.cpp
+    src/Coordinates.cpp
+    src/Fire.cpp
+    src/Wind.cpp
+    src/Math.cpp
+    src/Metric.cpp
+)
+
+target_link_libraries(LibsModule PRIVATE PostgreSQL::PostgreSQL)
+
+ADD_EXECUTABLE(main src/main.cpp)
+target_link_libraries(main LibsModule)
 #include_directories (${PostgreSQL_INCLUDE_DIRS})
 #link_directories(${PostgreSQL_LIBRARY_DIRS})
 
@@ -40,8 +55,8 @@ SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
         "Single Directory for all"
     )
 
-enable_testing()
+# enable_testing()
 include_directories(include)
 
-add_subdirectory( src build/src)
-add_subdirectory( tests build/tests)
+# add_subdirectory( src build/src)
+# add_subdirectory( tests build/tests)

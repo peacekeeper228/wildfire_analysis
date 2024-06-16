@@ -10,10 +10,10 @@
 #include "../include/Math.h"
 #include "../include/Metric.h"
 
-#include <windows.h>
-#include <Psapi.h>
+//#include <windows.h>
+//#include <Psapi.h>
 #include <stdio.h>
-#include <tchar.h>
+//#include <tchar.h>
 
 int main()
 {
@@ -43,9 +43,9 @@ int main()
         }
         // s.printCurrentStates();
     }
-    PROCESS_MEMORY_COUNTERS memCounter;
-    K32GetProcessMemoryInfo(GetCurrentProcess(), &memCounter, sizeof(memCounter));
-    std::cout << "WorkingSetSize " << memCounter.PeakWorkingSetSize << std::endl;
+    // PROCESS_MEMORY_COUNTERS memCounter;
+    // K32GetProcessMemoryInfo(GetCurrentProcess(), &memCounter, sizeof(memCounter));
+    // std::cout << "WorkingSetSize " << memCounter.PeakWorkingSetSize << std::endl;
 
     printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
     s.printCurrentStates();

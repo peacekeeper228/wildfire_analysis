@@ -16,6 +16,7 @@ Connection::Connection(CellStorage& storage)
 
         // Exit the program
         exit(1);
+        
     }
 }
 

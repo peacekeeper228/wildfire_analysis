@@ -5,7 +5,7 @@
 class Connection
 {
 private:
-    int connection;
+    PGconn* connection;
     CellStorage& storage;
 
 public:

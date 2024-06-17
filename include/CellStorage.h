@@ -72,6 +72,8 @@ public:
     /// @brief all current states of cell storage is stored to 'LogOfCurrentStates.txt' in root project directory
     void printCurrentStates();
 
+    std::pair<int, int> getRelativePosition() const;
+
     std::vector<std::pair<int, int>> getRelativeFirePoints() const;
 
     std::vector<std::pair<int, int>> getRelativeBurntPoints() const;

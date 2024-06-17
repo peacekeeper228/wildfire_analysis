@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(wildfire_analysis)
 
-#include_directories(include)
+include_directories(include)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
@@ -27,15 +27,6 @@ target_link_libraries(LibsModule PRIVATE PostgreSQL::PostgreSQL)
 
 ADD_EXECUTABLE(main src/main.cpp)
 target_link_libraries(main LibsModule)
-#include_directories (${PostgreSQL_INCLUDE_DIRS})
-#link_directories(${PostgreSQL_LIBRARY_DIRS})
-
-#add_executable(main src/main.cpp src/Cell.cpp src/CellStorage.cpp src/Connection.cpp src/Coordinates.cpp src/Fire.cpp src/Wind.cpp src/Math.cpp src/Metric.cpp)
-
-#add_subdirectory(tests)
-
-
-#target_link_libraries(main)
 
 SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY
         ${PROJECT_BINARY_DIR}/bin
@@ -55,8 +46,5 @@ SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
         "Single Directory for all"
     )
 
-# enable_testing()
-include_directories(include)
-
-# add_subdirectory( src build/src)
-# add_subdirectory( tests build/tests)
+#include_directories(include)
+#add_executable(main main.cpp Cell.cpp CellStorage.cpp Connection.cpp Coordinates.cpp Fire.cpp Wind.cpp Math.cpp Metric.cpp)

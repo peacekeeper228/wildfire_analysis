@@ -226,3 +226,7 @@ std::vector<std::pair<int, int>> CellStorage::getRelativeBurntPoints() const
     }
     return result;
 }
+std::pair<int, int> CellStorage::getRelativePosition() const
+{
+
+}

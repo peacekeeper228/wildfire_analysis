@@ -17,10 +17,10 @@ CellStorage::CellStorage(Math *formula, int16_t xSize, int16_t ySize)
     : formula(formula), xSize(xSize), ySize(ySize)
 {
     time_after = 0;
-    Terrain.resize(getXArea(), std::vector<std::shared_ptr<cell>>(getYArea()));
-    for (size_t i = 0; i < getXArea(); i++)
+    Terrain.resize(xSize, std::vector<std::shared_ptr<cell>>(ySize));
+    for (size_t i = 0; i < xSize; i++)
     {
-        for (size_t j = 0; j < getYArea(); j++)
+        for (size_t j = 0; j < ySize; j++)
         {
             Terrain[i][j] = std::make_shared<cell>();
         }
@@ -44,26 +44,26 @@ void CellStorage::iterateSquare(int xMin, int yMin, int xMax, int yMax)
 
 void CellStorage::iterate()
 {
-    std::thread thread1(&CellStorage::iterateSquare, this, 0, 0, getXArea() / 2, getYArea() / 2);
-    std::thread thread2(&CellStorage::iterateSquare, this, 0, getYArea() / 2, getXArea() / 2, getYArea());
-    std::thread thread3(&CellStorage::iterateSquare, this, getXArea() / 2, 0, getXArea(), getYArea() / 2);
-    std::thread thread4(&CellStorage::iterateSquare, this, getXArea() / 2, getYArea() / 2, getXArea(), getYArea());
+    std::thread thread1(&CellStorage::iterateSquare, this, 0, 0, xSize / 2, ySize / 2);
+    std::thread thread2(&CellStorage::iterateSquare, this, 0, ySize / 2, xSize / 2, ySize);
+    std::thread thread3(&CellStorage::iterateSquare, this, xSize / 2, 0, xSize, ySize / 2);
+    std::thread thread4(&CellStorage::iterateSquare, this, xSize / 2, ySize / 2, xSize, ySize);
     thread1.join();
     thread2.join();
     thread3.join();
     thread4.join();
     // take 55 % of time iteration
-    // for (int i = 0; i < getXArea(); i++)
+    // for (int i = 0; i < xSize; i++)
     // {
-    //     for (int j = 0; j < getYArea(); j++)
+    //     for (int j = 0; j < ySize; j++)
     //     {
     //         this->iterateCell(i, j);
     //     }
     // };
     // take 45 % of time iteration
-    for (size_t i = 0; i < getXArea(); i++)
+    for (size_t i = 0; i < xSize; i++)
     {
-        for (size_t j = 0; j < getYArea(); j++)
+        for (size_t j = 0; j < ySize; j++)
         {
             Terrain[i][j]->iterate();
         }
@@ -120,7 +120,7 @@ void CellStorage::iterateCell(int i, int j)
 
 bool CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pair<int, int> yRange, std::shared_ptr<const Wind> w)
 {
-    if ((xRange.first < 0) | (xRange.second > getXArea()) | (yRange.first < 0) | (yRange.second > getYArea()))
+    if ((xRange.first < 0) | (xRange.second > xSize) | (yRange.first < 0) | (yRange.second > ySize))
     {
         return false;
         // TODO: что-то надо делать
@@ -146,7 +146,7 @@ cellState CellStorage::getState(int xValue, int yValue) const
 }
 const cell *CellStorage::checkAndGetCell(int xValue, int yValue) const
 {
-    if (xValue >= 0 && xValue < getXArea() && yValue >= 0 && yValue < getYArea())
+    if (xValue >= 0 && xValue < xSize && yValue >= 0 && yValue < ySize)
     {
         return (Terrain[xValue][yValue].get());
     }
@@ -161,9 +161,9 @@ void CellStorage::printCurrentStates()
         std::cout << "Smth goes wrong in writing in file" << std::endl;
     }
 
-    for (size_t i = 0; i < getXArea(); i++)
+    for (size_t i = 0; i < xSize; i++)
     {
-        for (size_t j = 0; j < getYArea(); j++)
+        for (size_t j = 0; j < ySize; j++)
         {
             auto a = std::to_string(static_cast<int>(Terrain[i][j]->getState()));
             outFile << a;
@@ -179,9 +179,9 @@ void CellStorage::saveFiresToJson()
     //     Json::Value event;
     //     event["version"] = "0.0.1";
     //     Json::Value data(Json::arrayValue);
-    //     for (size_t i = 0; i < getXArea(); i++)
+    //     for (size_t i = 0; i < xSize; i++)
     //     {
-    //         for (size_t j = 0; j < getYArea(); j++)
+    //         for (size_t j = 0; j < ySize; j++)
     //         {
     //             auto stateOfCurrentCell = Terrain[i][j]->getState();
     //             if (stateOfCurrentCell == cellState::Burnt || stateOfCurrentCell == cellState::Fire){
@@ -202,9 +202,9 @@ std::vector<std::pair<int, int>> CellStorage::getRelativeFirePoints() const
 {
     // important note that result must be sorted!
     std::vector<std::pair<int, int>> result;
-    for (size_t i = 0; i < getXArea(); i++)
+    for (size_t i = 0; i < xSize; i++)
     {
-        for (size_t j = 0; j < getYArea(); j++)
+        for (size_t j = 0; j < ySize; j++)
         {
             if (Terrain[i][j]->getState() == cellState::Fire)
             {
@@ -219,9 +219,9 @@ std::vector<std::pair<int, int>> CellStorage::getRelativeBurntPoints() const
 {
     // important note that result must be sorted!
     std::vector<std::pair<int, int>> result;
-    for (size_t i = 0; i < getXArea(); i++)
+    for (size_t i = 0; i < xSize; i++)
     {
-        for (size_t j = 0; j < getYArea(); j++)
+        for (size_t j = 0; j < ySize; j++)
         {
             if (Terrain[i][j]->getState() == cellState::Burnt)
             {
@@ -234,10 +234,11 @@ std::vector<std::pair<int, int>> CellStorage::getRelativeBurntPoints() const
 
 CellStorage* CellStorage::CopySquare(int xMin, int yMin, int xMax, int yMax) const
 {
-
+    auto c = new CellStorage(this->formula, xMax-xMin, yMax-yMin);
+    return c;
 }
 
 std::pair<int, int> CellStorage::getRelativePosition() const
 {
-
+    return std::make_pair<int, int>(0,0);
 }

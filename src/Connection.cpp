@@ -66,5 +66,5 @@ void Connection::setStatesToStorage()
 
 Connection::~Connection()
 {
-    PQfinish(connection);
+    // PQfinish(connection);
 }

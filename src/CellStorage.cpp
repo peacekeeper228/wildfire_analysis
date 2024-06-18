@@ -9,7 +9,12 @@
 #include "../include/Coordinates.h"
 
 CellStorage::CellStorage(Math *formula)
-    : formula(formula)
+: CellStorage(formula, getXArea(),getYArea())
+{
+}
+
+CellStorage::CellStorage(Math *formula, int16_t xSize, int16_t ySize)
+    : formula(formula), xSize(xSize), ySize(ySize)
 {
     time_after = 0;
     Terrain.resize(getXArea(), std::vector<std::shared_ptr<cell>>(getYArea()));
@@ -226,6 +231,12 @@ std::vector<std::pair<int, int>> CellStorage::getRelativeBurntPoints() const
     }
     return result;
 }
+
+CellStorage* CellStorage::CopySquare(int xMin, int yMin, int xMax, int yMax) const
+{
+
+}
+
 std::pair<int, int> CellStorage::getRelativePosition() const
 {
 

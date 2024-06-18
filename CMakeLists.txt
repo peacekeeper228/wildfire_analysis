@@ -46,5 +46,7 @@ SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
         "Single Directory for all"
     )
 
+ADD_EXECUTABLE(test tests/test_main.cpp)
+target_link_libraries(test LibsModule)
 #include_directories(include)
 #add_executable(main main.cpp Cell.cpp CellStorage.cpp Connection.cpp Coordinates.cpp Fire.cpp Wind.cpp Math.cpp Metric.cpp)

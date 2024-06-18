@@ -21,7 +21,9 @@ class CellStorage
 private:
     size_t time_after;
     int32_t latitudeMin;
-    int32_t longtitudeMin;  
+    int32_t longtitudeMin; 
+    int16_t xSize;
+    int16_t ySize; 
     std::vector<std::vector<std::shared_ptr<cell>>> Terrain;
     Math* formula;
 
@@ -31,6 +33,7 @@ private:
 
 public:
     CellStorage(Math* formula);
+    CellStorage(Math* formula, int16_t xSize, int16_t ySize);
     ~CellStorage();
 
     /// @brief set state of a particular cell with no checking bound invariant
@@ -80,5 +83,6 @@ public:
 
     void saveFiresToJson();
 
+    CellStorage* CopySquare(int xMin, int yMin, int xMax, int yMax) const;
 
 };

@@ -23,8 +23,9 @@ constexpr int throughPercentage(){
 }
 
 /// @brief by now is from
-/// "A Novel Method of Modeling Grassland Wildfire Dynamics Based on Cellular Automata:
-///     A Case Study in Inner Mongolia, China"
+/// "Aildland fire spread modelling using cellular 
+/// automata: evolution in large-scale spatially heterogeneous environments 
+/// under fire suppression tactics"
 class Math1 final: public Math
 {
 private:

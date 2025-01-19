@@ -4,11 +4,11 @@
 #include <cmath>
 
 constexpr int getXArea(){
-    return 100;
+    return 400;
 }
 
 constexpr int getYArea(){
-    return 100;
+    return 400;
 }
 
 constexpr size_t numberOfSimulations(){

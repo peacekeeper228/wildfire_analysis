@@ -7,6 +7,7 @@
 
 #include "../include/CellStorage.h"
 #include "../include/Coordinates.h"
+#include "CellStorage.h"
 
 CellStorage::CellStorage(Math *formula)
 : CellStorage(formula, getXArea(),getYArea())
@@ -174,6 +175,10 @@ void CellStorage::printCurrentStates()
     outFile.close();
 }
 
+void CellStorage::setAltitudeToCell(int x, int y, int value)
+{
+    Terrain[x][y].get()->setAltitude(value);
+}
 void CellStorage::saveFiresToJson()
 {
     //     Json::Value event;

@@ -1,4 +1,5 @@
 #include "../include/Cell.h"
+#include "Cell.h"
 
 cell::cell()
     : futureState(cellState::NoState), windState(nullptr), fireState(nullptr)
@@ -98,6 +99,15 @@ const Fire *cell::getFireInCell() const
     return this->fireState.get();
 }
 
+void cell::setAltitude(int altitude)
+{
+    this->altitude = altitude;
+}
+
+int cell::getAltitude() const
+{
+    return this->altitude;
+}
 cell::~cell()
 {
     setWindToCell(this, nullptr);

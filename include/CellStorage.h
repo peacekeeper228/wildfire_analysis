@@ -75,6 +75,8 @@ public:
     /// @brief all current states of cell storage is stored to 'LogOfCurrentStates.txt' in root project directory
     void printCurrentStates();
 
+    void setAltitudeToCell(int x, int y, int value);
+
     std::pair<int, int> getRelativePosition() const;
 
     std::vector<std::pair<int, int>> getRelativeFirePoints() const;

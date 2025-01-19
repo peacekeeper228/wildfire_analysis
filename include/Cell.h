@@ -10,7 +10,7 @@ private:
     cellState currentState;
     std::shared_ptr<const Wind> windState;
     std::unique_ptr<Fire> fireState;
-    double altitude; //currently not used
+    double altitude;
     
 public:
     cell();
@@ -34,6 +34,9 @@ public:
 
     /// @brief possible state becomes present, often is called during iteration
     void setNewState();
+
+    void setAltitude(int altitude);
+    int getAltitude() const;
     ~cell();
 
     const Fire* getFireInCell() const;

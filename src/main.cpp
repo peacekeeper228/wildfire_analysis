@@ -22,6 +22,8 @@ int main()
 
     Math1 formula = Math1();
     CellStorage s = CellStorage(&formula);
+    s.latitudeMin = 10.0;
+    s.longtitudeMin = 30.0;
     auto xRange = std::make_pair<int, int>(0, getXArea());
     auto yRange = std::make_pair<int, int>(0, getYArea()/2);
     auto w = std::make_shared<const Wind>(directions::North, float(1.0));

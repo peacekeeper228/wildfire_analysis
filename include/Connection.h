@@ -8,6 +8,7 @@ private:
     PGconn* connection;
     CellStorage& storage;
 
+    PGresult* run_query(const char*) const;
 public:
     Connection(CellStorage& storage);
     void setStatesToStorage();

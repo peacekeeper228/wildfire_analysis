@@ -1,5 +1,4 @@
 #include "../include/Cell.h"
-#include "Cell.h"
 
 cell::cell()
     : futureState(cellState::NoState), windState(nullptr), fireState(nullptr)

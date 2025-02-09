@@ -1,10 +1,8 @@
 #include <format>
 #include "../include/Connection.h"
 #include "../include/Properties.h"
-#include "Connection.h"
 
-Connection::Connection(CellStorage &storage)
-    : storage(storage)
+Connection::Connection()
 {
     std::string conninfo = "dbname=postgis user=postgis password=postgis host=localhost port=5431";
     connection = PQconnectdb(conninfo.c_str());
@@ -31,22 +29,20 @@ PGresult* Connection::run_query(const char * formatted_dem_query) const
     return res;
 }
 
-void Connection::setStatesToStorage()
+void Connection::setDemToStorage(CellStorage& storage)
 {
-    std::string polygon = "ST_GeomFromText('POLYGON((36.7 55.3, 36.75 55.3, 36.75 55.35, 36.7 55.35, 36.7 55.3))', 4326)";
-    
     const std::string formatted_dem_query = std::format("\
-    SELECT x, y, val\
+    SELECT x-1, y-1, val\
     FROM(\
         SELECT\
             q.*\
         FROM\
-            dem r,\
+            (SELECT ST_Rescale(rast, 0.0005, 0.0005) as rast from dem) r,\
             LATERAL ST_PixelAsCentroids(ST_Clip(r.rast, {}), 1) as q\
         WHERE \
             ST_Intersects(r.rast, {})\
             ) as t\
-    WHERE val > 0;", polygon, polygon);
+    WHERE val > 0;", analyzedPolygon(), analyzedPolygon());
 
     printf("Query started: %d\n", 1);
     PGresult *res = this->run_query(formatted_dem_query.c_str());
@@ -54,50 +50,76 @@ void Connection::setStatesToStorage()
     printf("dem %d\t", PQntuples(res));
     for (int i = 0; i < PQntuples(res); i++)
     {
-        auto coordPairs = this->storage.getRelativePosition();
-        auto cell = this->storage.checkAndGetCell(atoi(PQgetvalue(res, i, 0)), atoi(PQgetvalue(res, i, 1)));
-        this->storage.setAltitudeToCell(
+        auto coordPairs = storage.getRelativePosition();
+        auto cell = storage.checkAndGetCell(atoi(PQgetvalue(res, i, 0)), atoi(PQgetvalue(res, i, 1)));
+        storage.setAltitudeToCell(
             atoi(PQgetvalue(res, i, 0)),
             atoi(PQgetvalue(res, i, 1)),
             atoi(PQgetvalue(res, i, 2)));
     }
+}
 
+void Connection::setBiomassToStorage(CellStorage& storage)
+{
     const std::string formatted_biomass_query = std::format("\
-    SELECT x, y, val\
+    SELECT x-1, y-1, val\
     FROM(\
         SELECT\
             q.*\
         FROM\
-            biomass r,\
+            (SELECT ST_Rescale(rast, 0.0005, 0.00025) as rast from biomass) r,\
             LATERAL ST_PixelAsCentroids(ST_Clip(r.rast, {}), 1) as q\
         WHERE \
             ST_Intersects(r.rast, {})\
             ) as t\
-    WHERE val > 0;", polygon, polygon);
-    res = this->run_query(formatted_biomass_query.c_str());
+    WHERE val > 80 and y < {};", analyzedPolygon(), analyzedPolygon(), getYArea());
+    PGresult *res = this->run_query(formatted_biomass_query.c_str());
     printf("biomass %d\t", PQntuples(res));
     for (int i = 0; i < PQntuples(res); i++)
     {
         double_t k = atof(PQgetvalue(res, i, 1));
-        this->storage.setNewState(cellState::Tree,
+        storage.setNewState(cellState::Tree,
                                   atoi(PQgetvalue(res, i, 0)),
                                   atoi(PQgetvalue(res, i, 1)));
     };
+}
 
+void Connection::setFireToStorage(CellStorage& storage)
+{
     const std::string formatted_fire_query = std::format("\
     SELECT brightness, ST_X(geom), ST_Y(geom)\
     FROM FIRE f\
-    WHERE ST_Intersects(f.geom, {})", polygon);
-    res = this->run_query(formatted_fire_query.c_str());
+    WHERE ST_Intersects(f.geom, {})", analyzedPolygon());
+    PGresult *res = this->run_query(formatted_fire_query.c_str());
     printf("%d\t", PQntuples(res));
     for (int i = 0; i < PQntuples(res); i++)
     {
         double_t k = atof(PQgetvalue(res, i, 1));
-        this->storage.setNewState(cellState::Fire,
-                                  (atof(PQgetvalue(res, i, 1)) - this->storage.latitudeMin) * 10,
-                                  (atof(PQgetvalue(res, i, 2)) - this->storage.longtitudeMin) * 10);
+        storage.setNewState(cellState::Fire,
+                                  (atof(PQgetvalue(res, i, 1)) - storage.latitudeMin) * 2,
+                                  (atof(PQgetvalue(res, i, 2)) - storage.longtitudeMin) * 2);
     };
+}
+
+void Connection::setStatesToStorage(CellStorage& storage)
+{
+    this->setDemToStorage(storage);
+    this->setBiomassToStorage(storage);
+    this->setFireToStorage(storage);
 };
+
+std::pair<int, int> Connection::calculateStorageSize(){
+    const std::string formatted_fire_query = std::format("\
+    SELECT \
+        max(x)-1, max(y)-1 \
+    FROM \
+		(SELECT ST_Rescale(rast, 0.0001, 0.0001) as rast from dem) as ra,\
+        LATERAL ST_PixelAsPoints(ST_Clip(ra.rast, {}), 1) as q \
+    WHERE  \
+        ST_Intersects(ra.rast, {})", analyzedPolygon(), analyzedPolygon());
+    PGresult *res = this->run_query(formatted_fire_query.c_str());
+    return std::make_pair<int, int>(atoi(PQgetvalue(res, 0, 0)), atoi(PQgetvalue(res, 0, 1)));
+}
 
 Connection::~Connection()
 {

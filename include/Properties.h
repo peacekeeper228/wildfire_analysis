@@ -2,17 +2,20 @@
 #include <cstddef>
 #include <cstdint>
 #include <cmath>
+#include <string>
+
+
 
 constexpr int getXArea(){
-    return 400;
+    return 110;
 }
 
 constexpr int getYArea(){
-    return 400;
+    return 110;
 }
 
 constexpr size_t numberOfSimulations(){
-    return 50;
+    return 100;
 }
 
 constexpr size_t numberOfStartingFirepoints(){
@@ -50,6 +53,10 @@ constexpr int cellSizeInMeters(){
 
 constexpr int minutesPerIteration(){
     return 10;
+}
+
+constexpr std::string analyzedPolygon(){
+    return "ST_GeomFromText('POLYGON((36.7 55.3, 36.75 55.3, 36.75 55.35, 36.7 55.35, 36.7 55.3))', 4326)";
 }
 
 constexpr double pi() { return std::atan(1) * 4; }

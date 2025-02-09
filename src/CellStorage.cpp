@@ -7,7 +7,6 @@
 
 #include "../include/CellStorage.h"
 #include "../include/Coordinates.h"
-#include "CellStorage.h"
 
 CellStorage::CellStorage(Math *formula)
 : CellStorage(formula, getXArea(),getYArea())
@@ -137,7 +136,7 @@ bool CellStorage::setWindToArea(const std::pair<int, int> xRange, const std::pai
     return true;
 }
 void CellStorage::setNewState(const cellState &state, int xValue, int yValue)
-{
+{  
     Terrain[xValue][yValue]->setState(state);
 }
 

@@ -6,11 +6,16 @@ class Connection
 {
 private:
     PGconn* connection;
-    CellStorage& storage;
+    ;
 
     PGresult* run_query(const char*) const;
+    void setDemToStorage(CellStorage& storage);
+    void setBiomassToStorage(CellStorage& storage);
+    void setFireToStorage(CellStorage& storage);
+    
 public:
-    Connection(CellStorage& storage);
-    void setStatesToStorage();
+    Connection();
+    void setStatesToStorage(CellStorage& storage);
+    std::pair<int, int> calculateStorageSize();
     ~Connection();
 };

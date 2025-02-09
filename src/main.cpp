@@ -18,8 +18,9 @@
 int main()
 {
 
-    printf("Size of cell from %.2lld to %.2lld bytes \n", sizeof(cell), sizeof(cell) + sizeof(Fire) + sizeof(Wind));
+    printf("Size of cell from %.2ld to %.2ld bytes \n", sizeof(cell), sizeof(cell) + sizeof(Fire) + sizeof(Wind));
 
+    Connection c = Connection();
     Math1 formula = Math1();
     CellStorage s = CellStorage(&formula);
     s.latitudeMin = 10.0;
@@ -32,8 +33,8 @@ int main()
     yRange = std::make_pair<int, int>(getYArea()/2, getYArea());
     w = std::make_shared<const Wind>(directions::SouthEast, float(2.0));
     s.setWindToArea(xRange, yRange, w);
-    Connection c = Connection(s);
-    c.setStatesToStorage();
+    
+    c.setStatesToStorage(s);
 
     clock_t tStart = clock();
     for (size_t i = 0; i < numberOfSimulations(); i++)
@@ -66,5 +67,6 @@ int main()
     m->calculateVariables(s, fired, burnt);
     std::cout <<"Simpson metric is equal to: " <<  m->compute() << std::endl;
     printf("Time taken: %.2fs\n", (double)(clock() - tStartMetrics) / CLOCKS_PER_SEC);
+    // s.printCurrentStates();
     return 0;
 }

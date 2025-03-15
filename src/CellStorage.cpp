@@ -97,7 +97,7 @@ void CellStorage::iterateCell(int i, int j)
             double fireKoeff = 0;
             if (nearestCell->getState() == cellState::Tree)
             {
-                if (formula->willSpread(iteratedCell, analyzedDirection))
+                if (formula->willSpread(iteratedCell, analyzedDirection, iteratedCell->getAltitude() - nearestCell->getAltitude()))
                 {
                     setNewState(cellState::Fire, i + x.first, j + x.second);
                 };
@@ -109,7 +109,7 @@ void CellStorage::iterateCell(int i, int j)
             };
             if ((throughCell->getState() == cellState::Tree) && (nearestCell->getState() != cellState::Tree) && ((nearestCell->getState() != cellState::Fire)))
             {
-                if (formula->willSpreadThroughOne(iteratedCell, analyzedDirection))
+                if (formula->willSpreadThroughOne(iteratedCell, analyzedDirection, iteratedCell->getAltitude() - throughCell->getAltitude()))
                 {
                     setNewState(cellState::Fire, i + 2 * x.first, j + 2 * x.second);
                 };

@@ -21,6 +21,7 @@ ADD_LIBRARY(LibsModule
     src/Wind.cpp
     src/Math.cpp
     src/Metric.cpp
+    src/ProfilingDecorator.cpp
 )
 
 target_link_libraries(LibsModule PRIVATE PostgreSQL::PostgreSQL)

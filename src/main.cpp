@@ -9,6 +9,7 @@
 #include "../include/Connection.h"
 #include "../include/Math.h"
 #include "../include/Metric.h"
+#include "../include/ProfilingDecorator.h"
 
 //#include <windows.h>
 //#include <Psapi.h>
@@ -22,7 +23,8 @@ int main()
 
     Connection c = Connection();
     Math1 formula = Math1();
-    CellStorage s = CellStorage(&formula);
+    auto formulaDecorator = ProfilingDecorator(&formula);
+    CellStorage s = CellStorage(&formulaDecorator);
     s.latitudeMin = 10.0;
     s.longtitudeMin = 30.0;
     auto xRange = std::make_pair<int, int>(0, getXArea());
@@ -67,6 +69,5 @@ int main()
     m->calculateVariables(s, fired, burnt);
     std::cout <<"Simpson metric is equal to: " <<  m->compute() << std::endl;
     printf("Time taken: %.2fs\n", (double)(clock() - tStartMetrics) / CLOCKS_PER_SEC);
-    // s.printCurrentStates();
     return 0;
 }

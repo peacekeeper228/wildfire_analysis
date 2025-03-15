@@ -100,6 +100,15 @@ void test_Wind(){
     assert(fabs(w.CalculateWindKoef((directions::North)) - 0.63147451510646979) < tolerance());
 }
 
+void test_Math(){
+    Math1 formula = Math1();
+
+    cell c = cell();
+    c.setState(cellState::Fire);
+    c.setAltitude(100);
+    assert(formula.willSpread(&c, directions::East, 1) == false);
+}
+
 void testFire(){
     Fire fire = Fire();
     assert(fire.getState() == FireState::Cursory);
@@ -167,6 +176,8 @@ int main()
     std::cout << "fire in cell tested successfully" << std::endl;
     testMetrics();
     std::cout << "metrics tested successfully" << std::endl;
+    test_Math();
+    std::cout << "math tested successfully" << std::endl;
     std::cout << "all tests passed" << std::endl;
     return 0;
 }

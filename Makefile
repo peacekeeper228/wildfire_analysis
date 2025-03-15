@@ -5,7 +5,7 @@ MAINFILE := src/main.cpp
 TESTMAINFILE := tests/test_main.cpp
 TARGET := bin/main
 
-SRCS := src/Cell.cpp src/CellStorage.cpp src/Coordinates.cpp src/Wind.cpp src/Fire.cpp src/Connection.cpp src/Math.cpp src/Metric.cpp
+SRCS := src/Cell.cpp src/CellStorage.cpp src/Coordinates.cpp src/Wind.cpp src/Fire.cpp src/Connection.cpp src/Math.cpp src/Metric.cpp src/ProfilingDecorator.cpp
 
 compile_run: clean compile run
 

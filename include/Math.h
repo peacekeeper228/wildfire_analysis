@@ -9,8 +9,8 @@ public:
     Math();
     //virtual double calculateKoef(float windSpeed, double slopeAngleRad) const = 0;
     //virtual double calculateWindKoef(const cell* c, directions InvestigatedDirection) const = 0;
-    virtual bool willSpread(const cell* c, directions InvestigatedDirection) const = 0;
-    virtual bool willSpreadThroughOne(const cell* c, directions InvestigatedDirection) const = 0;
+    virtual bool willSpread(const cell* c, directions InvestigatedDirection, int altitudeDifference) const = 0;
+    virtual bool willSpreadThroughOne(const cell* c, directions InvestigatedDirection, int altitudeDifference) const = 0;
     ~Math();
 };
 
@@ -26,14 +26,15 @@ constexpr int throughPercentage(){
 /// "Aildland fire spread modelling using cellular 
 /// automata: evolution in large-scale spatially heterogeneous environments 
 /// under fire suppression tactics"
-class Math1 final: public Math
+class Math1 final:  public Math
 {
 private:
     double calculateKoef(float windSpeed, double slopeAngleRad) const;
     double calculateWindKoef(const cell* c, directions InvestigatedDirection) const;
+    double calculateGroundSlopeKoef(directions InvestigatedDirection, int altitudeDifference) const;
 public:
-    bool willSpread(const cell* c, directions InvestigatedDirection) const override;
-    bool willSpreadThroughOne(const cell* c, directions InvestigatedDirection) const override;
+    bool willSpread(const cell* c, directions InvestigatedDirection, int altitudeDifference) const override;
+    bool willSpreadThroughOne(const cell* c, directions InvestigatedDirection, int altitudeDifference) const override;
     Math1() = default;
     ~Math1() = default;
 };

@@ -19,13 +19,13 @@ inline double NumberOfCellAffectedInParticularDirection(double koeff, float fire
 class CellStorage
 {
 private:
-    size_t time_after;
-    int16_t xSize;
-    int16_t ySize; 
-    std::vector<std::vector<std::shared_ptr<cell>>> Terrain;
-    Math* formula;
+    size_t time_after_;
+    int16_t x_size_;
+    int16_t y_size_; 
+    std::vector<std::vector<std::shared_ptr<cell>>> terrain_;
+    Math* formula_;
 
-    //cell Terrain[getXArea()][getYArea()];
+    //cell terrain_[getXArea()][getYArea()];
 
     void iterateSquare(int xMin, int yMin, int xMax, int yMax);
 
@@ -35,7 +35,7 @@ public:
     double_t longtitudeMin;
 
     CellStorage(Math* formula);
-    CellStorage(Math* formula, int16_t xSize, int16_t ySize);
+    CellStorage(Math* formula, int16_t x_size, int16_t y_size);
     ~CellStorage();
 
     /// @brief set state of a particular cell with no checking bound invariant

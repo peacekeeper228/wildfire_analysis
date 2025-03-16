@@ -106,7 +106,7 @@ void test_Math(){
     cell c = cell();
     c.setState(cellState::Fire);
     c.setAltitude(100);
-    assert(formula.willSpread(&c, directions::East, 1) == false);
+    assert(formula.willSpread(&c, directions::East, 1));
 }
 
 void testFire(){

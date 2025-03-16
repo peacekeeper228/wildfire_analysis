@@ -6,11 +6,11 @@
 class cell
 {
 private:
-    cellState futureState;
-    cellState currentState;
-    std::shared_ptr<const Wind> windState;
-    std::unique_ptr<Fire> fireState;
-    double altitude;
+    cellState future_state_;
+    cellState current_state_;
+    std::shared_ptr<const Wind> wind_state_;
+    std::unique_ptr<Fire> fire_state_;
+    double altitude_;
     
 public:
     cell();

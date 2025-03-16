@@ -5,24 +5,24 @@
 Connection::Connection()
 {
     std::string conninfo = "dbname=postgis user=postgis password=postgis host=localhost port=5431";
-    connection = PQconnectdb(conninfo.c_str());
-    if (PQstatus(connection) != CONNECTION_OK)
+    connection_ = PQconnectdb(conninfo.c_str());
+    if (PQstatus(connection_) != CONNECTION_OK)
     {
-        printf("Error while connecting to the database server: %s\n", PQerrorMessage(connection));
-        PQfinish(connection);
+        printf("Error while connecting to the database server: %s\n", PQerrorMessage(connection_));
+        PQfinish(connection_);
         exit(1);
     };
     printf("Connection Established\n");
 }
 
-PGresult* Connection::run_query(const char * formatted_dem_query) const
+PGresult* Connection::runQuery(const char * formatted_dem_query) const
 {
-    PGresult *res = PQexec(connection, formatted_dem_query);
+    PGresult *res = PQexec(connection_, formatted_dem_query);
     ExecStatusType resStatus = PQresultStatus(res);
     printf("Query Status: %s\n", PQresStatus(resStatus));
     if (resStatus != PGRES_TUPLES_OK)
     {
-        printf("Error while executing the query: %s\n", PQerrorMessage(connection));
+        printf("Error while executing the query: %s\n", PQerrorMessage(connection_));
         PQclear(res);
         exit(1);
     }
@@ -45,7 +45,7 @@ void Connection::setDemToStorage(CellStorage& storage)
     WHERE val > 0;", analyzedPolygon(), analyzedPolygon());
 
     printf("Query started: %d\n", 1);
-    PGresult *res = this->run_query(formatted_dem_query.c_str());
+    PGresult *res = this->runQuery(formatted_dem_query.c_str());
     
     printf("dem %d\t", PQntuples(res));
     for (int i = 0; i < PQntuples(res); i++)
@@ -73,7 +73,7 @@ void Connection::setBiomassToStorage(CellStorage& storage)
             ST_Intersects(r.rast, {})\
             ) as t\
     WHERE val > 80 and y < {};", analyzedPolygon(), analyzedPolygon(), getYArea());
-    PGresult *res = this->run_query(formatted_biomass_query.c_str());
+    PGresult *res = this->runQuery(formatted_biomass_query.c_str());
     printf("biomass %d\t", PQntuples(res));
     for (int i = 0; i < PQntuples(res); i++)
     {
@@ -90,7 +90,7 @@ void Connection::setFireToStorage(CellStorage& storage)
     SELECT brightness, ST_X(geom), ST_Y(geom)\
     FROM FIRE f\
     WHERE ST_Intersects(f.geom, {})", analyzedPolygon());
-    PGresult *res = this->run_query(formatted_fire_query.c_str());
+    PGresult *res = this->runQuery(formatted_fire_query.c_str());
     printf("%d\t", PQntuples(res));
     for (int i = 0; i < PQntuples(res); i++)
     {
@@ -117,7 +117,7 @@ std::pair<int, int> Connection::calculateStorageSize(){
         LATERAL ST_PixelAsPoints(ST_Clip(ra.rast, {}), 1) as q \
     WHERE  \
         ST_Intersects(ra.rast, {})", analyzedPolygon(), analyzedPolygon());
-    PGresult *res = this->run_query(formatted_fire_query.c_str());
+    PGresult *res = this->runQuery(formatted_fire_query.c_str());
     return std::make_pair<int, int>(atoi(PQgetvalue(res, 0, 0)), atoi(PQgetvalue(res, 0, 1)));
 }
 
@@ -125,5 +125,5 @@ Connection::~Connection()
 {
     // PQclear(result);
     // PQfinish(conn);
-    PQfinish(connection);
+    PQfinish(connection_);
 }

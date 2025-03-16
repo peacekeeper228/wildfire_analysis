@@ -5,10 +5,10 @@
 class Connection
 {
 private:
-    PGconn* connection;
+    PGconn* connection_;
     ;
 
-    PGresult* run_query(const char*) const;
+    PGresult* runQuery(const char*) const;
     void setDemToStorage(CellStorage& storage);
     void setBiomassToStorage(CellStorage& storage);
     void setFireToStorage(CellStorage& storage);

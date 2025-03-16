@@ -3,28 +3,28 @@
 #include <iostream>
 
 ProfilingDecorator::ProfilingDecorator(Math *formula)
-    : primary_class(formula), counter(0), positiveCounter(0)
+    : primary_class_(formula), counter_(0), positive_counter_(0)
 {
 }
 
 bool ProfilingDecorator::willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
 {
-    auto result = this->primary_class->willSpread(c, InvestigatedDirection, altitudeDifference);
-    this->counter++;
+    auto result = this->primary_class_->willSpread(c, InvestigatedDirection, altitudeDifference);
+    this->counter_++;
     if (result)
     {
-        this->positiveCounter++;
+        this->positive_counter_++;
     };
     return result;
 }
 
 bool ProfilingDecorator::willSpreadThroughOne(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
 {
-    return this->primary_class->willSpread(c, InvestigatedDirection, altitudeDifference);
+    return this->primary_class_->willSpread(c, InvestigatedDirection, altitudeDifference);
 }
 
 ProfilingDecorator::~ProfilingDecorator()
 {
-    std::cout << "Overall: " << this->counter << " Positive: " << this->positiveCounter << std::endl;
-    primary_class->~Math();
+    std::cout << "Overall: " << this->counter_ << " Positive: " << this->positive_counter_ << std::endl;
+    primary_class_->~Math();
 }

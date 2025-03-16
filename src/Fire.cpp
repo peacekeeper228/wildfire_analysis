@@ -1,39 +1,39 @@
 #include "../include/Fire.h"
 
 Fire::Fire()
-    : fireLifetime(0), state(FireState::Cursory)
+    : fire_lifetime_(0), state_(FireState::Cursory)
 {
 }
 
 FireState Fire::getState() const
 {
-    return this->state;
+    return this->state_;
 }
 void Fire::iterate()
 {
-    fireLifetime++;
-    if (fireLifetime == 1)
+    fire_lifetime_++;
+    if (fire_lifetime_ == 1)
     {
-        this->state = FireState::FullyDeveloped;
+        this->state_ = FireState::FullyDeveloped;
     }
-    else if (fireLifetime == 4)
+    else if (fire_lifetime_ == 4)
     {
-        this->state = FireState::Declining;
+        this->state_ = FireState::Declining;
     }
-    else if (fireLifetime == 5)
+    else if (fire_lifetime_ == 5)
     {
-        this->state = FireState::Ended;
+        this->state_ = FireState::Ended;
     };
     return;
 }
 bool Fire::fireEnded() const
 {
-    return fireLifetime >= 5;
+    return fire_lifetime_ >= 5;
 }
 
 bool Fire::canSpread() const
 {
-    return this->state == FireState::FullyDeveloped;
+    return this->state_ == FireState::FullyDeveloped;
 }
 Fire::~Fire()
 {

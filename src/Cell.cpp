@@ -1,22 +1,22 @@
 #include "../include/Cell.h"
 
 cell::cell()
-    : futureState(cellState::NoState), windState(nullptr), fireState(nullptr)
+    : future_state_(cellState::NoState), wind_state_(nullptr), fire_state_(nullptr)
 {
-    this->currentState = cellState::Empty;
+    this->current_state_ = cellState::Empty;
 }
 
 cell::cell(cell &&other)
-    : futureState(cellState::NoState), currentState(other.currentState), windState(other.windState)
+    : future_state_(cellState::NoState), current_state_(other.current_state_), wind_state_(other.wind_state_)
 {
-    this->fireState = std::move(other.fireState);
+    this->fire_state_ = std::move(other.fire_state_);
 }
 
 cell &cell::operator=(cell &&other)
 {
-    this->currentState = other.currentState;
-    this->windState = other.windState;
-    this->fireState = std::move(other.fireState);
+    this->current_state_ = other.current_state_;
+    this->wind_state_ = other.wind_state_;
+    this->fire_state_ = std::move(other.fire_state_);
     return *this;
 }
 
@@ -27,16 +27,16 @@ void setWindToCell(cell *changingCell, std::shared_ptr<const Wind> assigningWind
 
 void cell::setWind(std::shared_ptr<const Wind> wind)
 {
-    this->windState = wind;
+    this->wind_state_ = wind;
 }
 
 std::shared_ptr<const Wind> cell::getWind() const
 {
-    return this->windState;
+    return this->wind_state_;
 }
 cellState cell::getState() const
 {
-    return this->currentState;
+    return this->current_state_;
 }
 
 void cell::setState(const cellState &state)
@@ -47,17 +47,17 @@ void cell::setState(const cellState &state)
     }
     else
     {
-        this->currentState = state;
+        this->current_state_ = state;
     };
 }
 void cell::ignite()
 {
-    if (currentState == cellState::Tree)
+    if (current_state_ == cellState::Tree)
     {
-        futureState = cellState::Fire;
-        if (this->fireState == nullptr)
+        future_state_ = cellState::Fire;
+        if (this->fire_state_ == nullptr)
         {
-            this->fireState = std::make_unique<Fire>();
+            this->fire_state_ = std::make_unique<Fire>();
         }
     }
 }
@@ -66,14 +66,14 @@ void cell::iterate()
 {
 
     // cause for now only in fire there can be dynamic changes. Forest is not growing))))
-    if ((currentState == cellState::Fire))
+    if ((current_state_ == cellState::Fire))
     {
 
-        fireState->iterate();
-        if (fireState->fireEnded())
+        fire_state_->iterate();
+        if (fire_state_->fireEnded())
         {
-            fireState = nullptr;
-            futureState = cellState::Burnt;
+            fire_state_ = nullptr;
+            future_state_ = cellState::Burnt;
         };
     };
 
@@ -82,11 +82,11 @@ void cell::iterate()
 
 void cell::setNewState()
 {
-    if ((futureState != cellState::NoState) & (futureState != currentState))
+    if ((future_state_ != cellState::NoState) & (future_state_ != current_state_))
     {
-        currentState = futureState;
-        futureState = cellState::NoState;
-        if (currentState == cellState::Fire)
+        current_state_ = future_state_;
+        future_state_ = cellState::NoState;
+        if (current_state_ == cellState::Fire)
         {
             ignite();
         }
@@ -95,17 +95,17 @@ void cell::setNewState()
 
 const Fire *cell::getFireInCell() const
 {
-    return this->fireState.get();
+    return this->fire_state_.get();
 }
 
 void cell::setAltitude(int altitude)
 {
-    this->altitude = altitude;
+    this->altitude_ = altitude;
 }
 
 int cell::getAltitude() const
 {
-    return this->altitude;
+    return this->altitude_;
 }
 cell::~cell()
 {

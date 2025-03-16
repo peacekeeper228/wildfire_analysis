@@ -12,8 +12,8 @@ enum class FireState
 class Fire
 {
 private:
-    std::size_t fireLifetime;
-    FireState state;
+    std::size_t fire_lifetime_;
+    FireState state_;
 public:
     Fire();
     FireState getState() const;

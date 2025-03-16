@@ -4,9 +4,8 @@
 class Wind
 {
 private:
-    directions direction;
-    float windSpeed;
-    uint64_t numberOfAssignedCells;
+    directions direction_;
+    float wind_speed_;
 public:
     Wind(directions initialDirection, float w);
     ~Wind();

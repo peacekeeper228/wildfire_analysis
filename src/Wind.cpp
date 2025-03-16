@@ -4,18 +4,18 @@
 constexpr double pi() { return std::atan(1) * 4; }
 
 Wind::Wind(directions initialDirection, float w)
-    : direction(initialDirection), windSpeed(w), numberOfAssignedCells(0)
+    : direction_(initialDirection), wind_speed_(w)
 {
 }
 
 directions Wind::getWindDirection() const
 {
-    return this->direction;
+    return this->direction_;
 }
 
 float Wind::getWindSpeed() const
 {
-    return this->windSpeed;
+    return this->wind_speed_;
 }
 
 Wind::~Wind()
@@ -31,11 +31,11 @@ double Wind::CalculateWindKoef(directions InvestigatedDirection) const
 
     */
     float angleRadians = this->angleBetweenDirections(InvestigatedDirection) * pi() / 180;
-    return std::exp(this->windSpeed * (cos(cos(angleRadians)) - 1));
+    return std::exp(this->wind_speed_ * (cos(cos(angleRadians)) - 1));
 }
 int Wind::angleBetweenDirections(directions d) const
 {
-    int differenceInDirections = abs(static_cast<int>(d) - static_cast<int>(this->direction));
+    int differenceInDirections = abs(static_cast<int>(d) - static_cast<int>(this->direction_));
     if (differenceInDirections > 4)
     {
         return (8 - differenceInDirections) * numberOfDegreesPerDirection();

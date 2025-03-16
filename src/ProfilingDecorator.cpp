@@ -10,6 +10,8 @@ ProfilingDecorator::ProfilingDecorator(Math *formula)
 bool ProfilingDecorator::willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
 {
     auto result = this->primary_class_->willSpread(c, InvestigatedDirection, altitudeDifference);
+    metaData key = {InvestigatedDirection, altitudeDifference, c->getWind().get()->getWindDirection(), c->getWind().get()->getWindSpeed()};
+    results_[key]++;
     this->counter_++;
     if (result)
     {
@@ -20,11 +22,30 @@ bool ProfilingDecorator::willSpread(const cell *c, directions InvestigatedDirect
 
 bool ProfilingDecorator::willSpreadThroughOne(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
 {
-    return this->primary_class_->willSpread(c, InvestigatedDirection, altitudeDifference);
+    return this->primary_class_->willSpreadThroughOne(c, InvestigatedDirection, altitudeDifference);
 }
 
 ProfilingDecorator::~ProfilingDecorator()
 {
     std::cout << "Overall: " << this->counter_ << " Positive: " << this->positive_counter_ << std::endl;
+    
+    std::map<int,int> result_distribution;
+    printf("Results: altitude_difference_, wind_direction_, wind_speed_, investigated_direction_, number_of_calculations\n");
+    for (const auto &pair : results_)
+    {
+        printf("%d;%d;%2.2f;%d;%d \n",
+               pair.first.altitude_difference_,
+               static_cast<int>(pair.first.wind_direction_),
+               pair.first.wind_speed_,
+               static_cast<int>(pair.first.investigated_direction_),
+               pair.second);
+        result_distribution[pair.second]++;
+    };
+    printf("Distribution\n");
+    for (auto &&i : result_distribution)
+    {
+        printf("%d;%d\n", i.first, i.second);
+    };
+    
     primary_class_->~Math();
 }

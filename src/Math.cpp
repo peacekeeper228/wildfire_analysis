@@ -1,6 +1,7 @@
 #include "../include/Math.h"
 #include "../include/Properties.h"
 #include <cmath>
+#include "Math.h"
 
 Math::Math(/* args */)
 {
@@ -24,7 +25,9 @@ double Math1::calculateWindKoef(const cell *c, directions InvestigatedDirection)
         return double(1);
     }
     float angleRadians = wind->angleBetweenDirections(InvestigatedDirection) * pi() / 180;
-    return std::exp(wind->getWindSpeed() * (cos(cos(angleRadians)) - 1));
+    double result = std::exp(wind->getWindSpeed() * (cos(cos(angleRadians)) - 1));
+    result_wind_[result]++;
+    return result;
 }
 
 double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int altitudeDifference) const
@@ -39,14 +42,18 @@ double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int alt
     {
         coef = atan2(static_cast<double>(altitudeDifference), static_cast<double>(cellSizeInMeters() * sqrt(2.0)));
     }
-    return std::exp(0.5 * coef);
+    double result = std::exp(0.5 * coef);
+    result_slope_[result]++;
+    return result;
 }
 
 bool Math1::willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
 {
     double fireKoeff = calculateWindKoef(c, InvestigatedDirection);
     double slopeKoeff = calculateGroundSlopeKoef(InvestigatedDirection, altitudeDifference);
-    return int(fireKoeff * slopeKoeff * 100) + (rand() % 100) > ignitionPercentage();
+    int result = fireKoeff * slopeKoeff * 100;
+    result_overall[result]++;
+    return result + (rand() % 100) > ignitionPercentage();
 }
 
 bool Math1::willSpreadThroughOne(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
@@ -54,4 +61,23 @@ bool Math1::willSpreadThroughOne(const cell *c, directions InvestigatedDirection
     double fireKoeff = calculateWindKoef(c, InvestigatedDirection);
     double slopeKoeff = calculateGroundSlopeKoef(InvestigatedDirection, altitudeDifference);
     return int(fireKoeff * slopeKoeff * 100) + (rand() % 30) > throughPercentage();
+}
+
+Math1::~Math1()
+{
+    printf("slope profiling\n");   
+    for (auto &&i : result_slope_)
+    {
+        printf("%2.2f;%d\n",i.first, i.second);   
+    }
+    printf("wind profiling\n");   
+    for (auto &&i : result_wind_)
+    {
+        printf("%2.2f;%d\n",i.first, i.second);   
+    }
+    printf("overall profiling\n");   
+    for (auto &&i : result_overall)
+    {
+        printf("%d;%d\n",i.first, i.second);   
+    }
 }

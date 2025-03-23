@@ -39,6 +39,7 @@ private:
     mutable int positive_counter_;
     mutable int counter_;
     mutable std::unordered_map<metaData, int> results_;
+    mutable std::unordered_map<directions, int> results_directions_;
 
 public:
     ProfilingDecorator(Math *formula);

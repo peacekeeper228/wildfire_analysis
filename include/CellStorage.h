@@ -31,9 +31,6 @@ private:
 
 public:
 
-    double_t latitudeMin;
-    double_t longtitudeMin;
-
     CellStorage(Math* formula);
     CellStorage(Math* formula, int16_t x_size, int16_t y_size);
     ~CellStorage();

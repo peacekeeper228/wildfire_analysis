@@ -37,12 +37,12 @@ void Connection::setDemToStorage(CellStorage& storage)
         SELECT\
             q.*\
         FROM\
-            (SELECT ST_Rescale(rast, 0.0005, 0.0005) as rast from dem) r,\
+            (SELECT ST_Rescale(rast, 0.00025, 0.00025) as rast from dem_s) r,\
             LATERAL ST_PixelAsCentroids(ST_Clip(r.rast, {}), 1) as q\
         WHERE \
             ST_Intersects(r.rast, {})\
             ) as t\
-    WHERE val > 0;", analyzedPolygon(), analyzedPolygon());
+    WHERE val > 0 and x < {} and y < {};", analyzedPolygon(), analyzedPolygon(),  getXArea(), getYArea());
 
     printf("Query started: %d\n", 1);
     PGresult *res = this->runQuery(formatted_dem_query.c_str());
@@ -67,12 +67,12 @@ void Connection::setBiomassToStorage(CellStorage& storage)
         SELECT\
             q.*\
         FROM\
-            (SELECT ST_Rescale(rast, 0.0005, 0.00025) as rast from biomass) r,\
+            (SELECT ST_Rescale(rast, 0.0005, 0.00025) as rast from biomass_s) r,\
             LATERAL ST_PixelAsCentroids(ST_Clip(r.rast, {}), 1) as q\
         WHERE \
             ST_Intersects(r.rast, {})\
             ) as t\
-    WHERE val > 80 and y < {};", analyzedPolygon(), analyzedPolygon(), getYArea());
+    WHERE val > 80 and x < {} and y < {};", analyzedPolygon(), analyzedPolygon(), getXArea(), getYArea());
     PGresult *res = this->runQuery(formatted_biomass_query.c_str());
     printf("biomass %d\t", PQntuples(res));
     for (int i = 0; i < PQntuples(res); i++)
@@ -87,7 +87,9 @@ void Connection::setBiomassToStorage(CellStorage& storage)
 void Connection::setFireToStorage(CellStorage& storage)
 {
     const std::string formatted_fire_query = std::format("\
-    SELECT brightness, ST_X(geom), ST_Y(geom)\
+    SELECT brightness,\
+        ROUND(ST_Distance(f.geom::geography, ST_SetSRID(ST_MakePoint('70', ST_Y(f.geom)), 4326)::geography)/30),\
+        ROUND(ST_Distance(f.geom::geography, ST_SetSRID(ST_MakePoint(ST_X(f.geom),'60.5'), 4326)::geography)/30)\
     FROM FIRE f\
     WHERE ST_Intersects(f.geom, {})", analyzedPolygon());
     PGresult *res = this->runQuery(formatted_fire_query.c_str());
@@ -96,8 +98,8 @@ void Connection::setFireToStorage(CellStorage& storage)
     {
         double_t k = atof(PQgetvalue(res, i, 1));
         storage.setNewState(cellState::Fire,
-                                  (atof(PQgetvalue(res, i, 1)) - storage.latitudeMin) * 2,
-                                  (atof(PQgetvalue(res, i, 2)) - storage.longtitudeMin) * 2);
+                                  (atoi(PQgetvalue(res, i, 1))),
+                                  (atoi(PQgetvalue(res, i, 2))));
     };
 }
 

@@ -24,8 +24,8 @@ double Math1::calculateWindKoef(const cell *c, directions InvestigatedDirection)
     if (wind == nullptr){
         return double(1);
     }
-    float angleRadians = wind->angleBetweenDirections(InvestigatedDirection) * pi() / 180;
-    double result = std::exp(wind->getWindSpeed() * (cos(cos(angleRadians)) - 1));
+    float angleRadians = wind->angleBetweenDirections(InvestigatedDirection);// * pi() / 180;
+    double result = std::exp(wind->getWindSpeed() * (cos(angleRadians) - 1));
     result_wind_[result]++;
     return result;
 }
@@ -51,7 +51,7 @@ bool Math1::willSpread(const cell *c, directions InvestigatedDirection, int alti
 {
     double fireKoeff = calculateWindKoef(c, InvestigatedDirection);
     double slopeKoeff = calculateGroundSlopeKoef(InvestigatedDirection, altitudeDifference);
-    int result = fireKoeff * slopeKoeff * 100;
+    int result = fireKoeff * slopeKoeff * 100 - 40;
     result_overall[result]++;
     return result + (rand() % 100) > ignitionPercentage();
 }

@@ -15,6 +15,7 @@ bool ProfilingDecorator::willSpread(const cell *c, directions InvestigatedDirect
     this->counter_++;
     if (result)
     {
+        results_directions_[InvestigatedDirection]++;
         this->positive_counter_++;
     };
     return result;
@@ -45,6 +46,11 @@ ProfilingDecorator::~ProfilingDecorator()
     for (auto &&i : result_distribution)
     {
         printf("%d;%d\n", i.first, i.second);
+    };
+    printf("Distribution direction\n");
+    for (auto &&i : results_directions_)
+    {
+        printf("%d;%d\n", static_cast<int>(i.first), i.second);
     };
     
     primary_class_->~Math();

@@ -7,11 +7,11 @@
 
 
 constexpr int getXArea(){
-    return 110;
+    return 1000;
 }
 
 constexpr int getYArea(){
-    return 110;
+    return 1000;
 }
 
 constexpr size_t numberOfSimulations(){
@@ -56,7 +56,8 @@ constexpr int minutesPerIteration(){
 }
 
 constexpr std::string analyzedPolygon(){
-    return "ST_GeomFromText('POLYGON((36.7 55.3, 36.75 55.3, 36.75 55.35, 36.7 55.35, 36.7 55.3))', 4326)";
+    // return "ST_GeomFromText('POLYGON((36.7 55.3, 36.75 55.3, 36.75 55.35, 36.7 55.35, 36.7 55.3))', 4326)";
+    return "ST_GeomFromText('POLYGON((70 60.5, 70.5 60.5, 70.5 61, 70 61, 70 60.5))', 4326)";
 }
 
 constexpr double pi() { return std::atan(1) * 4; }

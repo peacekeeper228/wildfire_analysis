@@ -16,7 +16,7 @@ public:
 };
 
 constexpr int ignitionPercentage(){
-    return 150; // in formula there is smth wrong I suppose
+    return 50; // in formula there is smth wrong I suppose
 }
 
 constexpr int throughPercentage(){

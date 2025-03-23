@@ -36,10 +36,10 @@ double Wind::CalculateWindKoef(directions InvestigatedDirection) const
 int Wind::angleBetweenDirections(directions d) const
 {
     int differenceInDirections = abs(static_cast<int>(d) - static_cast<int>(this->direction_));
-    if (differenceInDirections > 4)
-    {
-        return (8 - differenceInDirections) * numberOfDegreesPerDirection();
-    };
+    // if (differenceInDirections > 4)
+    // {
+    //     return (8 - differenceInDirections) * numberOfDegreesPerDirection();
+    // };
     return differenceInDirections * numberOfDegreesPerDirection();
 }
 

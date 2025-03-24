@@ -21,10 +21,11 @@ double Math1::calculateKoef(float windSpeed, double slopeAngleRad) const
 double Math1::calculateWindKoef(const cell *c, directions InvestigatedDirection) const
 {
     auto wind = c->getWind().get();
-    if (wind == nullptr){
+    if (wind == nullptr)
+    {
         return double(1);
     }
-    float angleRadians = wind->angleBetweenDirections(InvestigatedDirection);// * pi() / 180;
+    float angleRadians = wind->angleBetweenDirections(InvestigatedDirection); // * pi() / 180;
     double result = std::exp(wind->getWindSpeed() * (cos(angleRadians) - 1));
     result_wind_[result]++;
     return result;
@@ -43,7 +44,8 @@ double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int alt
         coef = atan2(static_cast<double>(altitudeDifference), static_cast<double>(cellSizeInMeters() * sqrt(2.0)));
     }
     double result = std::exp(0.5 * coef);
-    result_slope_[result]++;
+    SlopeMetaData meta = {InvestigatedDirection, altitudeDifference};
+    result_slope_[meta]++;
     return result;
 }
 
@@ -65,19 +67,26 @@ bool Math1::willSpreadThroughOne(const cell *c, directions InvestigatedDirection
 
 Math1::~Math1()
 {
-    printf("slope profiling\n");   
+    printf("slope profiling\n");
+    std::map<int, int> slope_distribution;
     for (auto &&i : result_slope_)
     {
-        printf("%2.2f;%d\n",i.first, i.second);   
+        printf("%d,%d;%d\n", i.first.altitude_difference_, static_cast<int>(i.first.investigated_direction_), i.second);
+        slope_distribution[i.second]++;
     }
-    printf("wind profiling\n");   
+    printf("slope distribution\n");
+    for (auto &&i : slope_distribution)
+    {
+        printf("%d;%d\n", i.first, i.second);
+    }
+    printf("wind profiling\n");
     for (auto &&i : result_wind_)
     {
-        printf("%2.2f;%d\n",i.first, i.second);   
+        printf("%2.2f;%d\n", i.first, i.second);
     }
-    printf("overall profiling\n");   
+    printf("overall profiling\n");
     for (auto &&i : result_overall)
     {
-        printf("%d;%d\n",i.first, i.second);   
+        printf("%d;%d\n", i.first, i.second);
     }
 }

@@ -2,6 +2,30 @@
 #include <cmath>
 #include "Cell.h"
 #include <map>
+#include <unordered_map>
+
+struct SlopeMetaData
+{
+    directions investigated_direction_;
+    int altitude_difference_;
+    bool operator==(const SlopeMetaData &rhs) const
+    {
+        return investigated_direction_ == rhs.investigated_direction_ &&
+               altitude_difference_ == rhs.altitude_difference_;
+    }
+};
+
+template <>
+struct std::hash<SlopeMetaData>
+{
+    std::size_t operator()(const SlopeMetaData &key) const
+    {
+        size_t h1 = std::hash<int>()(static_cast<int>(key.investigated_direction_));
+        size_t h2 = std::hash<int>()(key.altitude_difference_);
+        return h1 ^ (h2 << 1);
+    }
+};
+
 class Math
 {
 private:
@@ -30,7 +54,7 @@ constexpr int throughPercentage(){
 class Math1 final:  public Math
 {
 private:
-    mutable std::map<double, int> result_slope_;
+    mutable std::unordered_map<SlopeMetaData, int> result_slope_;
     mutable std::map<double, int> result_wind_;
     mutable std::map<int, int> result_overall;
     double calculateKoef(float windSpeed, double slopeAngleRad) const;

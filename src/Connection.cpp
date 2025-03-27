@@ -31,13 +31,15 @@ PGresult* Connection::runQuery(const char * formatted_dem_query) const
 
 void Connection::setDemToStorage(CellStorage& storage)
 {
+    // (SELECT ST_Rescale(rast, 0.00025, 0.00025) as rast from dem_s) r,
+
     const std::string formatted_dem_query = std::format("\
     SELECT x-1, y-1, val\
     FROM(\
         SELECT\
             q.*\
         FROM\
-            (SELECT ST_Rescale(rast, 0.00025, 0.00025) as rast from dem_s) r,\
+            (SELECT ST_Rescale(rast, 0.0005, 0.0005) as rast from dem_usa) r,\
             LATERAL ST_PixelAsCentroids(ST_Clip(r.rast, {}), 1) as q\
         WHERE \
             ST_Intersects(r.rast, {})\
@@ -61,13 +63,14 @@ void Connection::setDemToStorage(CellStorage& storage)
 
 void Connection::setBiomassToStorage(CellStorage& storage)
 {
+    // (SELECT ST_Rescale(rast, 0.0005, 0.00025) as rast from biomass_s2) r,
     const std::string formatted_biomass_query = std::format("\
     SELECT x-1, y-1, val\
     FROM(\
         SELECT\
             q.*\
         FROM\
-            (SELECT ST_Rescale(rast, 0.0005, 0.00025) as rast from biomass_s) r,\
+            (SELECT ST_Rescale(rast, 0.00025, 0.00015) as rast from biomass_usa2) r,\
             LATERAL ST_PixelAsCentroids(ST_Clip(r.rast, {}), 1) as q\
         WHERE \
             ST_Intersects(r.rast, {})\
@@ -86,10 +89,11 @@ void Connection::setBiomassToStorage(CellStorage& storage)
 
 void Connection::setFireToStorage(CellStorage& storage)
 {
+    // 70 60.5
     const std::string formatted_fire_query = std::format("\
     SELECT brightness,\
-        ROUND(ST_Distance(f.geom::geography, ST_SetSRID(ST_MakePoint('70', ST_Y(f.geom)), 4326)::geography)/30),\
-        ROUND(ST_Distance(f.geom::geography, ST_SetSRID(ST_MakePoint(ST_X(f.geom),'60.5'), 4326)::geography)/30)\
+        1000-ROUND(ST_Distance(f.geom::geography, ST_SetSRID(ST_MakePoint('-124', ST_Y(f.geom)), 4326)::geography)/30),\
+        1000-ROUND(ST_Distance(f.geom::geography, ST_SetSRID(ST_MakePoint(ST_X(f.geom),'54'), 4326)::geography)/30)\
     FROM FIRE f\
     WHERE ST_Intersects(f.geom, {})", analyzedPolygon());
     PGresult *res = this->runQuery(formatted_fire_query.c_str());

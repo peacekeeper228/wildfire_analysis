@@ -34,7 +34,7 @@ ProfilingDecorator::~ProfilingDecorator()
     printf("Results: altitude_difference_, wind_direction_, wind_speed_, investigated_direction_, number_of_calculations\n");
     for (const auto &pair : results_)
     {
-        printf("%d;%d;%2.2f;%d;%d \n",
+        printf("%d,%d,%2.2f,%d;%d \n",
                pair.first.altitude_difference_,
                static_cast<int>(pair.first.wind_direction_),
                pair.first.wind_speed_,

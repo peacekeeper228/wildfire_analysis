@@ -2,6 +2,9 @@
 #include "../include/Properties.h"
 #include <cmath>
 #include "Math.h"
+#include <fstream>
+#include <sstream>
+#include <vector>
 
 Math::Math(/* args */)
 {
@@ -33,6 +36,19 @@ double Math1::calculateWindKoef(const cell *c, directions InvestigatedDirection)
 
 double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int altitudeDifference) const
 {
+    clock_t start = clock();
+
+    SlopeMetaData meta = {bool(static_cast<int>(InvestigatedDirection) / int(2)), altitudeDifference};
+    
+    // auto a = slope_result_[meta];
+    // if (a != 0)
+    // {
+    //     clock_t per_iteration = clock() - start;
+    //     slope_timer = per_iteration+slope_timer;
+    //     slope_counter++;
+    //     return a;
+    // }
+
     double coef = 0;
     if (InvestigatedDirection == directions::North || InvestigatedDirection == directions::West ||
         InvestigatedDirection == directions::East || InvestigatedDirection == directions::South)
@@ -44,8 +60,13 @@ double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int alt
         coef = atan2(static_cast<double>(altitudeDifference), static_cast<double>(cellSizeInMeters() * sqrt(2.0)));
     }
     double result = std::exp(0.5 * coef);
-    SlopeMetaData meta = {InvestigatedDirection, altitudeDifference};
-    result_slope_[meta]++;
+    // SlopeMetaData meta = {bool(static_cast<int>(InvestigatedDirection) / int(2)), altitudeDifference};
+    slope_counter_[meta]++;
+    // slope_result_[meta] = result;
+
+    clock_t per_iteration = clock() - start;
+    slope_timer = per_iteration+slope_timer;
+    slope_counter++;
     return result;
 }
 
@@ -65,28 +86,61 @@ bool Math1::willSpreadThroughOne(const cell *c, directions InvestigatedDirection
     return int(fireKoeff * slopeKoeff * 100) + (rand() % 30) > throughPercentage();
 }
 
+bool to_bool(std::string const &s)
+{
+    return s != "0";
+}
+
+Math1::Math1()
+{
+    std::ifstream csvFile{"data/slope.csv"};
+    std::string row;
+    while (std::getline(csvFile, row))
+    {
+        std::stringstream rowStream(row);
+        std::string col;
+        std::vector<std::string> cols;
+        while (std::getline(rowStream, col, ','))
+        {
+            cols.push_back(col);
+        }
+        auto a = atoi(cols[0].c_str());
+        slope_result_[SlopeMetaData{to_bool(cols[0].c_str()), a}] = atof(cols[2].c_str());
+    }
+    csvFile.close();
+    slope_counter = 0;
+    slope_timer = 0;
+}
+
 Math1::~Math1()
 {
-    printf("slope profiling\n");
-    std::map<int, int> slope_distribution;
-    for (auto &&i : result_slope_)
-    {
-        printf("%d,%d;%d\n", i.first.altitude_difference_, static_cast<int>(i.first.investigated_direction_), i.second);
-        slope_distribution[i.second]++;
-    }
-    printf("slope distribution\n");
-    for (auto &&i : slope_distribution)
-    {
-        printf("%d;%d\n", i.first, i.second);
-    }
-    printf("wind profiling\n");
-    for (auto &&i : result_wind_)
-    {
-        printf("%2.2f;%d\n", i.first, i.second);
-    }
-    printf("overall profiling\n");
-    for (auto &&i : result_overall)
-    {
-        printf("%d;%d\n", i.first, i.second);
-    }
+    printf("total time %f, overall counts %d", (double)(slope_timer), slope_counter);
+    // printf("slope profiling\n");
+    // std::map<int, int> slope_distribution;
+
+    // for (auto &&i : slope_result_)
+    // {
+    //     printf("%d,%d,%f\n", i.first.altitude_difference_, i.first.diagonal_direction_, i.second);
+    // }
+
+    // for (auto &&i : slope_counter_)
+    //  {
+    //      printf("%d,%d;%d\n", i.first.altitude_difference_, i.first.diagonal_direction_, i.second);
+    //      slope_distribution[i.second]++;
+    //  }
+    //  printf("slope distribution\n");
+    //  for (auto &&i : slope_distribution)
+    //  {
+    //      printf("%d;%d\n", i.first, i.second);
+    //  }
+    //  printf("wind profiling\n");
+    //  for (auto &&i : result_wind_)
+    //  {
+    //      printf("%2.2f;%d\n", i.first, i.second);
+    //  }
+    //  printf("overall profiling\n");
+    //  for (auto &&i : result_overall)
+    //  {
+    //      printf("%d;%d\n", i.first, i.second);
+    //  }
 }

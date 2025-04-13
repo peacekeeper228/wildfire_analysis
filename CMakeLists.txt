@@ -27,6 +27,9 @@ ADD_LIBRARY(LibsModule
 target_link_libraries(LibsModule PRIVATE PostgreSQL::PostgreSQL)
 
 ADD_EXECUTABLE(main src/main.cpp)
+ADD_CUSTOM_COMMAND(TARGET main POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_directory
+                    ${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:main>/data)
 target_link_libraries(main LibsModule)
 
 SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY

@@ -19,7 +19,7 @@ struct SlopeMetaData
 struct WindMetaData
 {
     int direction_difference_;
-    double wind_speed_;
+    float wind_speed_;
     bool operator==(const WindMetaData &rhs) const
     {
         return direction_difference_ == rhs.direction_difference_ &&
@@ -85,6 +85,11 @@ private:
     mutable std::map<int, int> result_overall;
     mutable clock_t slope_timer;
     mutable int slope_counter;
+
+    mutable clock_t wind_timer_;
+    mutable int wind_counter_;
+    mutable std::unordered_map<WindMetaData, double> wind_result_;
+    
     double calculateKoef(float windSpeed, double slopeAngleRad) const;
     double calculateWindKoef(const cell *c, directions InvestigatedDirection) const;
     double calculateGroundSlopeKoef(directions InvestigatedDirection, int altitudeDifference) const;

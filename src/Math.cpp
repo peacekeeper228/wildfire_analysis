@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <bits/stdc++.h> 
 
 Math::Math(/* args */)
 {
@@ -23,14 +24,29 @@ double Math1::calculateKoef(float windSpeed, double slopeAngleRad) const
 
 double Math1::calculateWindKoef(const cell *c, directions InvestigatedDirection) const
 {
+    clock_t start = clock();
     auto wind = c->getWind().get();
     if (wind == nullptr)
     {
         return double(1);
     }
-    float angleRadians = wind->angleBetweenDirections(InvestigatedDirection); // * pi() / 180;
+    WindMetaData meta = {abs(static_cast<int>(wind->getWindDirection()) - static_cast<int>(InvestigatedDirection)), wind->getWindSpeed()};
+    auto a = wind_result_[meta];
+    if (a != 0){
+        clock_t per_iteration = clock() - start;
+        wind_timer_ = per_iteration+wind_timer_;
+        wind_counter_++;
+        return wind_result_[meta];
+    };
+    float angleRadians = wind->angleBetweenDirections(InvestigatedDirection);
     double result = std::exp(wind->getWindSpeed() * (cos(angleRadians) - 1));
     result_wind_[result]++;
+
+    wind_result_[meta] = result;
+    clock_t per_iteration = clock() - start;
+    wind_timer_ = per_iteration+wind_timer_;
+    wind_counter_++;
+
     return result;
 }
 
@@ -104,17 +120,35 @@ Math1::Math1()
         {
             cols.push_back(col);
         }
-        auto a = atoi(cols[0].c_str());
+        auto a = atoi(cols[1].c_str());
         slope_result_[SlopeMetaData{to_bool(cols[0].c_str()), a}] = atof(cols[2].c_str());
     }
     csvFile.close();
+    std::ifstream csvFile2{"data/wind.csv"};
+    while (std::getline(csvFile2, row))
+    {
+        std::stringstream rowStream(row);
+        std::string col;
+        std::vector<std::string> cols;
+        while (std::getline(rowStream, col, ','))
+        {
+            cols.push_back(col);
+        }
+        float a = atof(cols[1].c_str());
+
+        wind_result_[WindMetaData{atoi(cols[0].c_str()), a}] = atof(cols[2].c_str());
+    }
+    csvFile2.close();
     slope_counter = 0;
     slope_timer = 0;
+    wind_counter_ = 0;
+    wind_timer_ = 0;
 }
 
 Math1::~Math1()
 {
-    printf("total time %f, overall counts %d", (double)(slope_timer), slope_counter);
+    printf("total time %f, overall counts %d\n", (double)(slope_timer), slope_counter);
+    printf("total time %f, overall counts %d\n", (double)(wind_timer_), wind_counter_);
     // printf("slope profiling\n");
     // std::map<int, int> slope_distribution;
 

@@ -34,6 +34,9 @@ int main()
     w = std::make_shared<const Wind>(directions::SouthEast, float(2.0));
     s.setWindToArea(xRange, yRange, w);
     
+    for (size_t i = 0; i < 10; i++)
+    {
+    
     c.setStatesToStorage(s);
 
     clock_t tStart = clock();
@@ -51,6 +54,8 @@ int main()
     // std::cout << "WorkingSetSize " << memCounter.PeakWorkingSetSize << std::endl;
 
     printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
+
+    };
     s.printCurrentStates();
     // s.saveFiresToJson();
 

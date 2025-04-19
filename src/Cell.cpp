@@ -111,3 +111,13 @@ cell::~cell()
 {
     setWindToCell(this, nullptr);
 }
+
+void cell::setBiomass(const int biomass)
+{
+    biomass_ = biomass;
+}
+
+int cell::getBiomass() const
+{
+    return biomass_;
+}

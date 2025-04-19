@@ -3,8 +3,8 @@
 
 constexpr double pi() { return std::atan(1) * 4; }
 
-Wind::Wind(directions initialDirection, float w)
-    : direction_(initialDirection), wind_speed_(w)
+Wind::Wind(directions initialDirection, float w, int moisture_percentage)
+    : direction_(initialDirection), wind_speed_(w), moisture_percentage_(moisture_percentage)
 {
 }
 
@@ -16,6 +16,11 @@ directions Wind::getWindDirection() const
 float Wind::getWindSpeed() const
 {
     return this->wind_speed_;
+}
+
+int Wind::getMoistureCoeff() const
+{
+    return moisture_percentage_;
 }
 
 Wind::~Wind()

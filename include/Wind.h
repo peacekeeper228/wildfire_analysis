@@ -6,11 +6,13 @@ class Wind
 private:
     directions direction_;
     float wind_speed_;
+    int moisture_percentage_;
 public:
-    Wind(directions initialDirection, float w);
+    Wind(directions initialDirection, float w, int moisture_percentage);
     ~Wind();
     directions getWindDirection() const;
     float getWindSpeed() const;
+    int getMoistureCoeff() const;
 
     /// @deprecated now calculates over math module
     /// @brief calculate the wind coeff based on mathematical model

@@ -86,11 +86,54 @@ double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int alt
     return result;
 }
 
+double Math1::calculateBiomassKoef(const cell *c) const
+{
+    int coeff = -1;
+    switch (c->getBiomass())
+    {
+        case 0 ... 100:
+            coeff = -0.4;
+            break;
+        case 101 ... 150:
+            coeff = 0;
+            break;
+        case 151 ... 300:
+            coeff = 0.3;
+            break;
+        default:
+            throw std::invalid_argument("received strange value in biomass");
+            break;
+    }
+    return double(1+coeff);
+}
+
+double Math1::calculateMoistureKoeff(int moisture_percentage) const
+{
+    clock_t start = clock();
+
+    auto a = moisture_result_[moisture_percentage];
+    if (a != 0){
+        clock_t per_iteration = clock() - start;
+        moisture_timer_ = per_iteration+moisture_timer_;
+        moisture_counter_++;
+        return moisture_result_[moisture_percentage];
+    };
+
+    double result = 2 * exp(-0.111 * moisture_percentage / 100);
+    moisture_result_[moisture_percentage] = result;
+    clock_t per_iteration = clock() - start;
+    moisture_timer_ = per_iteration+moisture_timer_;
+    moisture_counter_++;
+    return result;
+}
+
 bool Math1::willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
 {
     double fireKoeff = calculateWindKoef(c, InvestigatedDirection);
     double slopeKoeff = calculateGroundSlopeKoef(InvestigatedDirection, altitudeDifference);
-    int result = fireKoeff * slopeKoeff * 100 - 40;
+    double biomassKoeff = calculateBiomassKoef(c);
+    double moistureKoeff = calculateMoistureKoeff(c->getWind().get()->getMoistureCoeff());
+    int result = fireKoeff * slopeKoeff * biomassKoeff * moistureKoeff * 100 - 40;
     result_overall[result]++;
     return result + (rand() % 100) > ignitionPercentage();
 }
@@ -108,6 +151,7 @@ bool to_bool(std::string const &s)
 }
 
 Math1::Math1()
+    :slope_timer(0), slope_counter(0), wind_timer_(0), wind_counter_(0), moisture_timer_(0), moisture_counter_(0)
 {
     std::ifstream csvFile{"data/slope.csv"};
     std::string row;
@@ -139,16 +183,26 @@ Math1::Math1()
         wind_result_[WindMetaData{atoi(cols[0].c_str()), a}] = atof(cols[2].c_str());
     }
     csvFile2.close();
-    slope_counter = 0;
-    slope_timer = 0;
-    wind_counter_ = 0;
-    wind_timer_ = 0;
+    std::ifstream csvFile3{"data/moisture.csv"};
+    while (std::getline(csvFile3, row))
+    {
+        std::stringstream rowStream(row);
+        std::string col;
+        std::vector<std::string> cols;
+        while (std::getline(rowStream, col, ','))
+        {
+            cols.push_back(col);
+        }
+        moisture_result_[atoi(cols[0].c_str())] = atof(cols[1].c_str());
+    }
+    csvFile3.close();
 }
 
 Math1::~Math1()
 {
     printf("total time %f, overall counts %d\n", (double)(slope_timer), slope_counter);
     printf("total time %f, overall counts %d\n", (double)(wind_timer_), wind_counter_);
+    printf("total time %f, overall counts %d\n", (double)(moisture_timer_), moisture_counter_);
     // printf("slope profiling\n");
     // std::map<int, int> slope_distribution;
 

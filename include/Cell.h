@@ -10,6 +10,7 @@ private:
     cellState current_state_;
     std::shared_ptr<const Wind> wind_state_;
     std::unique_ptr<Fire> fire_state_;
+    int biomass_;
     double altitude_;
     
 public:
@@ -38,6 +39,9 @@ public:
     void setAltitude(int altitude);
     int getAltitude() const;
     ~cell();
+
+    void setBiomass(const int biomass);
+    int getBiomass() const;
 
     const Fire* getFireInCell() const;
 };

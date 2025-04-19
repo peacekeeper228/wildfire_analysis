@@ -31,7 +31,7 @@ void test_Cell(){
     assert(c.getState() == cellState::Artificial);
 
     float wS = 1.0;
-    auto w = std::make_shared<const Wind>(directions::North, wS);
+    auto w = std::make_shared<const Wind>(directions::North, wS, 0.1);
     c.setWind(w);
     assert(c.getWind().get() == w.get());
 }
@@ -55,7 +55,7 @@ void test_CellStorage_setWindToArea(){
     CellStorage s = CellStorage(&formula);
     std::pair<int, int> p = std::make_pair<int, int>(4, 5);
     float wS = 1.0;
-    auto w = std::make_shared<const Wind>(directions::North, wS);
+    auto w = std::make_shared<const Wind>(directions::North, wS, 0.1);
     
     assert(!s.checkAndGetCell(4, 4)->getWind());
 
@@ -87,7 +87,7 @@ void test_CellStorage(){
 
 void test_Wind(){
     float wS = 1.0;
-    Wind w = Wind(directions::North, wS);
+    Wind w = Wind(directions::North, wS, 0.1);
     assert(w.getWindDirection() == directions::North);
     
     assert(w.angleBetweenDirections(directions::North) == 0);

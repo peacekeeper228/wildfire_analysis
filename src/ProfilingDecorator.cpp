@@ -3,7 +3,7 @@
 #include <iostream>
 
 ProfilingDecorator::ProfilingDecorator(Math *formula)
-    : primary_class_(formula), counter_(0), positive_counter_(0)
+    : primary_class_(formula), positive_counter_(0), counter_(0)
 {
 }
 

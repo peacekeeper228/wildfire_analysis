@@ -83,16 +83,22 @@ private:
     mutable std::unordered_map<SlopeMetaData, double> slope_result_;
     mutable std::map<double, int> result_wind_;
     mutable std::map<int, int> result_overall;
-    mutable clock_t slope_timer;
+    mutable clock_t slope_timer; 
     mutable int slope_counter;
 
     mutable clock_t wind_timer_;
     mutable int wind_counter_;
     mutable std::unordered_map<WindMetaData, double> wind_result_;
+
+    mutable clock_t moisture_timer_;
+    mutable int moisture_counter_;
+    mutable std::unordered_map<int, double> moisture_result_;
     
     double calculateKoef(float windSpeed, double slopeAngleRad) const;
     double calculateWindKoef(const cell *c, directions InvestigatedDirection) const;
     double calculateGroundSlopeKoef(directions InvestigatedDirection, int altitudeDifference) const;
+    double calculateBiomassKoef(const cell *c) const;
+    double calculateMoistureKoeff(int moisture_percentage) const;
 
 public:
     bool willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const override;

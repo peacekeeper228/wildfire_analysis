@@ -27,11 +27,13 @@ int main()
     CellStorage s = CellStorage(&formulaDecorator);
     auto xRange = std::make_pair<int, int>(0, getXArea());
     auto yRange = std::make_pair<int, int>(0, getYArea()/2);
-    auto w = std::make_shared<const Wind>(directions::SouthWest, float(5.0));
+    auto w = std::make_shared<const Wind>(directions::SouthWest, float(5.0), 80); //Surgut
+    // auto w = std::make_shared<const Wind>(directions::NorthEast, float(2.0)); // Vanderhoof
+
     s.setWindToArea(xRange, yRange, w);
 
     yRange = std::make_pair<int, int>(getYArea()/2, getYArea());
-    w = std::make_shared<const Wind>(directions::SouthEast, float(2.0));
+    w = std::make_shared<const Wind>(directions::SouthEast, float(2.0), 80);
     s.setWindToArea(xRange, yRange, w);
     
     for (size_t i = 0; i < 10; i++)

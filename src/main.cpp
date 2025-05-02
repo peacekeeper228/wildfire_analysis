@@ -61,18 +61,21 @@ int main()
     s.printCurrentStates();
     // s.saveFiresToJson();
 
-    Metric* m = new SimpsonMetric();
-    auto burnt = std::vector<std::pair<int, int>>();
-    burnt.push_back(std::make_pair<int, int>(2, 3));
-    burnt.push_back(std::make_pair<int, int>(3, 4));
+    Metric* m = new JaccardMetric();
+    // auto burnt = std::vector<std::pair<int, int>>();
+    // burnt.push_back(std::make_pair<int, int>(2, 3));
+    // burnt.push_back(std::make_pair<int, int>(3, 4));
 
-    auto fired = std::vector<std::pair<int, int>>();
-    fired.push_back(std::make_pair<int, int>(5, 8));
-    fired.push_back(std::make_pair<int, int>(9, 10));
-    
+    // auto fired = std::vector<std::pair<int, int>>();
+    // fired.push_back(std::make_pair<int, int>(5, 8));
+    // fired.push_back(std::make_pair<int, int>(9, 10));
+    CellStorage other_s = CellStorage(&formulaDecorator);
+    other_s.uploadFromTxt();
     clock_t tStartMetrics = clock();
-    m->calculateVariables(s, fired, burnt);
-    std::cout <<"Simpson metric is equal to: " <<  m->compute() << std::endl;
+    // m->calculateVariables(s, fired, burnt);
+
+    m->calculateVariablesFrom2Storages(s, other_s);
+    printf("Jaccard metric is equal to: %f\n", m->compute());
     printf("Time taken: %.2fs\n", (double)(clock() - tStartMetrics) / CLOCKS_PER_SEC);
     return 0;
 }

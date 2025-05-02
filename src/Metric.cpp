@@ -38,6 +38,34 @@ void Metric::calculateVariables(const CellStorage &cellStorage, std::vector<std:
     d = allArea - a - b - c - d;
 }
 
+void Metric::calculateVariablesFrom2Storages(const CellStorage &cellStorage, const CellStorage &other)
+{
+    for (size_t i = 0; i < getXArea(); i++)
+    {
+        for (size_t j = 0; j < getYArea(); j++)
+        {
+            auto state = cellStorage.getState(i, j);
+            auto other_state = other.getState(i, j);
+            if ((state == cellState::Fire and other_state == cellState::Fire) or (state == cellState::Burnt and other_state == cellState::Burnt))
+            {
+                ++a;
+            }
+            else if (state == cellState::Fire or state == cellState::Burnt)
+            {
+                ++b;
+            }
+            else if (other_state == cellState::Fire or other_state == cellState::Burnt)
+            {
+                ++c;
+            }
+            else
+            {
+                ++d;
+            }
+        }
+    }
+}
+
 double SimpsonMetric::compute() const
 {
     return double(a) / double(std::min(a + b, a + c));

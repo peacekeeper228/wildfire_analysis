@@ -11,6 +11,7 @@ public:
     Metric(const Metric& m) = default;
     ~Metric();
     void calculateVariables(const CellStorage& cellStorage, std::vector<std::pair<int, int>>& realFirePoints, std::vector<std::pair<int, int>>& burntPoints);
+    void calculateVariablesFrom2Storages(const CellStorage& cellStorage, const CellStorage& other);
     virtual double compute() const = 0;
 };
 

@@ -26,4 +26,6 @@ public:
     /// @return angle in degrees
     int angleBetweenDirections(directions d) const;
 
+    int directionDifference(directions d) const;
+
 };

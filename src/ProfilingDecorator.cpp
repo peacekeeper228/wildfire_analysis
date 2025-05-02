@@ -9,7 +9,14 @@ ProfilingDecorator::ProfilingDecorator(Math *formula)
 
 bool ProfilingDecorator::willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
 {
+    clock_t start = clock();
+    int direction_difference = c->getWind().get()->directionDifference(InvestigatedDirection);
+    if (direction_difference > 1){
+        return false;
+    }
     auto result = this->primary_class_->willSpread(c, InvestigatedDirection, altitudeDifference);
+    clock_t per_iteration = clock() - start;
+    overall_timer_ = per_iteration+overall_timer_;
     metaData key = {InvestigatedDirection, altitudeDifference, c->getWind().get()->getWindDirection(), c->getWind().get()->getWindSpeed()};
     results_[key]++;
     this->counter_++;

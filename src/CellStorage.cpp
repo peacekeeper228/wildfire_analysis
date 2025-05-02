@@ -202,6 +202,26 @@ void CellStorage::saveFiresToJson()
     //     std::cout << event << std::endl;
 }
 
+void CellStorage::uploadFromTxt()
+{
+    std::ifstream txt_file{"previous.txt"};
+    if (!txt_file.is_open()) {
+        std::cerr << "Не удалось открыть файл с предыдущими данными" << std::endl;
+        return;
+    }
+    std::string line;
+    size_t currentLine = 0;
+
+    while (std::getline(txt_file, line)) {
+        for (size_t i = 0; i < line.size(); i++)
+        {
+            terrain_[currentLine][i].get()->setState(static_cast<cellState>(line[i]-'0'));
+        }
+        currentLine++;
+        
+    }
+    txt_file.close();
+}
 std::vector<std::pair<int, int>> CellStorage::getRelativeFirePoints() const
 {
     // important note that result must be sorted!

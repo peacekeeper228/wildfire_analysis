@@ -84,6 +84,8 @@ public:
 
     void saveFiresToJson();
 
+    void uploadFromTxt();
+
     CellStorage* CopySquare(int xMin, int yMin, int xMax, int yMax) const;
 
 };

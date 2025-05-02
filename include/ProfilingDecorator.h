@@ -38,6 +38,7 @@ private:
     Math *primary_class_;
     mutable int positive_counter_;
     mutable int counter_;
+    mutable clock_t overall_timer_; 
     mutable std::unordered_map<metaData, int> results_;
     mutable std::unordered_map<directions, int> results_directions_;
 

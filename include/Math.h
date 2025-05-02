@@ -80,6 +80,7 @@ class Math1 final : public Math
 {
 private:
     mutable std::unordered_map<SlopeMetaData, int> slope_counter_;
+    mutable std::map<double, int> result_slope_;
     mutable std::unordered_map<SlopeMetaData, double> slope_result_;
     mutable std::map<double, int> result_wind_;
     mutable std::map<int, int> result_overall;

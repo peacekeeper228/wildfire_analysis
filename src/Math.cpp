@@ -30,7 +30,8 @@ double Math1::calculateWindKoef(const cell *c, directions InvestigatedDirection)
     {
         return double(1);
     }
-    WindMetaData meta = {abs(static_cast<int>(wind->getWindDirection()) - static_cast<int>(InvestigatedDirection)), wind->getWindSpeed()};
+
+    WindMetaData meta = {wind->directionDifference(InvestigatedDirection), wind->getWindSpeed()};
     auto a = wind_result_[meta];
     if (a != 0){
         clock_t per_iteration = clock() - start;
@@ -56,14 +57,17 @@ double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int alt
 
     SlopeMetaData meta = {bool(static_cast<int>(InvestigatedDirection) / int(2)), altitudeDifference};
     
-    // auto a = slope_result_[meta];
-    // if (a != 0)
-    // {
-    //     clock_t per_iteration = clock() - start;
-    //     slope_timer = per_iteration+slope_timer;
-    //     slope_counter++;
-    //     return a;
-    // }
+    auto a = slope_result_[meta];
+    if (a != 0)
+    {
+        clock_t per_iteration = clock() - start;
+        slope_timer = per_iteration+slope_timer;
+        slope_counter++;
+        slope_counter_[meta]++;
+        slope_result_[meta] = a;
+        result_slope_[a]++;
+        return a;
+    }
 
     double coef = 0;
     if (InvestigatedDirection == directions::North || InvestigatedDirection == directions::West ||
@@ -133,9 +137,9 @@ bool Math1::willSpread(const cell *c, directions InvestigatedDirection, int alti
     double slopeKoeff = calculateGroundSlopeKoef(InvestigatedDirection, altitudeDifference);
     double biomassKoeff = calculateBiomassKoef(c);
     double moistureKoeff = calculateMoistureKoeff(c->getWind().get()->getMoistureCoeff());
-    int result = fireKoeff * slopeKoeff * biomassKoeff * moistureKoeff * 100 - 40;
+    int result = fireKoeff * slopeKoeff * biomassKoeff * moistureKoeff * 100 / 2;
     result_overall[result]++;
-    return result + (rand() % 100) > ignitionPercentage();
+    return result > (rand() % 100);
 }
 
 bool Math1::willSpreadThroughOne(const cell *c, directions InvestigatedDirection, int altitudeDifference) const

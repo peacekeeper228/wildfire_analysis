@@ -20,24 +20,23 @@ int main()
 {
 
     printf("Size of cell from %.2ld to %.2ld bytes \n", sizeof(cell), sizeof(cell) + sizeof(Fire) + sizeof(Wind));
-
     Connection c = Connection();
     Math1 formula = Math1();
     auto formulaDecorator = ProfilingDecorator(&formula);
     CellStorage s = CellStorage(&formulaDecorator);
     auto xRange = std::make_pair<int, int>(0, getXArea());
     auto yRange = std::make_pair<int, int>(0, getYArea()/2);
-    auto w = std::make_shared<const Wind>(directions::SouthWest, float(5.0), 80); //Surgut
+    auto w = std::make_shared<const Wind>(directions::SouthWest, float(2.0), 20); //Surgut
     // auto w = std::make_shared<const Wind>(directions::NorthEast, float(2.0)); // Vanderhoof
 
     s.setWindToArea(xRange, yRange, w);
 
     yRange = std::make_pair<int, int>(getYArea()/2, getYArea());
-    w = std::make_shared<const Wind>(directions::SouthEast, float(2.0), 80);
+    w = std::make_shared<const Wind>(directions::SouthWest, float(2.0), 20);
     s.setWindToArea(xRange, yRange, w);
     
-    for (size_t i = 0; i < 10; i++)
-    {
+    // for (size_t i = 0; i < 10; i++)
+    // {
     
     c.setStatesToStorage(s);
 
@@ -45,10 +44,10 @@ int main()
     for (size_t i = 0; i < numberOfSimulations(); i++)
     {
         s.iterate();
-        if ((i % 10 == 0) && (i != 0))
-        {
-            std::cout << "we have calculated " << i << " iterations" << std::endl;
-        }
+        // if ((i % 10 == 0) && (i != 0))
+        // {
+        //     std::cout << "we have calculated " << i << " iterations" << std::endl;
+        // }
         // s.printCurrentStates();
     }
     // PROCESS_MEMORY_COUNTERS memCounter;
@@ -57,7 +56,7 @@ int main()
 
     printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
 
-    };
+    // };
     s.printCurrentStates();
     // s.saveFiresToJson();
 
@@ -71,11 +70,18 @@ int main()
     // fired.push_back(std::make_pair<int, int>(9, 10));
     CellStorage other_s = CellStorage(&formulaDecorator);
     other_s.uploadFromTxt();
+    other_s.iterate();
+    // other_s.printCurrentStates();
     clock_t tStartMetrics = clock();
     // m->calculateVariables(s, fired, burnt);
 
     m->calculateVariablesFrom2Storages(s, other_s);
     printf("Jaccard metric is equal to: %f\n", m->compute());
+    auto simpson_metric = new SimpsonMetric(*m);
+    printf("%s metric is equal to: %f\n", simpson_metric->metricName(), simpson_metric->compute());
+    auto sneath_metric = new SneathMetric(*m);
+    printf("%s metric is equal to: %f\n", sneath_metric->metricName(), sneath_metric->compute());
+    m->printConfusionMatrix();
     printf("Time taken: %.2fs\n", (double)(clock() - tStartMetrics) / CLOCKS_PER_SEC);
     return 0;
 }

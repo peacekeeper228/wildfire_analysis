@@ -2,13 +2,65 @@
 
 #include "../include/Metric.h"
 #include "../include/Properties.h"
+#include "Metric.h"
+
+void Metric::hardResolver(cellState state, cellState other_state)
+{
+    if ((state == cellState::Fire and other_state == cellState::Fire) or (state == cellState::Burnt and other_state == cellState::Burnt))
+    {
+        ++a;
+    }
+    else if (state == cellState::Fire or state == cellState::Burnt)
+    {
+        ++b;
+    }
+    else if (other_state == cellState::Fire or other_state == cellState::Burnt)
+    {
+        ++c;
+    }
+    else
+    {
+        ++d;
+    }
+}
+
+void Metric::softResolver(cellState state, cellState other_state)
+{
+    if ((state == cellState::Fire or state == cellState::Burnt) and (other_state == cellState::Fire or other_state == cellState::Burnt))
+    {
+        ++a;
+    }
+    else if (state == cellState::Fire or state == cellState::Burnt)
+    {
+        ++b;
+    }
+    else if (other_state == cellState::Fire or other_state == cellState::Burnt)
+    {
+        ++c;
+    }
+    else
+    {
+        ++d;
+    }
+}
 
 Metric::Metric(/* args */)
 {
 }
 
+// Metric::Metric(const Metric *other)
+//     :a(other->a), b(other->b), c(other->c), d(other->d)
+// {
+
+// }
+
 Metric::~Metric()
 {
+}
+
+void Metric::printConfusionMatrix()
+{
+    printf("TP: %ld, FP: %ld, FN: %ld, TN: %ld\n", a, b, c, d);
 }
 
 void Metric::calculateVariables(const CellStorage &cellStorage, std::vector<std::pair<int, int>> &realFirePoints, std::vector<std::pair<int, int>> &burntPoints)
@@ -44,24 +96,8 @@ void Metric::calculateVariablesFrom2Storages(const CellStorage &cellStorage, con
     {
         for (size_t j = 0; j < getYArea(); j++)
         {
-            auto state = cellStorage.getState(i, j);
-            auto other_state = other.getState(i, j);
-            if ((state == cellState::Fire and other_state == cellState::Fire) or (state == cellState::Burnt and other_state == cellState::Burnt))
-            {
-                ++a;
-            }
-            else if (state == cellState::Fire or state == cellState::Burnt)
-            {
-                ++b;
-            }
-            else if (other_state == cellState::Fire or other_state == cellState::Burnt)
-            {
-                ++c;
-            }
-            else
-            {
-                ++d;
-            }
+            this->softResolver(cellStorage.getState(i, j), other.getState(i, j));
+            // this->hardResolver(cellStorage.getState(i, j), other.getState(i, j));
         }
     }
 }
@@ -71,12 +107,36 @@ double SimpsonMetric::compute() const
     return double(a) / double(std::min(a + b, a + c));
 }
 
+SimpsonMetric::SimpsonMetric(const Metric &m)
+    : Metric(m) {}
+
+const char *SimpsonMetric::metricName() const
+{
+    return "Simpson metric";
+}
+
 double JaccardMetric::compute() const
 {
     return double(a) / double(a + b + c);
 }
 
+JaccardMetric::JaccardMetric(const Metric &m)
+    : Metric(m) {}
+
+const char *JaccardMetric::metricName() const
+{
+    return "Jaccard metric";
+}
+
 double SneathMetric::compute() const
 {
     return double(a) / double(a + 2 * b + 2 * c);
+}
+
+SneathMetric::SneathMetric(const Metric &m)
+    : Metric(m) {}
+
+const char *SneathMetric::metricName() const
+{
+    return "Sneath metric";
 }

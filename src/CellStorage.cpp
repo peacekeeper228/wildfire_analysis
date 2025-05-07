@@ -95,7 +95,8 @@ void CellStorage::iterateCell(int i, int j)
                 continue;
             };
             double fireKoeff = 0;
-            if (nearestCell->getState() == cellState::Tree)
+            auto state_nearest_cell = nearestCell->getState();
+            if (state_nearest_cell == cellState::Tree)
             {
                 if (formula_->willSpread(iteratedCell, analyzedDirection, iteratedCell->getAltitude() - nearestCell->getAltitude()))
                 {
@@ -107,7 +108,8 @@ void CellStorage::iterateCell(int i, int j)
             {
                 continue;
             };
-            if ((throughCell->getState() == cellState::Tree) && (nearestCell->getState() != cellState::Tree) && ((nearestCell->getState() != cellState::Fire)))
+            auto state_through_cell = throughCell->getState();
+            if ((state_through_cell == cellState::Tree) && (state_nearest_cell != cellState::Tree) && ((state_nearest_cell != cellState::Fire)))
             {
                 if (formula_->willSpreadThroughOne(iteratedCell, analyzedDirection, iteratedCell->getAltitude() - throughCell->getAltitude()))
                 {
@@ -215,7 +217,11 @@ void CellStorage::uploadFromTxt()
     while (std::getline(txt_file, line)) {
         for (size_t i = 0; i < line.size(); i++)
         {
-            terrain_[currentLine][i].get()->setState(static_cast<cellState>(line[i]-'0'));
+            cellState new_state = static_cast<cellState>(line[i]-'0');
+            if (new_state == cellState::Fire){
+                setNewState(cellState::Tree, currentLine, i);
+            }
+            setNewState(new_state, currentLine, i);
         }
         currentLine++;
         

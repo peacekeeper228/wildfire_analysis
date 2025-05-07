@@ -82,7 +82,7 @@ double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int alt
     double result = std::exp(0.5 * coef);
     // SlopeMetaData meta = {bool(static_cast<int>(InvestigatedDirection) / int(2)), altitudeDifference};
     slope_counter_[meta]++;
-    // slope_result_[meta] = result;
+    slope_result_[meta] = result;
 
     clock_t per_iteration = clock() - start;
     slope_timer = per_iteration+slope_timer;
@@ -204,9 +204,9 @@ Math1::Math1()
 
 Math1::~Math1()
 {
-    printf("total time %f, overall counts %d\n", (double)(slope_timer), slope_counter);
-    printf("total time %f, overall counts %d\n", (double)(wind_timer_), wind_counter_);
-    printf("total time %f, overall counts %d\n", (double)(moisture_timer_), moisture_counter_);
+    printf("total slope time %f, overall counts %d\n", (double)(slope_timer), slope_counter);
+    printf("total wind time %f, overall counts %d\n", (double)(wind_timer_), wind_counter_);
+    printf("total moisture time %f, overall counts %d\n", (double)(moisture_timer_), moisture_counter_);
     // printf("slope profiling\n");
     // std::map<int, int> slope_distribution;
 

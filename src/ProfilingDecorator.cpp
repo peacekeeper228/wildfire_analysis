@@ -11,9 +11,13 @@ bool ProfilingDecorator::willSpread(const cell *c, directions InvestigatedDirect
 {
     clock_t start = clock();
     int direction_difference = c->getWind().get()->directionDifference(InvestigatedDirection);
-    if (direction_difference > 1){
-        return false;
-    }
+    // if (direction_difference == 4){
+    //     return false;
+    // } else if (direction_difference >= 2)
+    // {
+    //     return 4 > (rand() % 100);
+    // };
+    
     auto result = this->primary_class_->willSpread(c, InvestigatedDirection, altitudeDifference);
     clock_t per_iteration = clock() - start;
     overall_timer_ = per_iteration+overall_timer_;

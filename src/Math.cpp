@@ -51,6 +51,11 @@ double Math1::calculateWindKoef(const cell *c, directions InvestigatedDirection)
     return result;
 }
 
+int round_to_4(int digit){
+    int round_to = 4;
+    return (digit + round_to - 1) & -round_to;
+}
+
 double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int altitudeDifference) const
 {
     clock_t start = clock();
@@ -114,7 +119,7 @@ double Math1::calculateBiomassKoef(const cell *c) const
 double Math1::calculateMoistureKoeff(int moisture_percentage) const
 {
     clock_t start = clock();
-
+    moisture_percentage = round_to_4(moisture_percentage);
     auto a = moisture_result_[moisture_percentage];
     if (a != 0){
         clock_t per_iteration = clock() - start;

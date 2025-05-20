@@ -6,3 +6,5 @@ main.exe.stackdump
 generatedData
 postgres-data
 build
+html
+latex

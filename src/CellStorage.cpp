@@ -163,9 +163,9 @@ void CellStorage::printCurrentStates()
         std::cout << "Smth goes wrong in writing in file" << std::endl;
     }
 
-    for (size_t i = 0; i < x_size_; i++)
+    for (int16_t i = 0; i < x_size_; i++)
     {
-        for (size_t j = 0; j < y_size_; j++)
+        for (int16_t j = 0; j < y_size_; j++)
         {
             auto a = std::to_string(static_cast<int>(terrain_[i][j]->getState()));
             outFile << a;

@@ -36,6 +36,8 @@ public:
     /// @brief possible state becomes present, often is called during iteration
     void setNewState();
 
+    /// @brief set altitude to the cell
+    /// @param altitude 
     void setAltitude(int altitude);
     int getAltitude() const;
     ~cell();

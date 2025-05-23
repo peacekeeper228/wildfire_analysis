@@ -2,7 +2,7 @@
 #include "ProfilingDecorator.h"
 #include <iostream>
 
-ProfilingDecorator::ProfilingDecorator(Math *formula)
+ProfilingDecorator::ProfilingDecorator(IMath *formula)
     : primary_class_(formula), positive_counter_(0), counter_(0)
 {
 }
@@ -10,7 +10,7 @@ ProfilingDecorator::ProfilingDecorator(Math *formula)
 bool ProfilingDecorator::willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
 {
     clock_t start = clock();
-    int direction_difference = c->getWind().get()->directionDifference(InvestigatedDirection);
+    // int direction_difference = c->getWind().get()->directionDifference(InvestigatedDirection);
     // if (direction_difference == 4){
     //     return false;
     // } else if (direction_difference >= 2)
@@ -61,10 +61,10 @@ ProfilingDecorator::~ProfilingDecorator()
     //     printf("%d;%d\n", i.first, i.second);
     // };
     // printf("Distribution direction\n");
-    // for (auto &&i : results_directions_)
-    // {
-    //     printf("%d;%d\n", static_cast<int>(i.first), i.second);
-    // };
+    for (auto &&i : results_directions_)
+    {
+        printf("%d;%d\n", static_cast<int>(i.first), i.second);
+    };
     
-    primary_class_->~Math();
+    primary_class_->~IMath();
 }

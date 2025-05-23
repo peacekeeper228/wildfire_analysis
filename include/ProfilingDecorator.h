@@ -32,10 +32,11 @@ struct std::hash<metaData>
     }
 };
 
-class ProfilingDecorator final : public Math
+/// @brief class that store metrics and call Math primary class atttributes
+class ProfilingDecorator final : public IMath
 {
 private:
-    Math *primary_class_;
+    IMath *primary_class_;
     mutable int positive_counter_;
     mutable int counter_;
     mutable clock_t overall_timer_; 
@@ -43,7 +44,7 @@ private:
     mutable std::unordered_map<directions, int> results_directions_;
 
 public:
-    ProfilingDecorator(Math *formula);
+    ProfilingDecorator(IMath *formula);
     bool willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const override;
     bool willSpreadThroughOne(const cell *c, directions InvestigatedDirection, int altitudeDifference) const override;
     ~ProfilingDecorator();

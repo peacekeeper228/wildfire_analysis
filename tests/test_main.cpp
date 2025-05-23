@@ -51,7 +51,7 @@ void test_fire_in_cell(){
 }
 
 void test_CellStorage_setWindToArea(){
-    Math1 formula = Math1();
+    Math formula = Math();
     CellStorage s = CellStorage(&formula);
     std::pair<int, int> p = std::make_pair<int, int>(4, 5);
     float wS = 1.0;
@@ -73,7 +73,7 @@ void test_CellStorage_setWindToArea(){
 }
 
 void test_CellStorage(){
-    Math1 formula = Math1();
+    Math formula = Math();
     CellStorage s = CellStorage(&formula);
     s.setNewState(cellState::Tree, 5, 5);
     s.setNewState(cellState::Fire, 5, 5);
@@ -101,7 +101,7 @@ void test_Wind(){
 }
 
 void test_Math(){
-    Math1 formula = Math1();
+    Math formula = Math();
 
     cell c = cell();
     c.setState(cellState::Fire);
@@ -131,7 +131,7 @@ void testFire(){
 }
 
 void testMetrics(){
-    Math1 formula = Math1();
+    Math formula = Math();
     CellStorage s = CellStorage(&formula);
 
     for (size_t i = 0; i < 10; i++)

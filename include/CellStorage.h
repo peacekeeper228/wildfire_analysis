@@ -23,7 +23,7 @@ private:
     int16_t x_size_;
     int16_t y_size_; 
     std::vector<std::vector<std::shared_ptr<cell>>> terrain_;
-    Math* formula_;
+    IMath* formula_;
 
     //cell terrain_[getXArea()][getYArea()];
 
@@ -31,8 +31,8 @@ private:
 
 public:
 
-    CellStorage(Math* formula);
-    CellStorage(Math* formula, int16_t x_size, int16_t y_size);
+    CellStorage(IMath* formula);
+    CellStorage(IMath* formula, int16_t x_size, int16_t y_size);
     ~CellStorage();
 
     /// @brief set state of a particular cell with no checking bound invariant
@@ -84,6 +84,7 @@ public:
 
     void saveFiresToJson();
 
+    /// @brief load the states from the file "previous.txt"
     void uploadFromTxt();
 
     CellStorage* CopySquare(int xMin, int yMin, int xMax, int yMax) const;

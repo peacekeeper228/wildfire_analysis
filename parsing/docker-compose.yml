@@ -1,0 +1,31 @@
+version: '3.1'
+services:
+
+    database:
+        image: postgis/postgis:17-3.5-alpine
+        container_name: database
+        ports:
+            - '5431:5432'
+        environment:
+            POSTGRES_PASSWORD: postgis
+            PGUSER: postgis
+            POSTGRES_USER: postgis
+            POSTGRES_DATABSE: postgis
+        volumes:
+            - ./enableExt.sql:/docker-entrypoint-initdb.d/enableExt.sql:ro
+            - ./data/:/home/database/
+            - ./to_database.bash:/home/database/to_database.bash
+
+            # raster2pgsql -F -I -C -t 10000x10000  /home/database/file1.tif /home/database/file2.tif public.dem > /home/database/out.sql
+
+# raster2pgsql -F -I -C -t 10000x10000  /home/database/1/*.tif public.dem > /home/database/out.sql
+
+# psql -d postgis -f /home/database/out.sql
+
+# raster2pgsql -F -I -C -t 10000x10000  /home/database/2/*.tif public.biomass > /home/database/out.sql
+
+# psql -d postgis -f /home/database/out.sql
+
+# raster2pgsql -F -I -C -t 10000x10000  /home/database/3/*.nc public.weather > /home/database/out.sql
+
+# psql -d postgis -f /home/database/out.sql

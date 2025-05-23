@@ -14,7 +14,7 @@ public:
     float getWindSpeed() const;
     int getMoistureCoeff() const;
 
-    /// @deprecated now calculates over math module
+    /// @deprecated now calculates in math module
     /// @brief calculate the wind coeff based on mathematical model
     /// @param InvestigatedDirection direction in which koeff is investigated
     /// @return calculated coefficient

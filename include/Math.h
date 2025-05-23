@@ -50,16 +50,16 @@ struct std::hash<WindMetaData>
     }
 };
 
-class Math
+class IMath
 {
 private:
 public:
-    Math();
+    IMath();
     // virtual double calculateKoef(float windSpeed, double slopeAngleRad) const = 0;
     // virtual double calculateWindKoef(const cell* c, directions InvestigatedDirection) const = 0;
     virtual bool willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const = 0;
     virtual bool willSpreadThroughOne(const cell *c, directions InvestigatedDirection, int altitudeDifference) const = 0;
-    ~Math();
+    ~IMath();
 };
 
 constexpr int ignitionPercentage()
@@ -76,7 +76,7 @@ constexpr int throughPercentage()
 /// "Aildland fire spread modelling using cellular
 /// automata: evolution in large-scale spatially heterogeneous environments
 /// under fire suppression tactics"
-class Math1 final : public Math
+class Math final : public IMath
 {
 private:
     mutable std::unordered_map<SlopeMetaData, int> slope_counter_;
@@ -104,6 +104,6 @@ private:
 public:
     bool willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const override;
     bool willSpreadThroughOne(const cell *c, directions InvestigatedDirection, int altitudeDifference) const override;
-    Math1();
-    ~Math1();
+    Math();
+    ~Math();
 };

@@ -7,22 +7,22 @@
 #include <vector>
 #include <bits/stdc++.h> 
 
-Math::Math(/* args */)
+IMath::IMath(/* args */)
 {
 }
 
-Math::~Math()
+IMath::~IMath()
 {
 }
 
-double Math1::calculateKoef(float windSpeed, double slopeAngleRad) const
+double Math::calculateKoef(float windSpeed, double slopeAngleRad) const
 {
     double windKoeff = pow(196, 0.0133 * windSpeed);
     double slopeKoeff = 5.275 * tan(slopeAngleRad);
     return windKoeff * slopeKoeff;
 }
 
-double Math1::calculateWindKoef(const cell *c, directions InvestigatedDirection) const
+double Math::calculateWindKoef(const cell *c, directions InvestigatedDirection) const
 {
     clock_t start = clock();
     auto wind = c->getWind().get();
@@ -56,7 +56,7 @@ int round_to_4(int digit){
     return (digit + round_to - 1) & -round_to;
 }
 
-double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int altitudeDifference) const
+double Math::calculateGroundSlopeKoef(directions InvestigatedDirection, int altitudeDifference) const
 {
     clock_t start = clock();
 
@@ -95,7 +95,7 @@ double Math1::calculateGroundSlopeKoef(directions InvestigatedDirection, int alt
     return result;
 }
 
-double Math1::calculateBiomassKoef(const cell *c) const
+double Math::calculateBiomassKoef(const cell *c) const
 {
     int coeff = -1;
     switch (c->getBiomass())
@@ -116,7 +116,7 @@ double Math1::calculateBiomassKoef(const cell *c) const
     return double(1+coeff);
 }
 
-double Math1::calculateMoistureKoeff(int moisture_percentage) const
+double Math::calculateMoistureKoeff(int moisture_percentage) const
 {
     clock_t start = clock();
     moisture_percentage = round_to_4(moisture_percentage);
@@ -136,7 +136,7 @@ double Math1::calculateMoistureKoeff(int moisture_percentage) const
     return result;
 }
 
-bool Math1::willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
+bool Math::willSpread(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
 {
     double fireKoeff = calculateWindKoef(c, InvestigatedDirection);
     double slopeKoeff = calculateGroundSlopeKoef(InvestigatedDirection, altitudeDifference);
@@ -147,7 +147,7 @@ bool Math1::willSpread(const cell *c, directions InvestigatedDirection, int alti
     return result > (rand() % 100);
 }
 
-bool Math1::willSpreadThroughOne(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
+bool Math::willSpreadThroughOne(const cell *c, directions InvestigatedDirection, int altitudeDifference) const
 {
     double fireKoeff = calculateWindKoef(c, InvestigatedDirection);
     double slopeKoeff = calculateGroundSlopeKoef(InvestigatedDirection, altitudeDifference);
@@ -159,7 +159,7 @@ bool to_bool(std::string const &s)
     return s != "0";
 }
 
-Math1::Math1()
+Math::Math()
     :slope_timer(0), slope_counter(0), wind_timer_(0), wind_counter_(0), moisture_timer_(0), moisture_counter_(0)
 {
     std::ifstream csvFile{"data/slope.csv"};
@@ -207,7 +207,7 @@ Math1::Math1()
     csvFile3.close();
 }
 
-Math1::~Math1()
+Math::~Math()
 {
     printf("total slope time %f, overall counts %d\n", (double)(slope_timer), slope_counter);
     printf("total wind time %f, overall counts %d\n", (double)(wind_timer_), wind_counter_);
@@ -215,11 +215,25 @@ Math1::~Math1()
     // printf("slope profiling\n");
     // std::map<int, int> slope_distribution;
 
+    // for (auto &&i : moisture_result_)
+    // {
+    //     printf("%d,%f\n", i.first, i.second);
+    // }
+    // for (auto &&i : wind_result_)
+    // {
+    //     printf("%d,%f,%f\n", i.first.direction_difference_, i.first.wind_speed_, i.second);
+    // }
     // for (auto &&i : slope_result_)
     // {
-    //     printf("%d,%d,%f\n", i.first.altitude_difference_, i.first.diagonal_direction_, i.second);
+    //     printf("%d,%d,%f\n", i.first.diagonal_direction_, i.first.altitude_difference_, i.second);
     // }
+    // for (auto &&i : result_slope_)
+    // {
+    //     // printf("%.4f;%d\n", i.first, i.second);
+    //     printf("%.4f\n", i.first);
 
+    // };
+    
     // for (auto &&i : slope_counter_)
     //  {
     //      printf("%d,%d;%d\n", i.first.altitude_difference_, i.first.diagonal_direction_, i.second);

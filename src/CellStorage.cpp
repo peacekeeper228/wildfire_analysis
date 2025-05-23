@@ -8,12 +8,12 @@
 #include "../include/CellStorage.h"
 #include "../include/Coordinates.h"
 
-CellStorage::CellStorage(Math *formula)
+CellStorage::CellStorage(IMath *formula)
 : CellStorage(formula, getXArea(),getYArea())
 {
 }
 
-CellStorage::CellStorage(Math *formula, int16_t x_size, int16_t y_size)
+CellStorage::CellStorage(IMath *formula, int16_t x_size, int16_t y_size)
     : formula_(formula), x_size_(x_size), y_size_(y_size)
 {
     time_after_ = 0;
